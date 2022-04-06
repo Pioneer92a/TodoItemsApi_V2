@@ -36,75 +36,119 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.getTask = exports.deleteTask = exports.createNewTask = void 0;
-// const Task = require('../../infrastructure/db/model/task'); // import task model
+exports.TaskControllers = void 0;
 var taskService_1 = require("../../application/taskService");
-function createNewTask(req, res) {
-    return __awaiter(this, void 0, void 0, function () {
-        var newTask, e_1;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    _a.trys.push([0, 2, , 3]);
-                    return [4 /*yield*/, taskService_1.taskService.createNewTask(req)];
-                case 1:
-                    newTask = _a.sent();
-                    return [3 /*break*/, 3];
-                case 2:
-                    e_1 = _a.sent();
-                    res.status(400).send(e_1);
-                    return [3 /*break*/, 3];
-                case 3:
-                    res.status(200).send({ msg: "new task created", newTask: newTask });
-                    return [2 /*return*/];
-            }
+var taskApplicationService = new taskService_1.TaskApplicationService();
+var TaskControllers = /** @class */ (function () {
+    function TaskControllers() {
+    }
+    TaskControllers.prototype.createNewTask = function (req, res) {
+        return __awaiter(this, void 0, void 0, function () {
+            var newTask, e_1;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, taskApplicationService.createNewTask(req)];
+                    case 1:
+                        newTask = _a.sent();
+                        return [3 /*break*/, 3];
+                    case 2:
+                        e_1 = _a.sent();
+                        res.status(400).send(e_1);
+                        return [3 /*break*/, 3];
+                    case 3:
+                        // check if task FOUND ??
+                        if (!newTask)
+                            res.status(404).send({ msg: "something went wrong !!!" });
+                        else
+                            res.status(200).send({ msg: "new task created", newTask: newTask });
+                        return [2 /*return*/];
+                }
+            });
         });
-    });
-}
-exports.createNewTask = createNewTask;
-function deleteTask(req, res) {
-    return __awaiter(this, void 0, void 0, function () {
-        var task, e_2;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    _a.trys.push([0, 2, , 3]);
-                    return [4 /*yield*/, taskService_1.taskService.deleteTask(req.params.id)];
-                case 1:
-                    task = _a.sent();
-                    return [3 /*break*/, 3];
-                case 2:
-                    e_2 = _a.sent();
-                    res.status(400).send(e_2);
-                    return [3 /*break*/, 3];
-                case 3:
-                    res.status(200).send({ msg: "task deleted:", task: task });
-                    return [2 /*return*/];
-            }
+    };
+    TaskControllers.prototype.deleteTask = function (req, res) {
+        return __awaiter(this, void 0, void 0, function () {
+            var task, payload, e_2;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        payload = { taskId: req.params.id, uuid: req.uuid };
+                        return [4 /*yield*/, taskApplicationService.deleteTask(payload)];
+                    case 1:
+                        task = _a.sent();
+                        return [3 /*break*/, 3];
+                    case 2:
+                        e_2 = _a.sent();
+                        res.status(400).send(e_2);
+                        return [3 /*break*/, 3];
+                    case 3:
+                        // check if task FOUND ??
+                        if (!task)
+                            res.status(404).send({ msg: "something went wrong !!!" });
+                        else
+                            res.status(200).send({ msg: "task deleted:", task: task });
+                        return [2 /*return*/];
+                }
+            });
         });
-    });
-}
-exports.deleteTask = deleteTask;
-function getTask(req, res) {
-    return __awaiter(this, void 0, void 0, function () {
-        var task, e_3;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    _a.trys.push([0, 2, , 3]);
-                    return [4 /*yield*/, taskService_1.taskService.getTask(req.params.id)];
-                case 1:
-                    task = _a.sent();
-                    return [3 /*break*/, 3];
-                case 2:
-                    e_3 = _a.sent();
-                    res.status(400).send(e_3);
-                    return [3 /*break*/, 3];
-                case 3:
-                    res.status(200).send({ msg: "task found:", task: task });
-                    return [2 /*return*/];
-            }
+    };
+    TaskControllers.prototype.getTask = function (req, res) {
+        return __awaiter(this, void 0, void 0, function () {
+            var task, payload, e_3;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        payload = { taskId: req.params.id, uuid: req.uuid };
+                        return [4 /*yield*/, taskApplicationService.getTask(payload)];
+                    case 1:
+                        task = _a.sent();
+                        return [3 /*break*/, 3];
+                    case 2:
+                        e_3 = _a.sent();
+                        res.status(400).send(e_3);
+                        return [3 /*break*/, 3];
+                    case 3:
+                        // check if task FOUND ??
+                        if (!task)
+                            res.status(404).send({ msg: "something went wrong !!!" });
+                        else
+                            res.status(200).send({ msg: "task found:", task: task });
+                        return [2 /*return*/];
+                }
+            });
         });
-    });
-}
-exports.getTask = getTask;
+    };
+    TaskControllers.prototype.updateTask = function (req, res) {
+        return __awaiter(this, void 0, void 0, function () {
+            var updateTask, payload, e_4;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        payload = { taskId: req.params.id, uuid: req.uuid };
+                        return [4 /*yield*/, taskApplicationService.updateTask(payload)];
+                    case 1:
+                        updateTask = _a.sent();
+                        return [3 /*break*/, 3];
+                    case 2:
+                        e_4 = _a.sent();
+                        res.status(400).send(e_4);
+                        return [3 /*break*/, 3];
+                    case 3:
+                        // check if task FOUND ??
+                        if (!updateTask)
+                            res.status(404).send({ msg: "something went wrong !!!" });
+                        else
+                            res.status(200).send({ msg: "task found:", updateTask: updateTask });
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    return TaskControllers;
+}());
+exports.TaskControllers = TaskControllers;

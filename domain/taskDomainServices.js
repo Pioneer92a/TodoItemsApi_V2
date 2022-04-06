@@ -36,134 +36,127 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.userEntity = void 0;
+exports.TaskDomainServices = void 0;
 var user_1 = require("../infrastructure/db/user");
-var userDTO_1 = require("./userDTO");
-var jwt = require("jsonwebtoken"); // For user authentication;
-var config_1 = require("../infrastructure/config");
-var userEntity = /** @class */ (function () {
-    function userEntity() {
+var taskStore_1 = require("../infrastructure/stores/taskStore");
+var entity_1 = require("./entity");
+var userRepository = new user_1.UserRepository();
+var taskStore = new taskStore_1.TaskStore();
+var TaskDomainServices = /** @class */ (function () {
+    function TaskDomainServices() {
     }
-    userEntity.createNewUser = function (payload) {
+    // this function creates a new task after applying the domain rules
+    TaskDomainServices.prototype.createNewTask = function (payload) {
         return __awaiter(this, void 0, void 0, function () {
-            var x, user, e_1;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        _a.trys.push([0, 2, , 3]);
-                        user = new userDTO_1.userDTO(payload);
-                        return [4 /*yield*/, user_1.db.createNewUser(user)];
-                    case 1:
-                        x = _a.sent(); // userDTO here acts as middleware between service layer & database
-                        return [2 /*return*/, x];
-                    case 2:
-                        e_1 = _a.sent();
-                        console.log(e_1);
-                        return [3 /*break*/, 3];
-                    case 3: return [2 /*return*/];
-                }
-            });
-        });
-    };
-    userEntity.loginUser = function (payload) {
-        return __awaiter(this, void 0, void 0, function () {
-            var x, userFound, token, e_2;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        _a.trys.push([0, 5, , 6]);
-                        return [4 /*yield*/, user_1.db.findUserbyEmail(payload.email)];
-                    case 1:
-                        userFound = _a.sent();
-                        if (!(userFound !== null && userFound.password === payload.password)) return [3 /*break*/, 3];
-                        token = jwt.sign({ uuid: userFound.uuid.toString() }, config_1.JWT_SECRET);
-                        return [4 /*yield*/, user_1.db.addTokenToUser(payload, token)];
-                    case 2:
-                        x = _a.sent(); // add token to the user
-                        return [3 /*break*/, 4];
-                    case 3:
-                        x = null;
-                        _a.label = 4;
-                    case 4: return [2 /*return*/, x];
-                    case 5:
-                        e_2 = _a.sent();
-                        console.log(e_2);
-                        return [3 /*break*/, 6];
-                    case 6: return [2 /*return*/];
-                }
-            });
-        });
-    };
-    userEntity.logoutUser = function (userID) {
-        return __awaiter(this, void 0, void 0, function () {
-            var x, _user, e_3;
+            var _user, taskEntity, newTaskCreated, e_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 3, , 4]);
-                        return [4 /*yield*/, user_1.db.findUserbyUUID(userID)];
+                        return [4 /*yield*/, userRepository.findUserbyUUID(payload.uuid.toString())];
                     case 1:
                         _user = _a.sent();
                         if (!_user || !_user.token)
                             return [2 /*return*/, null];
-                        return [4 /*yield*/, user_1.db.removeTokenFromUser(userID)];
+                        taskEntity = entity_1.Entity.createTask(payload);
+                        return [4 /*yield*/, taskStore.add(taskEntity)];
                     case 2:
-                        // return null if user or its token is not found ... it means user has either logged out or deleted
-                        // this logic may later be moved to a higher layer of domain
-                        x = _a.sent(); // remove token from user that was created during login
-                        return [2 /*return*/, x];
+                        newTaskCreated = _a.sent();
+                        return [2 /*return*/, newTaskCreated];
                     case 3:
-                        e_3 = _a.sent();
-                        console.log(e_3);
-                        return [3 /*break*/, 4];
+                        e_1 = _a.sent();
+                        console.log(e_1);
+                        return [2 /*return*/, null];
                     case 4: return [2 /*return*/];
                 }
             });
         });
     };
-    // find user by their UUID
-    userEntity.findUserbyUUID = function (userUUID) {
+    TaskDomainServices.prototype.getTask = function (payload) {
         return __awaiter(this, void 0, void 0, function () {
-            var _user, e_4;
+            var _user, getTask, e_2;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, user_1.db.findUserbyUUID(userUUID)];
+                        _a.trys.push([0, 3, , 4]);
+                        return [4 /*yield*/, userRepository.findUserbyUUID(payload.uuid.toString())];
                     case 1:
                         _user = _a.sent();
                         if (!_user || !_user.token)
                             return [2 /*return*/, null];
-                        // return null if user or its token is not found ... it means user has either logged out or deleted
-                        // this logic may later be moved to a higher layer of domain
-                        return [2 /*return*/, _user];
+                        return [4 /*yield*/, taskStore.fetch(payload.taskId)];
                     case 2:
-                        e_4 = _a.sent();
-                        console.log(e_4);
-                        return [3 /*break*/, 3];
-                    case 3: return [2 /*return*/];
+                        getTask = _a.sent();
+                        return [2 /*return*/, getTask];
+                    case 3:
+                        e_2 = _a.sent();
+                        console.log(e_2);
+                        return [2 /*return*/, null];
+                    case 4: return [2 /*return*/];
                 }
             });
         });
     };
-    userEntity.deleteUser = function (userID) {
+    TaskDomainServices.prototype.updateTask = function (payload) {
         return __awaiter(this, void 0, void 0, function () {
-            var _user, x;
+            var _user, getTask, updateTask, e_3;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, user_1.db.findUserbyUUID(userID)];
+                    case 0:
+                        _a.trys.push([0, 4, , 5]);
+                        return [4 /*yield*/, userRepository.findUserbyUUID(payload.uuid.toString())];
                     case 1:
                         _user = _a.sent();
                         if (!_user || !_user.token)
                             return [2 /*return*/, null];
-                        return [4 /*yield*/, user_1.db.deleteUser(userID)];
+                        return [4 /*yield*/, taskStore.fetch(payload.taskId)];
                     case 2:
-                        x = _a.sent();
-                        return [2 /*return*/, x];
+                        getTask = _a.sent();
+                        if (!getTask)
+                            return [2 /*return*/, null]; // return if the task doesn't exist
+                        return [4 /*yield*/, taskStore.update(payload.taskId)];
+                    case 3:
+                        updateTask = _a.sent();
+                        return [2 /*return*/, updateTask];
+                    case 4:
+                        e_3 = _a.sent();
+                        console.log(e_3);
+                        return [2 /*return*/, null];
+                    case 5: return [2 /*return*/];
                 }
             });
         });
     };
-    return userEntity;
+    TaskDomainServices.prototype.deleteTask = function (payload) {
+        return __awaiter(this, void 0, void 0, function () {
+            var _user, getTask, deletedTask, e_4;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 4, , 5]);
+                        return [4 /*yield*/, userRepository.findUserbyUUID(payload.uuid.toString())];
+                    case 1:
+                        _user = _a.sent();
+                        if (!_user || !_user.token)
+                            return [2 /*return*/, null];
+                        return [4 /*yield*/, taskStore.fetch(payload.taskId)];
+                    case 2:
+                        getTask = _a.sent();
+                        if (!getTask)
+                            return [2 /*return*/, null]; // return if the task doesn't exist
+                        return [4 /*yield*/, taskStore.remove(payload.taskId)];
+                    case 3:
+                        deletedTask = _a.sent();
+                        return [2 /*return*/, deletedTask];
+                    case 4:
+                        e_4 = _a.sent();
+                        console.log(e_4);
+                        return [2 /*return*/, null];
+                    case 5: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    return TaskDomainServices;
 }());
-exports.userEntity = userEntity;
+exports.TaskDomainServices = TaskDomainServices;

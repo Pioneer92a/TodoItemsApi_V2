@@ -36,22 +36,22 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.db = void 0;
+exports.TaskRepository = void 0;
 var client_1 = require("@prisma/client");
 var prisma = new client_1.PrismaClient();
-var db = /** @class */ (function () {
-    function db() {
+var TaskRepository = /** @class */ (function () {
+    function TaskRepository() {
     }
-    // -- this gives error when we try to set more than one tasks to same user
-    db.createNewTask = function (newTask) {
+    TaskRepository.prototype.createNewTask = function (newTask) {
         return __awaiter(this, void 0, void 0, function () {
-            var x, e_1;
+            var newTaskCreated, e_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
                         return [4 /*yield*/, prisma.task.create({
                                 data: {
+                                    uuid: newTask.uuid,
                                     name: newTask.name,
                                     user: {
                                         connectOrCreate: {
@@ -59,8 +59,9 @@ var db = /** @class */ (function () {
                                                 uuid: newTask.userUUID
                                             },
                                             create: {
-                                                email: "viola@prisma.io",
-                                                name: "Viola"
+                                                email: "UserNotFound@prisma.io",
+                                                name: "UserNotFound",
+                                                uuid: "UserNotFound"
                                             }
                                         }
                                     }
@@ -70,69 +71,92 @@ var db = /** @class */ (function () {
                                 }
                             })];
                     case 1:
-                        x = _a.sent();
-                        // const _user = await prisma.user.findUnique({
-                        //   where: {
-                        //     uuid: newTask.userUUID,
-                        //   },
-                        // })
-                        // const x = await prisma.task.create({
-                        //   data: {  
-                        //     name: newTask.name,
-                        //     user: _user,
-                        //   },
-                        //   include: {
-                        //     user: true,
-                        //   },
-                        // });
-                        return [2 /*return*/, x];
+                        newTaskCreated = _a.sent();
+                        return [2 /*return*/, newTaskCreated];
                     case 2:
                         e_1 = _a.sent();
-                        console.log("error occured in infrastructure layer: ".concat(e_1));
-                        return [3 /*break*/, 3];
+                        console.log(e_1);
+                        return [2 /*return*/, null];
                     case 3: return [2 /*return*/];
                 }
             });
         });
     };
-    db.deleteTask = function (taskID) {
+    TaskRepository.prototype.deleteTask = function (taskID) {
         return __awaiter(this, void 0, void 0, function () {
-            var deleteTask;
+            var deletedTask, e_2;
             return __generator(this, function (_a) {
-                try {
-                    deleteTask = prisma.task["delete"]({
-                        where: {
-                            id: parseInt(taskID)
-                        }
-                    });
-                    return [2 /*return*/, deleteTask]; // return task
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, prisma.task["delete"]({
+                                where: {
+                                    id: parseInt(taskID)
+                                }
+                            })];
+                    case 1:
+                        deletedTask = _a.sent();
+                        return [2 /*return*/, deletedTask]; // return task
+                    case 2:
+                        e_2 = _a.sent();
+                        console.log(e_2);
+                        return [2 /*return*/, null];
+                    case 3: return [2 /*return*/];
                 }
-                catch (e) {
-                    console.log("error occured in infrastructure layer: ".concat(e));
-                }
-                return [2 /*return*/];
             });
         });
     };
-    db.getTask = function (taskID) {
+    TaskRepository.prototype.getTask = function (taskID) {
         return __awaiter(this, void 0, void 0, function () {
-            var getTask;
+            var getTask, e_3;
             return __generator(this, function (_a) {
-                try {
-                    getTask = prisma.task.findUnique({
-                        where: {
-                            id: parseInt(taskID)
-                        }
-                    });
-                    return [2 /*return*/, getTask]; // return task
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, prisma.task.findUnique({
+                                where: {
+                                    id: parseInt(taskID)
+                                }
+                            })];
+                    case 1:
+                        getTask = _a.sent();
+                        return [2 /*return*/, getTask]; // return task
+                    case 2:
+                        e_3 = _a.sent();
+                        console.log(e_3);
+                        return [2 /*return*/, null];
+                    case 3: return [2 /*return*/];
                 }
-                catch (e) {
-                    console.log("error occured in infrastructure layer: ".concat(e));
-                }
-                return [2 /*return*/];
             });
         });
     };
-    return db;
+    TaskRepository.prototype.updateTask = function (taskID) {
+        return __awaiter(this, void 0, void 0, function () {
+            var updateTask, e_4;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, prisma.task.update({
+                                where: {
+                                    id: parseInt(taskID)
+                                },
+                                data: {
+                                    name: "name changed"
+                                }
+                            })];
+                    case 1:
+                        updateTask = _a.sent();
+                        return [2 /*return*/, updateTask]; // return task
+                    case 2:
+                        e_4 = _a.sent();
+                        console.log(e_4);
+                        return [2 /*return*/, null];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    return TaskRepository;
 }());
-exports.db = db;
+exports.TaskRepository = TaskRepository;

@@ -36,92 +36,85 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.TaskApplicationService = void 0;
-var taskDomainServices_1 = require("../domain/taskDomainServices");
-var taskDomainServices = new taskDomainServices_1.TaskDomainServices();
-var TaskApplicationService = /** @class */ (function () {
-    function TaskApplicationService() {
+exports.TaskStore = void 0;
+var task_1 = require("../db/task");
+var taskService_1 = require("../services/taskService");
+var taskRepository = new task_1.TaskRepository();
+var TaskStore = /** @class */ (function () {
+    function TaskStore() {
     }
-    TaskApplicationService.prototype.createNewTask = function (newTask) {
+    TaskStore.prototype.add = function (taskEntity) {
         return __awaiter(this, void 0, void 0, function () {
-            var newTaskCreated, e_1;
+            var newTaskCreated;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0:
-                        _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, taskDomainServices.createNewTask(newTask)];
+                    case 0: return [4 /*yield*/, taskRepository.createNewTask(taskEntity)];
                     case 1:
                         newTaskCreated = _a.sent();
-                        return [2 /*return*/, newTaskCreated];
-                    case 2:
-                        e_1 = _a.sent();
-                        console.log(e_1);
-                        return [2 /*return*/, null];
-                    case 3: return [2 /*return*/];
+                        //
+                        if (!newTaskCreated)
+                            return [2 /*return*/, null];
+                        else
+                            return [2 /*return*/, taskService_1.TaskService.createTaskEntity(newTaskCreated)];
+                        return [2 /*return*/];
                 }
             });
         });
     };
-    TaskApplicationService.prototype.deleteTask = function (payload) {
+    TaskStore.prototype.remove = function (taskID) {
         return __awaiter(this, void 0, void 0, function () {
-            var deletedTask, e_2;
+            var deletedTask;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0:
-                        _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, taskDomainServices.deleteTask(payload)];
+                    case 0: return [4 /*yield*/, taskRepository.deleteTask(taskID)];
                     case 1:
                         deletedTask = _a.sent();
-                        return [2 /*return*/, deletedTask];
-                    case 2:
-                        e_2 = _a.sent();
-                        console.log(e_2);
-                        return [2 /*return*/, null];
-                    case 3: return [2 /*return*/];
+                        //
+                        if (!deletedTask)
+                            return [2 /*return*/, null];
+                        else
+                            return [2 /*return*/, taskService_1.TaskService.createTaskEntity(deletedTask)];
+                        return [2 /*return*/];
                 }
             });
         });
     };
-    TaskApplicationService.prototype.getTask = function (payload) {
+    TaskStore.prototype.update = function (taskId) {
         return __awaiter(this, void 0, void 0, function () {
-            var getTask, e_3;
+            var updatedTask;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0:
-                        _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, taskDomainServices.getTask(payload)];
+                    case 0: return [4 /*yield*/, taskRepository.updateTask(taskId)];
+                    case 1:
+                        updatedTask = _a.sent();
+                        //
+                        if (!updatedTask)
+                            return [2 /*return*/, null];
+                        else
+                            return [2 /*return*/, taskService_1.TaskService.createTaskEntity(updatedTask)];
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    TaskStore.prototype.fetch = function (taskId) {
+        return __awaiter(this, void 0, void 0, function () {
+            var getTask;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, taskRepository.getTask(taskId)];
                     case 1:
                         getTask = _a.sent();
-                        return [2 /*return*/, getTask];
-                    case 2:
-                        e_3 = _a.sent();
-                        console.log(e_3);
-                        return [2 /*return*/, null];
-                    case 3: return [2 /*return*/];
+                        //
+                        if (!getTask)
+                            return [2 /*return*/, null];
+                        else
+                            return [2 /*return*/, taskService_1.TaskService.createTaskEntity(getTask)];
+                        return [2 /*return*/];
                 }
             });
         });
     };
-    TaskApplicationService.prototype.updateTask = function (payload) {
-        return __awaiter(this, void 0, void 0, function () {
-            var updateTask, e_4;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, taskDomainServices.updateTask(payload)];
-                    case 1:
-                        updateTask = _a.sent();
-                        return [2 /*return*/, updateTask];
-                    case 2:
-                        e_4 = _a.sent();
-                        console.log(e_4);
-                        return [2 /*return*/, null];
-                    case 3: return [2 /*return*/];
-                }
-            });
-        });
-    };
-    return TaskApplicationService;
+    return TaskStore;
 }());
-exports.TaskApplicationService = TaskApplicationService;
+exports.TaskStore = TaskStore;

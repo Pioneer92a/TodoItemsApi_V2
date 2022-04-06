@@ -1,105 +1,93 @@
-/* eslint-disable linebreak-style */
-/* eslint-disable no-underscore-dangle */
+import { UserApplicationService } from "../../application/userService";
+const userApplicationService = new UserApplicationService();
 
-import { userService } from "../../application/userService";
-
-async function createNewUser(req, res) {
-  let newUser;
-  try {
-    newUser = await userService.createNewUser(req.body);
-  } catch (e) {
-    res.status(400).send(e);
-  }
-
-  // check if USER FOUND ??
-  if (!newUser) res.status(404).send({ msg: "user not found !!!" });
-  else res.status(200).send({ msg: "New user creation performed", newUser });
+interface UserControllersI {
+  createNewUser(req, res);
+  loginUser(req, res);
+  logoutUser(req, res);
+  getUserDetails(req, res);
+  deleteUser(req, res);
+  updateUser(req, res)
 }
 
-async function loginUser(req, res) {
-  let loginUser;
-  try {
-    loginUser = await userService.loginUser(req.body);
-  } catch (e) {
-    res.status(400).send(e);
+export class UserControllers implements UserControllersI {
+  async createNewUser(req, res) {
+    let newUser;
+    try {
+      newUser = await userApplicationService.createNewUser(req.body);
+    } catch (e) {
+      res.status(400).send(e);
+    }
+
+    // check if USER FOUND ??
+    if (!newUser) res.status(404).send({ msg: "user not found !!!" });
+    else res.status(200).send({ msg: "New user creation performed", newUser });
   }
 
-  // check if USER FOUND ??
-  if (!loginUser) res.status(404).send({ msg: "user not found !!!" });
-  else res.status(200).send({ msg: "Login performed", loginUser });
-}
+  async loginUser(req, res) {
+    let loginUser;
+    try {
+      loginUser = await userApplicationService.loginUser(req.body);
+    } catch (e) {
+      res.status(400).send(e);
+    }
 
-async function logoutUser(req, res) {
-  let logoutUser;
-  try {
-    logoutUser = await userService.logoutUser(req.uuid);
-  } catch (e) {
-    res.status(400).send(e);
+    // check if USER FOUND ??
+    if (!loginUser) res.status(404).send({ msg: "user not found !!!" });
+    else res.status(200).send({ msg: "Login performed", loginUser });
   }
 
-  // check if USER FOUND ??
-  if (!logoutUser) res.status(404).send({ msg: "user not found !!!" });
-  else res.status(200).send({ msg: "Logout performed", logoutUser });
-}
+  async logoutUser(req, res) {
+    let logoutUser;
+    try {
+      logoutUser = await userApplicationService.logoutUser(req.uuid);
+    } catch (e) {
+      res.status(400).send(e);
+    }
 
-// async function AllUsersLogout(req, res) {
-//   try {
-//     req.user.tokens = [];
-//     await req.user.save();
-//     res.status(200).send();
-//   } catch (e) {
-//     res.status(500).send();
-//   }
-// }
-
-async function getUserDetails(req, res) {
-  let user;
-
-  try {
-    // wait for user details
-    user = await userService.findUser(req.uuid);
-  } catch (e) {
-    res.status(400).send(e);
+    // check if USER FOUND ??
+    if (!logoutUser) res.status(404).send({ msg: "user not found !!!" });
+    else res.status(200).send({ msg: "Logout performed", logoutUser });
   }
 
-  // check if USER FOUND ??
-  if (!user) res.status(404).send({ msg: "user not found !!!" });
-  else res.status(200).send({ msg: "user found:", user });
-}
+  async getUserDetails(req, res) {
+    let user;
 
-// async function updateUser(req, res) {
-//   const updates = Object.keys(req.body);
-//   const allowedUpdates = ["name", "email", "password", "age"];
-//   const isValidOperation = updates.every((update) =>
-//     allowedUpdates.includes(update)
-//   );
-//   if (!isValidOperation) {
-//     return res.status(401).send({ error: "Invalid updates" });
-//   }
-//   try {
-//     updates.forEach((update) => {
-//       req.user[update] = req.body[update];
-//     });
-//     await req.user.save();
-//     return res.status(201).send(req.user);
-//   } catch (e) {
-//     return res.status(404).send({
-//       e,
-//     });
-//   }
-// }
+    try {
+      // wait for user details
+      user = await userApplicationService.findUser(req.uuid);
+    } catch (e) {
+      res.status(400).send(e);
+    }
 
-async function deleteUser(req, res) {
-  let user;
-  try {
-    user = await userService.deleteUser(req.uuid);
-  } catch (e) {
-    res.status(400).send(e);
+    // check if USER FOUND ??
+    if (!user) res.status(404).send({ msg: "user not found !!!" });
+    else res.status(200).send({ msg: "user found:", user });
   }
 
-  // check if USER FOUND ??
-  if (!user) res.status(404).send({ msg: "user not found !!!" });
-  else res.status(200).send({ msg: "user deleted:", user });
-}
+  async deleteUser(req, res) {
+    let user;
+    try {
+      user = await userApplicationService.deleteUser(req.uuid);
+    } catch (e) {
+      res.status(400).send(e);
+    }
 
-export { logoutUser, createNewUser, getUserDetails, deleteUser, loginUser };
+    // check if USER FOUND ??
+    if (!user) res.status(404).send({ msg: "user not found !!!" });
+    else res.status(200).send({ msg: "user deleted:", user });
+  }
+
+  async updateUser(req, res) {
+    let user;
+    try {
+      user = await userApplicationService.updateUser(req.uuid);
+    } catch (e) {
+      res.status(400).send(e);
+    }
+
+    // check if USER FOUND ??
+    if (!user) res.status(404).send({ msg: "user not found !!!" });
+    else res.status(200).send({ msg: "user updated:", user });
+  }
+}

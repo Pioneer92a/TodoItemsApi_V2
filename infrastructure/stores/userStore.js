@@ -36,59 +36,85 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.taskEntity = void 0;
-var task_1 = require("../infrastructure/db/task");
-var taskEntity = /** @class */ (function () {
-    function taskEntity() {
+exports.UserStore = void 0;
+var user_1 = require("../db/user");
+var userService_1 = require("../services/userService");
+var userRepository = new user_1.UserRepository();
+var UserStore = /** @class */ (function () {
+    function UserStore() {
     }
-    taskEntity.createNewTask = function (newTask) {
+    UserStore.prototype.add = function (userEntity) {
         return __awaiter(this, void 0, void 0, function () {
-            var udpatedTask, x;
+            var user;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0:
-                        udpatedTask = new taskDTO(newTask);
-                        return [4 /*yield*/, task_1.db.createNewTask(udpatedTask)];
+                    case 0: return [4 /*yield*/, userRepository.createNewUser(userEntity)];
                     case 1:
-                        x = _a.sent();
-                        return [2 /*return*/, x];
+                        user = _a.sent();
+                        //
+                        if (!user)
+                            return [2 /*return*/, null];
+                        else
+                            return [2 /*return*/, userService_1.UserService.createUserEntity(user)];
+                        return [2 /*return*/];
                 }
             });
         });
     };
-    taskEntity.getTask = function (taskID) {
+    UserStore.prototype.remove = function (userUUID) {
         return __awaiter(this, void 0, void 0, function () {
-            var x;
+            var user;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, task_1.db.getTask(taskID)];
+                    case 0: return [4 /*yield*/, userRepository.deleteUser(userUUID)];
                     case 1:
-                        x = _a.sent();
-                        return [2 /*return*/, x];
+                        user = _a.sent();
+                        //
+                        if (!user)
+                            return [2 /*return*/, null];
+                        else
+                            return [2 /*return*/, userService_1.UserService.createUserEntity(user)];
+                        return [2 /*return*/];
                 }
             });
         });
     };
-    taskEntity.deleteTask = function (taskID) {
+    UserStore.prototype.update = function (userUUID) {
         return __awaiter(this, void 0, void 0, function () {
-            var x;
+            var user;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, task_1.db.deleteTask(taskID)];
+                    case 0: return [4 /*yield*/, userRepository.updateUser(userUUID)];
                     case 1:
-                        x = _a.sent();
-                        return [2 /*return*/, x];
+                        user = _a.sent();
+                        //
+                        if (!user)
+                            return [2 /*return*/, null];
+                        else
+                            return [2 /*return*/, userService_1.UserService.createUserEntity(user)];
+                        return [2 /*return*/];
                 }
             });
         });
     };
-    return taskEntity;
+    UserStore.prototype.fetch = function (userUUID) {
+        return __awaiter(this, void 0, void 0, function () {
+            var user;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, userRepository.findUserbyUUID(userUUID)];
+                    case 1:
+                        user = _a.sent();
+                        //
+                        if (!user)
+                            return [2 /*return*/, null];
+                        else
+                            return [2 /*return*/, userService_1.UserService.createUserEntity(user)];
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    return UserStore;
 }());
-exports.taskEntity = taskEntity;
-var taskDTO = /** @class */ (function () {
-    function taskDTO(newTask) {
-        this.name = newTask.body.name;
-        this.userUUID = newTask.uuid;
-    }
-    return taskDTO;
-}());
+exports.UserStore = UserStore;

@@ -1,12 +1,19 @@
 import { PrismaClient, User } from "@prisma/client";
-
 const prisma = new PrismaClient();
 
-export class db {
-  static async addTokenToUser(payload, userToken): Promise<User> {
-    let x;
+interface UserRepositoryI {
+  addTokenToUser(payload, userToken);
+  removeTokenFromUser(payload);
+  createNewUser(newUser)
+  findUserbyUUID(userID)
+  findUserbyEmail(userEmail)
+  deleteUser(userID)
+}
+
+export class UserRepository implements UserRepositoryI {
+  async addTokenToUser(payload, userToken): Promise<User> {
     try {
-      x = await prisma.user.update({
+      const updatedUser = await prisma.user.update({
         where: {
           email: payload.email,
         },
@@ -14,16 +21,17 @@ export class db {
           token: userToken,
         },
       })
-      return x;
+      return updatedUser;
+      //
     } catch (e) {
       console.log(e);
+      return null;
     }
   }
 
-  static async removeTokenFromUser(payload): Promise<User> {
-    let x;
+  async removeTokenFromUser(payload): Promise<User> {
     try {
-      x = await prisma.user.update({
+      const updatedUser = await prisma.user.update({
         where: {
           uuid: payload,
         },
@@ -31,15 +39,17 @@ export class db {
           token: null,
         },
       })      
-      return x;
+      return updatedUser;
+      //
     } catch (e) {
       console.log(e);
+      return null;
     }
   }
 
-  static async createNewUser(newUser): Promise<User> {
+  async createNewUser(newUser): Promise<User> {
     try {
-      const x = await prisma.user.create({
+      const newUserCreated = await prisma.user.create({
         data: {
           uuid: newUser.uuid,
           email: newUser.email,
@@ -52,46 +62,50 @@ export class db {
           // },
         },
       });
-      return x;
+      return newUserCreated;
+      //
     } catch (e) {
       console.log(e);
+      return null;
     }
   }
 
-  static async findUserbyUUID(userID): Promise<User> {
-    let x;
+  async findUserbyUUID(userID): Promise<User> {
     try {
-      x = await prisma.user.findUnique({
+      const userFound = await prisma.user.findUnique({
         where: {
           uuid: userID,
         },
       });
-      return x;
+      return userFound;
+      //
     } catch (e) {
       console.log(e);
+      return null;
     }
   }
 
-  static async findUserbyEmail(userEmail): Promise<User> {
-    let x;
+  async findUserbyEmail(userEmail): Promise<User> {
     try {
-      x = await prisma.user.findUnique({
+      const userFound = await prisma.user.findUnique({
         where: {
           email: userEmail,
         },
       });
-      return x;
+      return userFound;
+      //
     } catch (e) {
       console.log(e);
+      return null;
     }
   }
 
-  static async deleteUser(userID): Promise<User> {
+  async deleteUser(userId): Promise<User> {
     try {
       // find the user first
       const userToDelete = await prisma.user.findUnique({
         where: {
-          uuid: userID,
+          uuid: userId,
         },
       });
 
@@ -105,7 +119,7 @@ export class db {
       // delete the user
       const deleteUser = prisma.user.delete({
         where: {
-          uuid: userID,
+          uuid: userId,
         },
       });
 
@@ -114,7 +128,28 @@ export class db {
 
       return transaction[1]; // return User
     } catch (e) {
-      console.log(`error occured in infrastructure layer: ${e}`);
+      console.log(e);
+      return null;
+
     }
   }
+
+  async updateUser(userId): Promise<User> {
+    try {
+      const updatedUser = await prisma.user.update({
+        where: {
+          uuid: userId,
+        },
+        data: {
+          name: "name changed",
+        },
+      })
+      return updatedUser;
+      //
+    } catch (e) {
+      console.log(e);
+      return null;
+    }
+  }
+
 }

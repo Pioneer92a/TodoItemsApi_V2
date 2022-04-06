@@ -47,7 +47,8 @@ var auth = function (req, res, next) { return __awaiter(void 0, void 0, void 0, 
     return __generator(this, function (_a) {
         try {
             token = req.header("Authorization").replace("Bearer ", "");
-            if (!token) { // throw an error if the token not found
+            if (!token) {
+                // throw an error if the token not found
                 throw new Error();
             }
             decoded = jwt.verify(token, config_1.JWT_SECRET);

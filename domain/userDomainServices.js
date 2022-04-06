@@ -36,30 +36,29 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.UserRepository = void 0;
-var client_1 = require("@prisma/client");
-var prisma = new client_1.PrismaClient();
-var UserRepository = /** @class */ (function () {
-    function UserRepository() {
+exports.UserDomainServices = void 0;
+var user_1 = require("../infrastructure/db/user");
+var userStore_1 = require("../infrastructure/stores/userStore");
+var jwt = require("jsonwebtoken"); // For user authentication;
+var config_1 = require("../infrastructure/config");
+var entity_1 = require("./entity");
+var userRepository = new user_1.UserRepository();
+var userStore = new userStore_1.UserStore();
+var UserDomainServices = /** @class */ (function () {
+    function UserDomainServices() {
     }
-    UserRepository.prototype.addTokenToUser = function (payload, userToken) {
+    UserDomainServices.prototype.createNewUser = function (payload) {
         return __awaiter(this, void 0, void 0, function () {
-            var updatedUser, e_1;
+            var userEntity, newUserCreated, e_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, prisma.user.update({
-                                where: {
-                                    email: payload.email
-                                },
-                                data: {
-                                    token: userToken
-                                }
-                            })];
+                        userEntity = entity_1.Entity.createUser(payload);
+                        return [4 /*yield*/, userStore.add(userEntity)];
                     case 1:
-                        updatedUser = _a.sent();
-                        return [2 /*return*/, updatedUser];
+                        newUserCreated = _a.sent();
+                        return [2 /*return*/, newUserCreated];
                     case 2:
                         e_1 = _a.sent();
                         console.log(e_1);
@@ -69,76 +68,74 @@ var UserRepository = /** @class */ (function () {
             });
         });
     };
-    UserRepository.prototype.removeTokenFromUser = function (payload) {
+    UserDomainServices.prototype.loginUser = function (payload) {
         return __awaiter(this, void 0, void 0, function () {
-            var updatedUser, e_2;
+            var userFound, token, user, e_2;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, prisma.user.update({
-                                where: {
-                                    uuid: payload
-                                },
-                                data: {
-                                    token: null
-                                }
-                            })];
+                        _a.trys.push([0, 5, , 6]);
+                        return [4 /*yield*/, userRepository.findUserbyEmail(payload.email)];
                     case 1:
-                        updatedUser = _a.sent();
-                        return [2 /*return*/, updatedUser];
+                        userFound = _a.sent();
+                        if (!(userFound !== null && userFound.password === payload.password)) return [3 /*break*/, 3];
+                        token = jwt.sign({ uuid: userFound.uuid.toString() }, config_1.JWT_SECRET);
+                        return [4 /*yield*/, userRepository.addTokenToUser(payload, token)];
                     case 2:
+                        user = _a.sent();
+                        return [2 /*return*/, user];
+                    case 3: return [2 /*return*/, null];
+                    case 4: return [3 /*break*/, 6];
+                    case 5:
                         e_2 = _a.sent();
                         console.log(e_2);
                         return [2 /*return*/, null];
-                    case 3: return [2 /*return*/];
+                    case 6: return [2 /*return*/];
                 }
             });
         });
     };
-    UserRepository.prototype.createNewUser = function (newUser) {
+    UserDomainServices.prototype.logoutUser = function (userUUID) {
         return __awaiter(this, void 0, void 0, function () {
-            var newUserCreated, e_3;
+            var _user, user, e_3;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, prisma.user.create({
-                                data: {
-                                    uuid: newUser.uuid,
-                                    email: newUser.email,
-                                    name: newUser.name,
-                                    token: newUser.token,
-                                    password: newUser.password
-                                }
-                            })];
+                        _a.trys.push([0, 3, , 4]);
+                        return [4 /*yield*/, userRepository.findUserbyUUID(userUUID)];
                     case 1:
-                        newUserCreated = _a.sent();
-                        return [2 /*return*/, newUserCreated];
+                        _user = _a.sent();
+                        if (!_user || !_user.token)
+                            return [2 /*return*/, null];
+                        return [4 /*yield*/, userRepository.removeTokenFromUser(userUUID)];
                     case 2:
+                        user = _a.sent();
+                        return [2 /*return*/, user];
+                    case 3:
                         e_3 = _a.sent();
                         console.log(e_3);
                         return [2 /*return*/, null];
-                    case 3: return [2 /*return*/];
+                    case 4: return [2 /*return*/];
                 }
             });
         });
     };
-    UserRepository.prototype.findUserbyUUID = function (userID) {
+    // find user by their UUID
+    UserDomainServices.prototype.findUserbyUUID = function (userUUID) {
         return __awaiter(this, void 0, void 0, function () {
-            var userFound, e_4;
+            var _user, e_4;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, prisma.user.findUnique({
-                                where: {
-                                    uuid: userID
-                                }
-                            })];
+                        return [4 /*yield*/, userStore.fetch(userUUID)];
                     case 1:
-                        userFound = _a.sent();
-                        return [2 /*return*/, userFound];
+                        _user = _a.sent();
+                        if (!_user || !_user.token)
+                            return [2 /*return*/, null];
+                        // return null if user or its token is not found ... it means user has either logged out or deleted
+                        // this logic may later be moved to a higher layer of domain
+                        return [2 /*return*/, _user];
                     case 2:
                         e_4 = _a.sent();
                         console.log(e_4);
@@ -148,21 +145,21 @@ var UserRepository = /** @class */ (function () {
             });
         });
     };
-    UserRepository.prototype.findUserbyEmail = function (userEmail) {
+    UserDomainServices.prototype.deleteUser = function (userUUID) {
         return __awaiter(this, void 0, void 0, function () {
-            var userFound, e_5;
+            var _user, e_5;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, prisma.user.findUnique({
-                                where: {
-                                    email: userEmail
-                                }
-                            })];
+                        return [4 /*yield*/, userStore.remove(userUUID)];
                     case 1:
-                        userFound = _a.sent();
-                        return [2 /*return*/, userFound];
+                        _user = _a.sent();
+                        if (!_user || !_user.token)
+                            return [2 /*return*/, null];
+                        // return null if user or its token is not found ... it means user has either logged out or deleted
+                        // this logic may later be moved to a higher layer of domain
+                        return [2 /*return*/, _user];
                     case 2:
                         e_5 = _a.sent();
                         console.log(e_5);
@@ -172,70 +169,30 @@ var UserRepository = /** @class */ (function () {
             });
         });
     };
-    UserRepository.prototype.deleteUser = function (userId) {
+    UserDomainServices.prototype.updateUser = function (userUUID) {
         return __awaiter(this, void 0, void 0, function () {
-            var userToDelete, deleteTasks, deleteUser, transaction, e_6;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        _a.trys.push([0, 3, , 4]);
-                        return [4 /*yield*/, prisma.user.findUnique({
-                                where: {
-                                    uuid: userId
-                                }
-                            })];
-                    case 1:
-                        userToDelete = _a.sent();
-                        deleteTasks = prisma.task.deleteMany({
-                            where: {
-                                userId: userToDelete.id
-                            }
-                        });
-                        deleteUser = prisma.user["delete"]({
-                            where: {
-                                uuid: userId
-                            }
-                        });
-                        return [4 /*yield*/, prisma.$transaction([deleteTasks, deleteUser])];
-                    case 2:
-                        transaction = _a.sent();
-                        return [2 /*return*/, transaction[1]]; // return User
-                    case 3:
-                        e_6 = _a.sent();
-                        console.log(e_6);
-                        return [2 /*return*/, null];
-                    case 4: return [2 /*return*/];
-                }
-            });
-        });
-    };
-    UserRepository.prototype.updateUser = function (userId) {
-        return __awaiter(this, void 0, void 0, function () {
-            var updatedUser, e_7;
+            var _user, e_6;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, prisma.user.update({
-                                where: {
-                                    uuid: userId
-                                },
-                                data: {
-                                    name: "name changed"
-                                }
-                            })];
+                        return [4 /*yield*/, userStore.update(userUUID)];
                     case 1:
-                        updatedUser = _a.sent();
-                        return [2 /*return*/, updatedUser];
+                        _user = _a.sent();
+                        if (!_user || !_user.token)
+                            return [2 /*return*/, null];
+                        // return null if user or its token is not found ... it means user has either logged out or deleted
+                        // this logic may later be moved to a higher layer of domain
+                        return [2 /*return*/, _user];
                     case 2:
-                        e_7 = _a.sent();
-                        console.log(e_7);
+                        e_6 = _a.sent();
+                        console.log(e_6);
                         return [2 /*return*/, null];
                     case 3: return [2 /*return*/];
                 }
             });
         });
     };
-    return UserRepository;
+    return UserDomainServices;
 }());
-exports.UserRepository = UserRepository;
+exports.UserDomainServices = UserDomainServices;

@@ -1,34 +1,56 @@
-import { taskEntity } from "../domain/taskEntity";
+import { TaskDomainServices } from "../domain/taskDomainServices";
+const taskDomainServices = new TaskDomainServices();
 
-export class taskService {
-  
-  static async createNewTask(newTask): Promise<typeof x> {
-   const x = await taskEntity.createNewTask(newTask)
-   return x;
+interface TaskApplicationServiceI {
+  createNewTask(newTask);
+  deleteTask(taskID);
+  getTask(payload);
+  updateTask(payload)
+}
+
+export class TaskApplicationService implements TaskApplicationServiceI{
+  async createNewTask(newTask) {
+    try {
+      const newTaskCreated = await taskDomainServices.createNewTask(newTask);
+      return newTaskCreated;
+
+    } catch (e) {
+      console.log(e);
+      return null;
+    }
   }
 
-//   static async findUser(userID): Promise<typeof x> {
-//     const x = await userEntity.findUser(userID)
-//     return x;
-//    }
-
-   static async deleteTask(taskID): Promise<typeof x> {
-    let x;   
+  async deleteTask(payload) {
     try {
-          x = await taskEntity.deleteTask(taskID)
-    return x; 
-       } catch (e) {
-           console.log(e);         
-       }
-   }
+      const deletedTask = await taskDomainServices.deleteTask(payload);
+      return deletedTask;
 
-   static async getTask(taskID): Promise<typeof x> {
-    let x;   
+    } catch (e) {
+      console.log(e);
+      return null;
+    }
+  }
+
+  async getTask(payload) {
     try {
-          x = await taskEntity.getTask(taskID)
-    return x; 
-       } catch (e) {
-           console.log(e);         
-       }
-   }
+      const getTask = await taskDomainServices.getTask(payload);
+      return getTask;
+
+    } catch (e) {
+      console.log(e);
+      return null;
+    }
+  }
+
+  async updateTask(payload) {
+    try {
+      const updateTask = await taskDomainServices.updateTask(payload);
+      return updateTask;
+
+    } catch (e) {
+      console.log(e);
+      return null;
+    }
+  }
+
 }

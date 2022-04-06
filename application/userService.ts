@@ -1,38 +1,81 @@
-import { userEntity } from "../domain/userEntity";
+import { UserDomainServices } from "../domain/userDomainServices";
 
-export class userService {
-  static async createNewUser(payload): Promise<typeof x> {
-    let x;
+const userDomainServices = new UserDomainServices();
+
+interface UserApplicationServiceI {
+  createNewUser(payload);
+  loginUser(payload);
+  logoutUser(payload);
+  findUser(userID);
+  deleteUser(userID);
+  updateUser(userID)
+}
+
+export class UserApplicationService implements UserApplicationServiceI {
+  async createNewUser(payload) {
     try {
-      x = await userEntity.createNewUser(payload);
+      const newUserCreated = await userDomainServices.createNewUser(payload);
+      return newUserCreated;
+      //
     } catch (e) {
       console.log(e);
-    }
-    return x;
-  }
-
-  static async loginUser(payload): Promise<typeof x> {
-    const x = await userEntity.loginUser(payload);
-    return x;
-  }
-
-  static async logoutUser(payload): Promise<typeof x> {
-    const x = await userEntity.logoutUser(payload);    
-    return x;
-  }
-
-  static async findUser(userID): Promise<typeof x> {
-    let x;
-    try {
-      x = await userEntity.findUserbyUUID(userID);
-      return x;
-    } catch (e) {
-      console.log(e);
+      return null;
     }
   }
 
-  static async deleteUser(userID): Promise<typeof x> {
-    const x = await userEntity.deleteUser(userID);
-    return x;
+  async loginUser(payload) {
+    try {
+      const user = await userDomainServices.loginUser(payload);
+      return user;
+      //
+    } catch (e) {
+      console.log(e);
+      return null;
+    }
   }
+
+  async logoutUser(payload) {
+    try {
+      const user = await userDomainServices.logoutUser(payload);
+      return user;
+      //
+    } catch (e) {
+      console.log(e);
+      return null;
+    }
+  }
+
+  async findUser(userID) {
+    try {
+      const user = await userDomainServices.findUserbyUUID(userID);
+      return user;
+      //
+    } catch (e) {
+      console.log(e);
+      return null;
+    }
+  }
+
+  async deleteUser(userID) {
+    try {
+      const deletedUser = await userDomainServices.deleteUser(userID);
+      return deletedUser;
+      //
+    } catch (e) {
+      console.log(e);
+      return null;
+    }
+  }
+
+  async updateUser(userID) {
+    try {
+      const updatedUser = await userDomainServices.updateUser(userID);
+      return updatedUser;
+      //
+    } catch (e) {
+      console.log(e);
+      return null;
+    }
+  }
+
 }

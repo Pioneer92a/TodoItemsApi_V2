@@ -1,6 +1,4 @@
 "use strict";
-/* eslint-disable linebreak-style */
-/* eslint-disable no-underscore-dangle */
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -38,171 +36,169 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.loginUser = exports.deleteUser = exports.getUserDetails = exports.createNewUser = exports.logoutUser = void 0;
+exports.UserControllers = void 0;
 var userService_1 = require("../../application/userService");
-function createNewUser(req, res) {
-    return __awaiter(this, void 0, void 0, function () {
-        var newUser, e_1;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    _a.trys.push([0, 2, , 3]);
-                    return [4 /*yield*/, userService_1.userService.createNewUser(req.body)];
-                case 1:
-                    newUser = _a.sent();
-                    return [3 /*break*/, 3];
-                case 2:
-                    e_1 = _a.sent();
-                    res.status(400).send(e_1);
-                    return [3 /*break*/, 3];
-                case 3:
-                    // check if USER FOUND ??
-                    if (!newUser)
-                        res.status(404).send({ msg: "user not found !!!" });
-                    else
-                        res.status(200).send({ msg: "New user creation performed", newUser: newUser });
-                    return [2 /*return*/];
-            }
+var userApplicationService = new userService_1.UserApplicationService();
+var UserControllers = /** @class */ (function () {
+    function UserControllers() {
+    }
+    UserControllers.prototype.createNewUser = function (req, res) {
+        return __awaiter(this, void 0, void 0, function () {
+            var newUser, e_1;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, userApplicationService.createNewUser(req.body)];
+                    case 1:
+                        newUser = _a.sent();
+                        return [3 /*break*/, 3];
+                    case 2:
+                        e_1 = _a.sent();
+                        res.status(400).send(e_1);
+                        return [3 /*break*/, 3];
+                    case 3:
+                        // check if USER FOUND ??
+                        if (!newUser)
+                            res.status(404).send({ msg: "user not found !!!" });
+                        else
+                            res.status(200).send({ msg: "New user creation performed", newUser: newUser });
+                        return [2 /*return*/];
+                }
+            });
         });
-    });
-}
-exports.createNewUser = createNewUser;
-function loginUser(req, res) {
-    return __awaiter(this, void 0, void 0, function () {
-        var loginUser, e_2;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    _a.trys.push([0, 2, , 3]);
-                    return [4 /*yield*/, userService_1.userService.loginUser(req.body)];
-                case 1:
-                    loginUser = _a.sent();
-                    return [3 /*break*/, 3];
-                case 2:
-                    e_2 = _a.sent();
-                    res.status(400).send(e_2);
-                    return [3 /*break*/, 3];
-                case 3:
-                    // check if USER FOUND ??
-                    if (!loginUser)
-                        res.status(404).send({ msg: "user not found !!!" });
-                    else
-                        res.status(200).send({ msg: "Login performed", loginUser: loginUser });
-                    return [2 /*return*/];
-            }
+    };
+    UserControllers.prototype.loginUser = function (req, res) {
+        return __awaiter(this, void 0, void 0, function () {
+            var loginUser, e_2;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, userApplicationService.loginUser(req.body)];
+                    case 1:
+                        loginUser = _a.sent();
+                        return [3 /*break*/, 3];
+                    case 2:
+                        e_2 = _a.sent();
+                        res.status(400).send(e_2);
+                        return [3 /*break*/, 3];
+                    case 3:
+                        // check if USER FOUND ??
+                        if (!loginUser)
+                            res.status(404).send({ msg: "user not found !!!" });
+                        else
+                            res.status(200).send({ msg: "Login performed", loginUser: loginUser });
+                        return [2 /*return*/];
+                }
+            });
         });
-    });
-}
-exports.loginUser = loginUser;
-function logoutUser(req, res) {
-    return __awaiter(this, void 0, void 0, function () {
-        var logoutUser, e_3;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    _a.trys.push([0, 2, , 3]);
-                    return [4 /*yield*/, userService_1.userService.logoutUser(req.uuid)];
-                case 1:
-                    logoutUser = _a.sent();
-                    return [3 /*break*/, 3];
-                case 2:
-                    e_3 = _a.sent();
-                    res.status(400).send(e_3);
-                    return [3 /*break*/, 3];
-                case 3:
-                    // check if USER FOUND ??
-                    if (!logoutUser)
-                        res.status(404).send({ msg: "user not found !!!" });
-                    else
-                        res.status(200).send({ msg: "Logout performed", logoutUser: logoutUser });
-                    return [2 /*return*/];
-            }
+    };
+    UserControllers.prototype.logoutUser = function (req, res) {
+        return __awaiter(this, void 0, void 0, function () {
+            var logoutUser, e_3;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, userApplicationService.logoutUser(req.uuid)];
+                    case 1:
+                        logoutUser = _a.sent();
+                        return [3 /*break*/, 3];
+                    case 2:
+                        e_3 = _a.sent();
+                        res.status(400).send(e_3);
+                        return [3 /*break*/, 3];
+                    case 3:
+                        // check if USER FOUND ??
+                        if (!logoutUser)
+                            res.status(404).send({ msg: "user not found !!!" });
+                        else
+                            res.status(200).send({ msg: "Logout performed", logoutUser: logoutUser });
+                        return [2 /*return*/];
+                }
+            });
         });
-    });
-}
-exports.logoutUser = logoutUser;
-// async function AllUsersLogout(req, res) {
-//   try {
-//     req.user.tokens = [];
-//     await req.user.save();
-//     res.status(200).send();
-//   } catch (e) {
-//     res.status(500).send();
-//   }
-// }
-function getUserDetails(req, res) {
-    return __awaiter(this, void 0, void 0, function () {
-        var user, e_4;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    _a.trys.push([0, 2, , 3]);
-                    return [4 /*yield*/, userService_1.userService.findUser(req.uuid)];
-                case 1:
-                    // wait for user details
-                    user = _a.sent();
-                    return [3 /*break*/, 3];
-                case 2:
-                    e_4 = _a.sent();
-                    res.status(400).send(e_4);
-                    return [3 /*break*/, 3];
-                case 3:
-                    // check if USER FOUND ??
-                    if (!user)
-                        res.status(404).send({ msg: "user not found !!!" });
-                    else
-                        res.status(200).send({ msg: "user found:", user: user });
-                    return [2 /*return*/];
-            }
+    };
+    UserControllers.prototype.getUserDetails = function (req, res) {
+        return __awaiter(this, void 0, void 0, function () {
+            var user, e_4;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, userApplicationService.findUser(req.uuid)];
+                    case 1:
+                        // wait for user details
+                        user = _a.sent();
+                        return [3 /*break*/, 3];
+                    case 2:
+                        e_4 = _a.sent();
+                        res.status(400).send(e_4);
+                        return [3 /*break*/, 3];
+                    case 3:
+                        // check if USER FOUND ??
+                        if (!user)
+                            res.status(404).send({ msg: "user not found !!!" });
+                        else
+                            res.status(200).send({ msg: "user found:", user: user });
+                        return [2 /*return*/];
+                }
+            });
         });
-    });
-}
-exports.getUserDetails = getUserDetails;
-// async function updateUser(req, res) {
-//   const updates = Object.keys(req.body);
-//   const allowedUpdates = ["name", "email", "password", "age"];
-//   const isValidOperation = updates.every((update) =>
-//     allowedUpdates.includes(update)
-//   );
-//   if (!isValidOperation) {
-//     return res.status(401).send({ error: "Invalid updates" });
-//   }
-//   try {
-//     updates.forEach((update) => {
-//       req.user[update] = req.body[update];
-//     });
-//     await req.user.save();
-//     return res.status(201).send(req.user);
-//   } catch (e) {
-//     return res.status(404).send({
-//       e,
-//     });
-//   }
-// }
-function deleteUser(req, res) {
-    return __awaiter(this, void 0, void 0, function () {
-        var user, e_5;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    _a.trys.push([0, 2, , 3]);
-                    return [4 /*yield*/, userService_1.userService.deleteUser(req.uuid)];
-                case 1:
-                    user = _a.sent();
-                    return [3 /*break*/, 3];
-                case 2:
-                    e_5 = _a.sent();
-                    res.status(400).send(e_5);
-                    return [3 /*break*/, 3];
-                case 3:
-                    // check if USER FOUND ??
-                    if (!user)
-                        res.status(404).send({ msg: "user not found !!!" });
-                    else
-                        res.status(200).send({ msg: "user deleted:", user: user });
-                    return [2 /*return*/];
-            }
+    };
+    UserControllers.prototype.deleteUser = function (req, res) {
+        return __awaiter(this, void 0, void 0, function () {
+            var user, e_5;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, userApplicationService.deleteUser(req.uuid)];
+                    case 1:
+                        user = _a.sent();
+                        return [3 /*break*/, 3];
+                    case 2:
+                        e_5 = _a.sent();
+                        res.status(400).send(e_5);
+                        return [3 /*break*/, 3];
+                    case 3:
+                        // check if USER FOUND ??
+                        if (!user)
+                            res.status(404).send({ msg: "user not found !!!" });
+                        else
+                            res.status(200).send({ msg: "user deleted:", user: user });
+                        return [2 /*return*/];
+                }
+            });
         });
-    });
-}
-exports.deleteUser = deleteUser;
+    };
+    UserControllers.prototype.updateUser = function (req, res) {
+        return __awaiter(this, void 0, void 0, function () {
+            var user, e_6;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, userApplicationService.updateUser(req.uuid)];
+                    case 1:
+                        user = _a.sent();
+                        return [3 /*break*/, 3];
+                    case 2:
+                        e_6 = _a.sent();
+                        res.status(400).send(e_6);
+                        return [3 /*break*/, 3];
+                    case 3:
+                        // check if USER FOUND ??
+                        if (!user)
+                            res.status(404).send({ msg: "user not found !!!" });
+                        else
+                            res.status(200).send({ msg: "user updated:", user: user });
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    return UserControllers;
+}());
+exports.UserControllers = UserControllers;

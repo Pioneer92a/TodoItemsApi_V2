@@ -30,6 +30,7 @@
         "**/*"
     ],
     "exclude": [
+        "**/.js",
        "./src/tests/",
         "node_modules",
         "**/*.spec.ts",

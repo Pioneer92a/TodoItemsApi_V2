@@ -36,90 +36,132 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.userService = void 0;
-var userEntity_1 = require("../domain/userEntity");
-var userService = /** @class */ (function () {
-    function userService() {
+exports.UserApplicationService = void 0;
+var userDomainServices_1 = require("../domain/userDomainServices");
+var userDomainServices = new userDomainServices_1.UserDomainServices();
+var UserApplicationService = /** @class */ (function () {
+    function UserApplicationService() {
     }
-    userService.createNewUser = function (payload) {
+    UserApplicationService.prototype.createNewUser = function (payload) {
         return __awaiter(this, void 0, void 0, function () {
-            var x, e_1;
+            var newUserCreated, e_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, userEntity_1.userEntity.createNewUser(payload)];
+                        return [4 /*yield*/, userDomainServices.createNewUser(payload)];
                     case 1:
-                        x = _a.sent();
-                        return [3 /*break*/, 3];
+                        newUserCreated = _a.sent();
+                        return [2 /*return*/, newUserCreated];
                     case 2:
                         e_1 = _a.sent();
                         console.log(e_1);
-                        return [3 /*break*/, 3];
-                    case 3: return [2 /*return*/, x];
-                }
-            });
-        });
-    };
-    userService.loginUser = function (payload) {
-        return __awaiter(this, void 0, void 0, function () {
-            var x;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, userEntity_1.userEntity.loginUser(payload)];
-                    case 1:
-                        x = _a.sent();
-                        return [2 /*return*/, x];
-                }
-            });
-        });
-    };
-    userService.logoutUser = function (payload) {
-        return __awaiter(this, void 0, void 0, function () {
-            var x;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, userEntity_1.userEntity.logoutUser(payload)];
-                    case 1:
-                        x = _a.sent();
-                        return [2 /*return*/, x];
-                }
-            });
-        });
-    };
-    userService.findUser = function (userID) {
-        return __awaiter(this, void 0, void 0, function () {
-            var x, e_2;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, userEntity_1.userEntity.findUserbyUUID(userID)];
-                    case 1:
-                        x = _a.sent();
-                        return [2 /*return*/, x];
-                    case 2:
-                        e_2 = _a.sent();
-                        console.log(e_2);
-                        return [3 /*break*/, 3];
+                        return [2 /*return*/, null];
                     case 3: return [2 /*return*/];
                 }
             });
         });
     };
-    userService.deleteUser = function (userID) {
+    UserApplicationService.prototype.loginUser = function (payload) {
         return __awaiter(this, void 0, void 0, function () {
-            var x;
+            var user, e_2;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, userEntity_1.userEntity.deleteUser(userID)];
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, userDomainServices.loginUser(payload)];
                     case 1:
-                        x = _a.sent();
-                        return [2 /*return*/, x];
+                        user = _a.sent();
+                        return [2 /*return*/, user];
+                    case 2:
+                        e_2 = _a.sent();
+                        console.log(e_2);
+                        return [2 /*return*/, null];
+                    case 3: return [2 /*return*/];
                 }
             });
         });
     };
-    return userService;
+    UserApplicationService.prototype.logoutUser = function (payload) {
+        return __awaiter(this, void 0, void 0, function () {
+            var user, e_3;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, userDomainServices.logoutUser(payload)];
+                    case 1:
+                        user = _a.sent();
+                        return [2 /*return*/, user];
+                    case 2:
+                        e_3 = _a.sent();
+                        console.log(e_3);
+                        return [2 /*return*/, null];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    UserApplicationService.prototype.findUser = function (userID) {
+        return __awaiter(this, void 0, void 0, function () {
+            var user, e_4;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, userDomainServices.findUserbyUUID(userID)];
+                    case 1:
+                        user = _a.sent();
+                        return [2 /*return*/, user];
+                    case 2:
+                        e_4 = _a.sent();
+                        console.log(e_4);
+                        return [2 /*return*/, null];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    UserApplicationService.prototype.deleteUser = function (userID) {
+        return __awaiter(this, void 0, void 0, function () {
+            var deletedUser, e_5;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, userDomainServices.deleteUser(userID)];
+                    case 1:
+                        deletedUser = _a.sent();
+                        return [2 /*return*/, deletedUser];
+                    case 2:
+                        e_5 = _a.sent();
+                        console.log(e_5);
+                        return [2 /*return*/, null];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    UserApplicationService.prototype.updateUser = function (userID) {
+        return __awaiter(this, void 0, void 0, function () {
+            var updatedUser, e_6;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, userDomainServices.updateUser(userID)];
+                    case 1:
+                        updatedUser = _a.sent();
+                        return [2 /*return*/, updatedUser];
+                    case 2:
+                        e_6 = _a.sent();
+                        console.log(e_6);
+                        return [2 /*return*/, null];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    return UserApplicationService;
 }());
-exports.userService = userService;
+exports.UserApplicationService = UserApplicationService;
