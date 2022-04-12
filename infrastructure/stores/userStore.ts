@@ -31,8 +31,15 @@ export class UserStore implements UserStoreI {
     else return UserService.createUserEntity(user);
   }
 
-  async fetch(userUUID) {
+  async fetchbyUUID(userUUID) {
     const user = await userRepository.findUserbyUUID(userUUID);
+    //
+    if (!user) return null;
+    else return UserService.createUserEntity(user);
+  }
+
+  async fetch(email) {
+    const user = await userRepository.findUserbyEmail(email);
     //
     if (!user) return null;
     else return UserService.createUserEntity(user);

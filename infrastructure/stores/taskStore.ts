@@ -11,8 +11,6 @@ interface TaskStoreI {
 }
 
 export class TaskStore implements TaskStoreI {
-
-
   async add(taskEntity) {
     const newTaskCreated = await taskRepository.createNewTask(taskEntity);
     //

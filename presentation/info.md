@@ -1,1 +1,0 @@
-Controllers are responsible for handling API requests

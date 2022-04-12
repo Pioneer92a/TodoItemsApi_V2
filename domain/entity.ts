@@ -24,7 +24,7 @@ class user {
     this.name = newUser.name;
     this.email = newUser.email;
     this.uuid = uuidv1(); // generate uuid
-    this.password = newUser.password;
+    this.password = 'dummyPass';
   }
 }
 
@@ -35,7 +35,7 @@ class task {
   userUUID: string;
 
   constructor(newTask) {
-    this.name = newTask.body.name;
+    this.name = newTask.name;
     this.userUUID = newTask.uuid;
     this.uuid = uuidv1(); // generate uuid
   }

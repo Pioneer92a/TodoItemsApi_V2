@@ -1,1 +1,0 @@
-it deals with domains and stores

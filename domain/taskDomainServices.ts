@@ -15,13 +15,15 @@ interface TaskDomainServicesI {
 export class TaskDomainServices implements TaskDomainServicesI {
   // this function creates a new task after applying the domain rules
   async createNewTask(payload) {
+    // console.log(payload);
+    
     try {
       const _user = await userRepository.findUserbyUUID(
         payload.uuid.toString()
       );
-      if (!_user || !_user.token) return null;
-      // return null if user or its token is not found ... it means user has either logged out or deleted
-      // this logic may later be moved to a higher layer of domain
+
+      if (!_user || !_user.isLoggedIn) return null;
+      // return null if user not found or is logged out
 
       const taskEntity = Entity.createTask(payload); // create a new task entity by static factory method
       const newTaskCreated = await taskStore.add(taskEntity);
@@ -38,9 +40,8 @@ export class TaskDomainServices implements TaskDomainServicesI {
       const _user = await userRepository.findUserbyUUID(
         payload.uuid.toString()
       );
-      if (!_user || !_user.token) return null;
-      // return null if user or its token is not found ... it means user has either logged out or deleted
-      // this logic may later be moved to a higher layer of domain
+      if (!_user || !_user.isLoggedIn) return null;
+      // return null if user not found or is logged out
 
       const getTask = await taskStore.fetch(payload.taskId);
       return getTask;
@@ -56,11 +57,11 @@ export class TaskDomainServices implements TaskDomainServicesI {
       const _user = await userRepository.findUserbyUUID(
         payload.uuid.toString()
       );
-      if (!_user || !_user.token) return null;
-      // return null if user or its token is not found ... it means user has either logged out or deleted
-      // this logic may later be moved to a higher layer of domain
 
+       if (!_user || !_user.isLoggedIn) return null;
+      // return null if user not found or is logged out
       // check if the task exists or not
+
       const getTask = await taskStore.fetch(payload.taskId);
       if (!getTask) return null; // return if the task doesn't exist
 
@@ -78,9 +79,9 @@ export class TaskDomainServices implements TaskDomainServicesI {
       const _user = await userRepository.findUserbyUUID(
         payload.uuid.toString()
       );
-      if (!_user || !_user.token) return null;
-      // return null if user or its token is not found ... it means user has either logged out or deleted
-      // this logic may later be moved to a higher layer of domain
+     
+      if (!_user || !_user.isLoggedIn) return null;
+      // return null if user not found or is logged out
 
       // check if the task exists or not
       const getTask = await taskStore.fetch(payload.taskId);

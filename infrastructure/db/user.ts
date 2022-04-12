@@ -2,16 +2,16 @@ import { PrismaClient, User } from "@prisma/client";
 const prisma = new PrismaClient();
 
 interface UserRepositoryI {
-  addTokenToUser(payload, userToken);
-  removeTokenFromUser(payload);
-  createNewUser(newUser)
-  findUserbyUUID(userID)
-  findUserbyEmail(userEmail)
-  deleteUser(userID)
+  // addTokenToUser(payload, userToken);
+  // removeTokenFromUser(payload);
+  createNewUser(newUser);
+  findUserbyUUID(userID);
+  findUserbyEmail(userEmail);
+  deleteUser(userID);
 }
 
 export class UserRepository implements UserRepositoryI {
-  async addTokenToUser(payload, userToken): Promise<User> {
+  /* async addTokenToUser(payload, userToken): Promise<User> {
     try {
       const updatedUser = await prisma.user.update({
         where: {
@@ -20,7 +20,7 @@ export class UserRepository implements UserRepositoryI {
         data: {
           token: userToken,
         },
-      })
+      });
       return updatedUser;
       //
     } catch (e) {
@@ -28,8 +28,9 @@ export class UserRepository implements UserRepositoryI {
       return null;
     }
   }
+  */
 
-  async removeTokenFromUser(payload): Promise<User> {
+  /* async removeTokenFromUser(payload): Promise<User> {
     try {
       const updatedUser = await prisma.user.update({
         where: {
@@ -38,7 +39,44 @@ export class UserRepository implements UserRepositoryI {
         data: {
           token: null,
         },
-      })      
+      });
+      return updatedUser;
+      //
+    } catch (e) {
+      console.log(e);
+      return null;
+    }
+  }
+  */
+
+  async logout(payload): Promise<User> {
+    try {
+      const updatedUser = await prisma.user.update({
+        where: {
+          uuid: payload,
+        },
+        data: {
+          isLoggedIn: false,
+        },
+      });
+      return updatedUser;
+      //
+    } catch (e) {
+      console.log(e);
+      return null;
+    }
+  }
+
+  async login(payload): Promise<User> {
+    try {
+      const updatedUser = await prisma.user.update({
+        where: {
+          email: payload,
+        },
+        data: {
+          isLoggedIn: true,
+        },
+      });
       return updatedUser;
       //
     } catch (e) {
@@ -54,12 +92,9 @@ export class UserRepository implements UserRepositoryI {
           uuid: newUser.uuid,
           email: newUser.email,
           name: newUser.name,
-          token: newUser.token,
-          password: newUser.password,
-          // tasks: {
-          //   create: [{ name: "Hello Worldssss" }, { name: "asd" }],
-          //   // create: [{ name: "Hello Worldssss" }],
-          // },
+          // token: newUser.token,
+          // password: newUser.password,
+          isLoggedIn: true,
         },
       });
       return newUserCreated;
@@ -108,6 +143,8 @@ export class UserRepository implements UserRepositoryI {
           uuid: userId,
         },
       });
+      // return if user doesn't exist
+      if (!userToDelete) return null;
 
       // delete the related tasks first
       const deleteTasks = prisma.task.deleteMany({
@@ -130,7 +167,6 @@ export class UserRepository implements UserRepositoryI {
     } catch (e) {
       console.log(e);
       return null;
-
     }
   }
 
@@ -143,7 +179,7 @@ export class UserRepository implements UserRepositoryI {
         data: {
           name: "name changed",
         },
-      })
+      });
       return updatedUser;
       //
     } catch (e) {
@@ -151,5 +187,4 @@ export class UserRepository implements UserRepositoryI {
       return null;
     }
   }
-
 }

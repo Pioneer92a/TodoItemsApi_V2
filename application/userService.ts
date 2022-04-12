@@ -8,10 +8,29 @@ interface UserApplicationServiceI {
   logoutUser(payload);
   findUser(userID);
   deleteUser(userID);
-  updateUser(userID)
+  updateUser(userID);
+  findOrCreateUser(payload)
+  findUserByEmail(email)
 }
 
 export class UserApplicationService implements UserApplicationServiceI {
+  async findOrCreateUser(payload) {
+    const user = await this.findUserByEmail(payload.email)
+    // console.log('user found', user);
+    
+    if (user) { // if user is found, then login
+      const userFound = await this.loginUser(payload.email)
+      return userFound // return the user if its already present in the database
+    }
+
+    if (!user) { // create new user if not already in database
+      const newUser = await this.createNewUser(payload) 
+      return newUser
+      // console.log('newUserCreated',newUser);
+    }
+    
+  }
+
   async createNewUser(payload) {
     try {
       const newUserCreated = await userDomainServices.createNewUser(payload);
@@ -36,7 +55,7 @@ export class UserApplicationService implements UserApplicationServiceI {
 
   async logoutUser(payload) {
     try {
-      const user = await userDomainServices.logoutUser(payload);
+      const user = await userDomainServices.logoutUser(payload.userUUID);
       return user;
       //
     } catch (e) {
@@ -45,9 +64,9 @@ export class UserApplicationService implements UserApplicationServiceI {
     }
   }
 
-  async findUser(userID) {
+  async findUser(payload) {
     try {
-      const user = await userDomainServices.findUserbyUUID(userID);
+      const user = await userDomainServices.findUserbyUUID(payload.userUUID);
       return user;
       //
     } catch (e) {
@@ -56,9 +75,20 @@ export class UserApplicationService implements UserApplicationServiceI {
     }
   }
 
-  async deleteUser(userID) {
+  async findUserByEmail(email) {
     try {
-      const deletedUser = await userDomainServices.deleteUser(userID);
+      const user = await userDomainServices.findUserbyEmail(email);
+      return user;
+      //
+    } catch (e) {
+      console.log(e);
+      return null;
+    }
+  }
+
+  async deleteUser(payload) {
+    try {
+      const deletedUser = await userDomainServices.deleteUser(payload.userUUID);
       return deletedUser;
       //
     } catch (e) {

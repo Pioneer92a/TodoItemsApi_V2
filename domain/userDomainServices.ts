@@ -29,19 +29,24 @@ export class UserDomainServices implements UserDomainServicesI {
     }
   }
 
-  async loginUser(payload) {
+  async loginUser(email) {
     try {
       // find our required user
-      const userFound = await userRepository.findUserbyEmail(payload.email);
+      const user = await userRepository.findUserbyEmail(email);
+      // return null if user not found
+      if(!user) return null;
 
-      // check if user exists. Then check password
-      if (userFound !== null && userFound.password === payload.password) {
-        const token = jwt.sign({ uuid: userFound.uuid.toString() }, JWT_SECRET);
-        const user = await userRepository.addTokenToUser(payload, token); // add token to the user
-        return user;
-      } else {
-        return null;
-      }
+      const userFound = await userRepository.login(email);
+      return userFound
+
+      // // check if user exists. Then check password
+      // if (userFound !== null && userFound.password === payload.password) {
+      //   const token = jwt.sign({ uuid: userFound.uuid.toString() }, JWT_SECRET);
+      //   const user = await userRepository.addTokenToUser(payload, token); // add token to the user
+      //   return user;
+      // } else {
+      //   return null;
+      // }
       //
     } catch (e) {
       console.log(e);
@@ -52,11 +57,13 @@ export class UserDomainServices implements UserDomainServicesI {
   async logoutUser(userUUID) {
     try {
       const _user = await userRepository.findUserbyUUID(userUUID);
-      if (!_user || !_user.token) return null;
+      // if (!_user || !_user.token) return null;
+      if (!_user) return null;
       // return null if user or its token is not found ... it means user has either logged out or deleted
       // this logic may later be moved to a higher layer of domain
 
-      const user = await userRepository.removeTokenFromUser(userUUID); // remove token from user that was created during login
+      // const user = await userRepository.removeTokenFromUser(userUUID); // remove token from user that was created during login
+      const user = await userRepository.logout(userUUID)
       return user;
       //
     } catch (e) {
@@ -68,9 +75,9 @@ export class UserDomainServices implements UserDomainServicesI {
   // find user by their UUID
   async findUserbyUUID(userUUID) {
     try {
-      const _user = await userStore.fetch(userUUID);
-      if (!_user || !_user.token) return null;
-      // return null if user or its token is not found ... it means user has either logged out or deleted
+      
+      const _user = await userStore.fetchbyUUID(userUUID);
+      if (!_user) return null;
       // this logic may later be moved to a higher layer of domain
 
       return _user;
@@ -80,12 +87,27 @@ export class UserDomainServices implements UserDomainServicesI {
     }
   }
 
+    // find user by their UUID
+    async findUserbyEmail(email) {
+      try {
+        const _user = await userStore.fetch(email);
+        // if (!_user || !_user.token) return null;
+        if (!_user) return null;
+        // return null if user or its token is not found ... it means user has either logged out or deleted
+        // this logic may later be moved to a higher layer of domain
+  
+        return _user;
+      } catch (e) {
+        console.log(e);
+        return null;
+      }
+    }
+
   async deleteUser(userUUID) {
     try {
       const _user = await userStore.remove(userUUID);
 
-      if (!_user || !_user.token) return null;
-      // return null if user or its token is not found ... it means user has either logged out or deleted
+      if (!_user) return null;
       // this logic may later be moved to a higher layer of domain
 
       return _user;

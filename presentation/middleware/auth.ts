@@ -4,6 +4,16 @@ import * as jwt from "jsonwebtoken";
 // import { User } from "../../infrastructure/db/model/userMongo"; // import user model
 import { JWT_SECRET } from "../../infrastructure/config";
 
+
+const auth2 = async (req, res, next) => {
+  //middleware
+  if (req.user) {
+    next();
+  } else {
+    res.sendStatus(401);
+  }
+};
+
 // defining middleware
 const auth = async (req, res, next) => {
   try {
@@ -14,7 +24,7 @@ const auth = async (req, res, next) => {
       throw new Error();
     }
 
-    const decoded = jwt.verify(token, JWT_SECRET); // find decoded from token using JWT_SECRET
+    const decoded: any = jwt.verify(token, JWT_SECRET); // find decoded from token using JWT_SECRET
 
     req.token = token; // attach the decoded token with the request
     req.uuid = decoded.uuid.toString(); // attach the user id with the request
@@ -30,4 +40,4 @@ const auth = async (req, res, next) => {
   // next();
 };
 
-export { auth };
+export { auth, auth2 };

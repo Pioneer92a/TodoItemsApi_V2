@@ -24,6 +24,7 @@ export class TaskRepository implements TaskRepositoryI {
                 email: "UserNotFound@prisma.io",
                 name: "UserNotFound",
                 uuid: "UserNotFound",
+                isLoggedIn: true,
               },
             },
           },
