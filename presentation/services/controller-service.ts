@@ -48,6 +48,6 @@ export class ControllerService {
   static handleResponseForUser(user, res) {
     // // check if USER FOUND ??
     if (!user) res.status(404).send({ msg: "user not found/created !!!" });
-    else res.status(200).send({ msg: "user found/created:", user });
+    else res.status(200).send({ msg: "user operation performed", user });
   }
 }

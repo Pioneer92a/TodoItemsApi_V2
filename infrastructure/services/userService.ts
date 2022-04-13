@@ -17,4 +17,16 @@ export class UserServices {
   static async findUserbyUUID(userUUID) {
     return await userRepository.findUserbyUUID(userUUID);
   }
+
+  static async findUserbyEmail(userUUID) {
+    return await userRepository.findUserbyEmail(userUUID);
+  }
+
+  static async login(userUUID) {
+    return await userRepository.login(userUUID);
+  }
+
+  static async logout(userUUID) {
+    return await userRepository.logout(userUUID);
+  }
 }

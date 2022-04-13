@@ -1,8 +1,7 @@
-import { UserRepository } from "../infrastructure/db/repository/userRepository";
+import { UserServices as UserRepositoryServices } from "../infrastructure/services/userService";
 import { UserStore } from "../infrastructure/stores/userStore";
 import { EntityFactory } from "./entityFactory";
 
-const userRepository = new UserRepository();
 const userStore = new UserStore();
 
 interface UserDomainServicesI {
@@ -30,10 +29,10 @@ export class UserDomainServices implements UserDomainServicesI {
   async loginUser(email) {
     try {
       // find our required user
-      const user = await userRepository.findUserbyEmail(email);
+      const user = await UserRepositoryServices.findUserbyEmail(email);
       if (!user) return null;
 
-      const userFound = await userRepository.login(email);
+      const userFound = await UserRepositoryServices.login(email);
       return userFound;
       //
     } catch (e) {
@@ -44,10 +43,10 @@ export class UserDomainServices implements UserDomainServicesI {
 
   async logoutUser(userUUID) {
     try {
-      const _user = await userRepository.findUserbyUUID(userUUID);
+      const _user = await UserRepositoryServices.findUserbyUUID(userUUID);
       if (!_user) return null;
 
-      const user = await userRepository.logout(userUUID);
+      const user = await UserRepositoryServices.logout(userUUID);
       return user;
       //
     } catch (e) {
@@ -106,8 +105,6 @@ export class UserDomainServices implements UserDomainServicesI {
       const _user = await userStore.update(userUUID);
 
       if (!_user) return null;
-      // return null if user or its token is not found ... it means user has either logged out or deleted
-      // this logic may later be moved to a higher layer of domain
 
       return _user;
       //
