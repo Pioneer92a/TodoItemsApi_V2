@@ -1,0 +1,12 @@
+{
+  "files.exclude": {
+    "**/.js": true
+  },
+  "explorer.experimental.fileNesting.patterns": {
+    "*.ts": "${capture}.js",
+    "*.jsx": "${capture}.js",
+    "*.tsx": "${capture}.ts",
+    "tsconfig.json": "tsconfig.*.json",
+    "package.json": "package-lock.json, yarn.lock"
+  }
+}
