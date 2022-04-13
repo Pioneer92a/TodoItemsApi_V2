@@ -14,8 +14,10 @@ User Routes cleared:
    if user already present, mark him/her as logged in
 
 4. post("/delete/:uuid")
-   mark the specific user logged out in the database
-   no impact on current session
+   delete the user
+
+5. get("/user/:uuid")
+   read the user
 
    TASK ROUTES: note that below operations will be performed only if user is marked logged in from database
 

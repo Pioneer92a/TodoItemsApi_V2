@@ -5,15 +5,14 @@ interface TaskApplicationServiceI {
   createNewTask(newTask);
   deleteTask(taskID);
   getTask(payload);
-  updateTask(payload)
+  updateTask(payload);
 }
 
-export class TaskApplicationService implements TaskApplicationServiceI{
-  async createNewTask(newTask) {
+export class TaskApplicationService implements TaskApplicationServiceI {
+  async createNewTask(payload) {
     try {
-      const newTaskCreated = await taskDomainServices.createNewTask(newTask);
+      const newTaskCreated = await taskDomainServices.createNewTask(payload);
       return newTaskCreated;
-
     } catch (e) {
       console.log(e);
       return null;
@@ -24,7 +23,6 @@ export class TaskApplicationService implements TaskApplicationServiceI{
     try {
       const deletedTask = await taskDomainServices.deleteTask(payload);
       return deletedTask;
-
     } catch (e) {
       console.log(e);
       return null;
@@ -35,7 +33,6 @@ export class TaskApplicationService implements TaskApplicationServiceI{
     try {
       const getTask = await taskDomainServices.getTask(payload);
       return getTask;
-
     } catch (e) {
       console.log(e);
       return null;
@@ -46,11 +43,9 @@ export class TaskApplicationService implements TaskApplicationServiceI{
     try {
       const updateTask = await taskDomainServices.updateTask(payload);
       return updateTask;
-
     } catch (e) {
       console.log(e);
       return null;
     }
   }
-
 }

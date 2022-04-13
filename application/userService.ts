@@ -9,26 +9,28 @@ interface UserApplicationServiceI {
   findUser(userID);
   deleteUser(userID);
   updateUser(userID);
-  findOrCreateUser(payload)
-  findUserByEmail(email)
+  findOrCreateUser(payload);
+  findUserByEmail(email);
 }
 
 export class UserApplicationService implements UserApplicationServiceI {
+  /**
+   * perform login if user is found, otherwise create a new one in local database
+   */
   async findOrCreateUser(payload) {
-    const user = await this.findUserByEmail(payload.email)
-    // console.log('user found', user);
-    
-    if (user) { // if user is found, then login
-      const userFound = await this.loginUser(payload.email)
-      return userFound // return the user if its already present in the database
+    const user = await this.findUserByEmail(payload.email);
+
+    // if user is found, then login
+    if (user) {
+      const userFound = await this.loginUser(payload.email);
+      return userFound; // return the user if its already present in the database
     }
 
-    if (!user) { // create new user if not already in database
-      const newUser = await this.createNewUser(payload) 
-      return newUser
-      // console.log('newUserCreated',newUser);
+    // create new user if not already in database
+    if (!user) {
+      const newUser = await this.createNewUser(payload);
+      return newUser;
     }
-    
   }
 
   async createNewUser(payload) {
@@ -107,5 +109,4 @@ export class UserApplicationService implements UserApplicationServiceI {
       return null;
     }
   }
-
 }

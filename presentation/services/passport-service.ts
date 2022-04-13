@@ -1,27 +1,23 @@
 import * as passport from "passport";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
-
-// we need ngrok to generate https tunnel
-// unfortunately a new link has to be pasted here for every new ngrok session
-const ngrokURI = "https://b857-202-165-233-154.ngrok.io";
+import {
+  GOOGLE_CLIENT_ID,
+  GOOGLE_CLIENT_SECRET,
+  NGROK_URI,
+} from "../../infrastructure/config";
 
 function GoogleStrategyCbFunc(accessToken, refreshToken, profile, done) {
-  // use the profile info (mainly profile id) to check if the user is registered in your database
-  // profile will contain email, id, etc.
-  // register the user if its not present
-  // select the user if it is present
-  // pass the user in done instead of profile
-  // return done(err, user);
   // console.log(accessToken);
 
   return done(null, profile); // serialize function will be called here
 }
 
+// we need ngrok to generate https tunnel
+// unfortunately a new link has to be pasted in the .env file for every new ngrok session
 const clientDetailsObj = {
-  clientID:
-    "152891392650-r11uegdppifl1e1nleok5q3llj5b7ge5.apps.googleusercontent.com",
-  clientSecret: "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",
-  callbackURL: `${ngrokURI}/google/callback`,
+  clientID: GOOGLE_CLIENT_ID,
+  clientSecret: GOOGLE_CLIENT_SECRET,
+  callbackURL: `${NGROK_URI}/google/callback`,
 };
 
 function serializeUserCbFunc(user, done) {

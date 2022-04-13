@@ -2,53 +2,16 @@ import { PrismaClient, User } from "@prisma/client";
 const prisma = new PrismaClient();
 
 interface UserRepositoryI {
-  // addTokenToUser(payload, userToken);
-  // removeTokenFromUser(payload);
   createNewUser(newUser);
   findUserbyUUID(userID);
   findUserbyEmail(userEmail);
   deleteUser(userID);
 }
 
+/**
+ * interacts with the database directly
+ */
 export class UserRepository implements UserRepositoryI {
-  /* async addTokenToUser(payload, userToken): Promise<User> {
-    try {
-      const updatedUser = await prisma.user.update({
-        where: {
-          email: payload.email,
-        },
-        data: {
-          token: userToken,
-        },
-      });
-      return updatedUser;
-      //
-    } catch (e) {
-      console.log(e);
-      return null;
-    }
-  }
-  */
-
-  /* async removeTokenFromUser(payload): Promise<User> {
-    try {
-      const updatedUser = await prisma.user.update({
-        where: {
-          uuid: payload,
-        },
-        data: {
-          token: null,
-        },
-      });
-      return updatedUser;
-      //
-    } catch (e) {
-      console.log(e);
-      return null;
-    }
-  }
-  */
-
   async logout(payload): Promise<User> {
     try {
       const updatedUser = await prisma.user.update({
@@ -92,8 +55,6 @@ export class UserRepository implements UserRepositoryI {
           uuid: newUser.uuid,
           email: newUser.email,
           name: newUser.name,
-          // token: newUser.token,
-          // password: newUser.password,
           isLoggedIn: true,
         },
       });
@@ -105,11 +66,11 @@ export class UserRepository implements UserRepositoryI {
     }
   }
 
-  async findUserbyUUID(userID): Promise<User> {
+  async findUserbyUUID(userUUID): Promise<User> {
     try {
       const userFound = await prisma.user.findUnique({
         where: {
-          uuid: userID,
+          uuid: userUUID,
         },
       });
       return userFound;
@@ -160,10 +121,11 @@ export class UserRepository implements UserRepositoryI {
         },
       });
 
-      // elete a user and all their taks with two separate queries in a transaction (all queries must succeed)
+      // delete a user and all their taks with two separate queries in a transaction (all queries must succeed)
       const transaction = await prisma.$transaction([deleteTasks, deleteUser]);
 
       return transaction[1]; // return User
+      //
     } catch (e) {
       console.log(e);
       return null;

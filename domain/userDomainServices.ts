@@ -1,8 +1,6 @@
-import { UserRepository } from "../infrastructure/db/user";
+import { UserRepository } from "../infrastructure/db/repository/userRepository";
 import { UserStore } from "../infrastructure/stores/userStore";
-import * as jwt from "jsonwebtoken"; // For user authentication;
-import { JWT_SECRET } from "../infrastructure/config";
-import { Entity } from "./entity";
+import { EntityFactory } from "./entityFactory";
 
 const userRepository = new UserRepository();
 const userStore = new UserStore();
@@ -19,7 +17,7 @@ interface UserDomainServicesI {
 export class UserDomainServices implements UserDomainServicesI {
   async createNewUser(payload) {
     try {
-      const userEntity = Entity.createUser(payload); // create new user entity trough static factory method
+      const userEntity = EntityFactory.createUser(payload); // create new user entity trough static factory method
       const newUserCreated = await userStore.add(userEntity);
       return newUserCreated;
       //
@@ -33,20 +31,10 @@ export class UserDomainServices implements UserDomainServicesI {
     try {
       // find our required user
       const user = await userRepository.findUserbyEmail(email);
-      // return null if user not found
-      if(!user) return null;
+      if (!user) return null;
 
       const userFound = await userRepository.login(email);
-      return userFound
-
-      // // check if user exists. Then check password
-      // if (userFound !== null && userFound.password === payload.password) {
-      //   const token = jwt.sign({ uuid: userFound.uuid.toString() }, JWT_SECRET);
-      //   const user = await userRepository.addTokenToUser(payload, token); // add token to the user
-      //   return user;
-      // } else {
-      //   return null;
-      // }
+      return userFound;
       //
     } catch (e) {
       console.log(e);
@@ -57,13 +45,9 @@ export class UserDomainServices implements UserDomainServicesI {
   async logoutUser(userUUID) {
     try {
       const _user = await userRepository.findUserbyUUID(userUUID);
-      // if (!_user || !_user.token) return null;
       if (!_user) return null;
-      // return null if user or its token is not found ... it means user has either logged out or deleted
-      // this logic may later be moved to a higher layer of domain
 
-      // const user = await userRepository.removeTokenFromUser(userUUID); // remove token from user that was created during login
-      const user = await userRepository.logout(userUUID)
+      const user = await userRepository.logout(userUUID);
       return user;
       //
     } catch (e) {
@@ -75,7 +59,6 @@ export class UserDomainServices implements UserDomainServicesI {
   // find user by their UUID
   async findUserbyUUID(userUUID) {
     try {
-      
       const _user = await userStore.fetchbyUUID(userUUID);
       if (!_user) return null;
       // this logic may later be moved to a higher layer of domain
@@ -87,21 +70,21 @@ export class UserDomainServices implements UserDomainServicesI {
     }
   }
 
-    // find user by their UUID
-    async findUserbyEmail(email) {
-      try {
-        const _user = await userStore.fetch(email);
-        // if (!_user || !_user.token) return null;
-        if (!_user) return null;
-        // return null if user or its token is not found ... it means user has either logged out or deleted
-        // this logic may later be moved to a higher layer of domain
-  
-        return _user;
-      } catch (e) {
-        console.log(e);
-        return null;
-      }
+  // find user by their UUID
+  async findUserbyEmail(email) {
+    try {
+      const _user = await userStore.fetch(email);
+      // if (!_user || !_user.token) return null;
+      if (!_user) return null;
+      // return null if user or its token is not found ... it means user has either logged out or deleted
+      // this logic may later be moved to a higher layer of domain
+
+      return _user;
+    } catch (e) {
+      console.log(e);
+      return null;
     }
+  }
 
   async deleteUser(userUUID) {
     try {
@@ -122,7 +105,7 @@ export class UserDomainServices implements UserDomainServicesI {
     try {
       const _user = await userStore.update(userUUID);
 
-      if (!_user || !_user.token) return null;
+      if (!_user) return null;
       // return null if user or its token is not found ... it means user has either logged out or deleted
       // this logic may later be moved to a higher layer of domain
 

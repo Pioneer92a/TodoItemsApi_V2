@@ -1,10 +1,14 @@
-import { UserRepository } from "../infrastructure/db/user";
+import { UserRepository } from "../infrastructure/db/repository/userRepository";
+import { UserServices as UserDBServices } from "../infrastructure/services/userService";
 import { TaskStore } from "../infrastructure/stores/taskStore";
-import { Entity } from "./entity";
+import { EntityFactory } from "./entityFactory";
 
 const userRepository = new UserRepository();
 const taskStore = new TaskStore();
 
+/**
+ * basic crud operations
+ */
 interface TaskDomainServicesI {
   createNewTask(payload);
   getTask(payload);
@@ -15,18 +19,16 @@ interface TaskDomainServicesI {
 export class TaskDomainServices implements TaskDomainServicesI {
   // this function creates a new task after applying the domain rules
   async createNewTask(payload) {
-    // console.log(payload);
-    
     try {
-      const _user = await userRepository.findUserbyUUID(
+      const _user = await UserDBServices.findUserbyUUID(
         payload.uuid.toString()
       );
 
-      if (!_user || !_user.isLoggedIn) return null;
-      // return null if user not found or is logged out
+      if (!_user) return { msg: "user not found" };
+      if (!_user.isLoggedIn) return { msg: "user not logged in" };
 
-      const taskEntity = Entity.createTask(payload); // create a new task entity by static factory method
-      const newTaskCreated = await taskStore.add(taskEntity);
+      const taskEntity = EntityFactory.createTask(payload); // create a new task entity by static factory method
+      const newTaskCreated = await taskStore.add(taskEntity); // pass on the entity to the task store
 
       return newTaskCreated;
     } catch (e) {
@@ -37,11 +39,11 @@ export class TaskDomainServices implements TaskDomainServicesI {
 
   async getTask(payload) {
     try {
-      const _user = await userRepository.findUserbyUUID(
+      const _user = await UserDBServices.findUserbyUUID(
         payload.uuid.toString()
       );
-      if (!_user || !_user.isLoggedIn) return null;
-      // return null if user not found or is logged out
+      if (!_user) return { msg: "user not found" };
+      if (!_user.isLoggedIn) return { msg: "user not logged in" };
 
       const getTask = await taskStore.fetch(payload.taskId);
       return getTask;
@@ -54,16 +56,15 @@ export class TaskDomainServices implements TaskDomainServicesI {
   async updateTask(payload) {
     try {
       // check if the user exists or not
-      const _user = await userRepository.findUserbyUUID(
+      const _user = await UserDBServices.findUserbyUUID(
         payload.uuid.toString()
       );
 
-       if (!_user || !_user.isLoggedIn) return null;
-      // return null if user not found or is logged out
-      // check if the task exists or not
+      if (!_user) return { msg: "user not found" };
+      if (!_user.isLoggedIn) return { msg: "user not logged in" };
 
       const getTask = await taskStore.fetch(payload.taskId);
-      if (!getTask) return null; // return if the task doesn't exist
+      if (!getTask) return { msg: "task not found" };
 
       const updateTask = await taskStore.update(payload.taskId);
       return updateTask;
@@ -76,16 +77,16 @@ export class TaskDomainServices implements TaskDomainServicesI {
   async deleteTask(payload) {
     try {
       // check if the user exists or not
-      const _user = await userRepository.findUserbyUUID(
+      const _user = await UserDBServices.findUserbyUUID(
         payload.uuid.toString()
       );
-     
-      if (!_user || !_user.isLoggedIn) return null;
-      // return null if user not found or is logged out
+
+      if (!_user) return { msg: "user not found" };
+      if (!_user.isLoggedIn) return { msg: "user not logged in" };
 
       // check if the task exists or not
       const getTask = await taskStore.fetch(payload.taskId);
-      if (!getTask) return null; // return if the task doesn't exist
+      if (!getTask) return { msg: "task not found" };
 
       const deletedTask = await taskStore.remove(payload.taskId);
       return deletedTask;

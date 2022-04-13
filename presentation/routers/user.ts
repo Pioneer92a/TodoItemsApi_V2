@@ -1,29 +1,21 @@
 import * as express from "express";
 import { UserControllers } from "../controllers/user";
+import { auth } from "../middleware/auth";
 
 const router = express.Router();
 const userControllers = new UserControllers();
 
-// route for Creating a new user
-// router.post("/users", userControllers.createNewUser);
+// route for logging-out a user
+router.post("/logout/:uuid", auth, userControllers.logoutUser);
 
 // route for Reading a user
-// router.get("/users/", auth, userControllers.getUserDetails);
-router.get("/user/:uuid", userControllers.getUserDetails);
+router.get("/user/:uuid", auth, userControllers.getUserDetails);
 
 // route for Deleting a user
-// router.delete("/users/me", auth, userControllers.deleteUser);
-router.delete("/user/:uuid", userControllers.deleteUser);
+router.delete("/user/:uuid", auth, userControllers.deleteUser);
 
-
-// route for logging-in a user (jwt token is added to user in this case)
-// router.post("/users/login", userControllers.loginUser);
-
-// route for logging-out a user (jwt token is deleted from user in this case)
-// router.post("/users/logout", auth, userControllers.logoutUser);
-router.post("/logout/:uuid", userControllers.logoutUser);
-
-// route for updating a user 
-// router.post("/users/update", auth, userControllers.updateUser);
+// the following route is in main file index.ts
+// create a user and login, or find a user and login
+// app.get("/good", isLoggedInCb, userControllers.findOrCreateUser);
 
 export { router };

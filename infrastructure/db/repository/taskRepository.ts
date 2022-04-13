@@ -8,6 +8,9 @@ interface TaskRepositoryI {
   updateTask(taskID);
 }
 
+/**
+ * interacts with the database directly
+ */
 export class TaskRepository implements TaskRepositoryI {
   async createNewTask(newTask): Promise<Task> {
     try {
