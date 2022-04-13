@@ -52,6 +52,19 @@ export class TaskControllers implements TaskControllersI {
     ControllerService.handleResponse(task, res);
   }
 
+  async getAllTasks(req, res) {
+    const payload = ControllerService.createPayload(req);
+    let task;
+    try {
+      task = await taskApplicationService.getAllTasks(payload);
+    } catch (e) {
+      res.status(400).send(e);
+    }
+
+    res.send(task);
+    // ControllerService.handleResponse(task, res);
+  }
+
   async updateTask(req, res) {
     const payload = ControllerService.createPayload(req);
 

@@ -10,13 +10,7 @@ interface TaskApplicationServiceI {
 
 export class TaskApplicationService implements TaskApplicationServiceI {
   async createNewTask(payload) {
-    try {
-      const newTaskCreated = await taskDomainServices.createNewTask(payload);
-      return newTaskCreated;
-    } catch (e) {
-      console.log(e);
-      return null;
-    }
+    return await taskDomainServices.createNewTask(payload);
   }
 
   async deleteTask(payload) {
@@ -32,6 +26,16 @@ export class TaskApplicationService implements TaskApplicationServiceI {
   async getTask(payload) {
     try {
       const getTask = await taskDomainServices.getTask(payload);
+      return getTask;
+    } catch (e) {
+      console.log(e);
+      return null;
+    }
+  }
+
+  async getAllTasks(payload) {
+    try {
+      const getTask = await taskDomainServices.getAllTasks(payload);
       return getTask;
     } catch (e) {
       console.log(e);

@@ -41,4 +41,12 @@ export class TaskStore implements TaskStoreI {
     if (!getTask) return null;
     else return TaskServices.createTaskEntity(getTask);
   }
+
+  async fetchAll(page) {
+    const getAllTasks = await taskRepository.getAllTasks(page);
+    //
+    if (!getAllTasks) return null;
+    // else return TaskServices.createTaskEntity(getTask);
+    else return getAllTasks;
+  }
 }

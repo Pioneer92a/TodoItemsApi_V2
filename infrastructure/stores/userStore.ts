@@ -29,7 +29,7 @@ export class UserStore implements UserStoreI {
 
   async update(userUUID) {
     const user = await userRepository.updateUser(userUUID);
-    //
+
     if (!user) return null;
     else return UserServices.createUserEntity(user);
   }

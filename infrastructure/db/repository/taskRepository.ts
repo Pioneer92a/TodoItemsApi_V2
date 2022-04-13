@@ -1,4 +1,5 @@
 import { PrismaClient, Task } from "@prisma/client";
+import { Task_Pagination_Limit } from "../../config";
 const prisma = new PrismaClient();
 
 interface TaskRepositoryI {
@@ -71,6 +72,14 @@ export class TaskRepository implements TaskRepositoryI {
       console.log(e);
       return null;
     }
+  }
+
+  async getAllTasks(page) {
+    // get The task
+    return await prisma.task.findMany({
+      skip: parseInt(page) - 1, // start from the parameter page by skipping page-1
+      take: parseInt(Task_Pagination_Limit), // limit
+    });
   }
 
   async updateTask(taskID): Promise<Task> {

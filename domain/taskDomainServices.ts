@@ -53,6 +53,22 @@ export class TaskDomainServices implements TaskDomainServicesI {
     }
   }
 
+  async getAllTasks(payload) {
+    try {
+      const _user = await UserDBServices.findUserbyUUID(
+        payload.uuid.toString()
+      );
+      if (!_user) return { msg: "user not found" };
+      if (!_user.isLoggedIn) return { msg: "user not logged in" };
+
+      const getTask = await taskStore.fetchAll(payload.page);
+      return getTask;
+    } catch (e) {
+      console.log(e);
+      return null;
+    }
+  }
+
   async updateTask(payload) {
     try {
       // check if the user exists or not

@@ -3,15 +3,18 @@ export class ControllerService {
    * creates two different payloads FOR TASKS based on req
    */
   static createPayload(req) {
-    if (!req.params.id) {
-      // create a payload for 'createNewTask'
-      const payload = { name: req.body.name, uuid: req.body.userUUID }; // create payload
-      return payload;
-    } else {
-      // create a payload for others
-      const payload = { taskId: req.params.id, uuid: req.body.userUUID }; // create payload
-      return payload;
-    }
+    // create a payload for 'createNewTask'
+    if (req.body.name) return { name: req.body.name, uuid: req.body.userUUID };
+    // create a payload for pagination getAll
+    else if (req.params.page)
+      return {
+        page: req.params.page,
+        uuid: req.body.userUUID,
+      };
+    // create payload
+    // create a payload for others
+    else if (req.params.id)
+      return { taskId: req.params.id, uuid: req.body.userUUID };
   }
 
   /**

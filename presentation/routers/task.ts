@@ -22,4 +22,7 @@ router.delete("/task/:id", auth, taskControllers.deleteTask);
 // route for updating a task
 router.post("/task/update/:id", auth, taskControllers.updateTask);
 
+// route for reading a task
+router.get("/task/getAll/:page", auth, taskControllers.getAllTasks);
+
 export { router };

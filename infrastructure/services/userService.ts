@@ -27,6 +27,9 @@ export class UserServices {
   }
 
   static async logout(userUUID) {
-    return await userRepository.logout(userUUID);
+    const user = await userRepository.logout(userUUID);
+    //
+    if (!user) return null;
+    else return UserServices.createUserEntity(user);
   }
 }
