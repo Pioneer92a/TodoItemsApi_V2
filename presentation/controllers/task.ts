@@ -16,65 +16,52 @@ interface TaskControllersI {
 
 export class TaskControllers implements TaskControllersI {
   async createNewTask(req, res) {
-    const payload = ControllerService.createPayload(req);
-
-    let task;
     try {
-      task = await taskApplicationService.createNewTask(payload);
+      const task = await taskApplicationService.createNewTask(req);
+      ControllerService.handleResponseForTask(task, res);
     } catch (e) {
-      res.status(400).send(e);
+      console.log(e);
+      return res.status(400).send(e.message);
     }
-
-    ControllerService.handleResponse(task, res);
   }
 
   async deleteTask(req, res) {
-    const payload = ControllerService.createPayload(req);
-    let task;
     try {
-      task = await taskApplicationService.deleteTask(payload);
+      const task = await taskApplicationService.deleteTask(req);
+      ControllerService.handleResponseForTask(task, res);
     } catch (e) {
-      res.status(400).send(e);
+      return res.status(400).send(e.message);
     }
-
-    ControllerService.handleResponse(task, res);
   }
 
   async getTask(req, res) {
-    const payload = ControllerService.createPayload(req);
-    let task;
     try {
-      task = await taskApplicationService.getTask(payload);
+      const task = await taskApplicationService.getTask(req);
+      ControllerService.handleResponseForTask(task, res);
     } catch (e) {
-      res.status(400).send(e);
+      console.log(e);
+      return res.status(400).send(e.message);
     }
-
-    ControllerService.handleResponse(task, res);
   }
 
   async getAllTasks(req, res) {
-    const payload = ControllerService.createPayload(req);
-    let task;
     try {
-      task = await taskApplicationService.getAllTasks(payload);
+      const task = await taskApplicationService.getAllTasks(req);
+      // ControllerService.handleResponseForTask(task, res);
+      return res.send({ AllTasks: task });
     } catch (e) {
-      res.status(400).send(e);
+      console.log(e);
+      return res.status(400).send(e.message);
     }
-
-    res.send(task);
-    // ControllerService.handleResponse(task, res);
   }
 
   async updateTask(req, res) {
-    const payload = ControllerService.createPayload(req);
-
-    let task;
     try {
-      task = await taskApplicationService.updateTask(payload);
+      const task = await taskApplicationService.updateTask(req);
+      ControllerService.handleResponseForTask(task, res);
     } catch (e) {
-      res.status(400).send(e);
+      console.log(e);
+      return res.status(400).send(e.message);
     }
-
-    ControllerService.handleResponse(task, res);
   }
 }

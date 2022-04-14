@@ -1,4 +1,4 @@
-import { UserServices as UserRepositoryServices } from "../infrastructure/services/userService";
+import { UserServices as UserDBServices } from "../infrastructure/services/userService";
 import { UserStore } from "../infrastructure/stores/userStore";
 import { EntityFactory } from "./entityFactory";
 
@@ -14,103 +14,43 @@ interface UserDomainServicesI {
 }
 
 export class UserDomainServices implements UserDomainServicesI {
+  //
   async createNewUser(payload) {
-    try {
-      const userEntity = EntityFactory.createUser(payload); // create new user entity trough static factory method
-      const newUserCreated = await userStore.add(userEntity);
-      return newUserCreated;
-      //
-    } catch (e) {
-      console.log(e);
-      return null;
-    }
+    const userEntity = EntityFactory.createUser(payload); // create new user entity through static factory method
+    if (!userEntity) throw new Error(`user entity could not be created`);
+    //
+    return await userStore.add(userEntity); // pass it to store and return store's result
   }
 
   async loginUser(email) {
-    try {
-      // find our required user
-      const user = await UserRepositoryServices.findUserbyEmail(email);
-      if (!user) return null;
-
-      const userFound = await UserRepositoryServices.login(email);
-      return userFound;
-      //
-    } catch (e) {
-      console.log(e);
-      return null;
-    }
+    if (await UserDBServices.findUserbyEmail(email))
+      // dont use fetch here as it will throw an unwanted error if user doesn't exist
+      return await UserDBServices.login(email);
+    // if user found then login, otherwise throw error
+    else throw new Error(`user having following email not found: ${email}`);
   }
 
   async logoutUser(userUUID) {
-    try {
-      const _user = await UserRepositoryServices.findUserbyUUID(userUUID);
-      if (!_user) return null;
-
-      const user = await UserRepositoryServices.logout(userUUID);
-      return user;
-      //
-    } catch (e) {
-      console.log(e);
-      return null;
-    }
+    if (await UserDBServices.findUserbyUUID(userUUID))
+      // dont use fetch here as it will throw an unwanted error if user doesn't exist
+      return await UserDBServices.logout(userUUID);
+    // if user found then logout, otherwise throw error
+    else throw new Error(`user having following uuid not found: ${userUUID}`);
   }
 
-  // find user by their UUID
   async findUserbyUUID(userUUID) {
-    try {
-      const _user = await userStore.fetchbyUUID(userUUID);
-      if (!_user) return null;
-      // this logic may later be moved to a higher layer of domain
-
-      return _user;
-    } catch (e) {
-      console.log(e);
-      return null;
-    }
+    return await userStore.fetchbyUUID(userUUID);
   }
 
-  // find user by their UUID
   async findUserbyEmail(email) {
-    try {
-      const _user = await userStore.fetch(email);
-      // if (!_user || !_user.token) return null;
-      if (!_user) return null;
-      // return null if user or its token is not found ... it means user has either logged out or deleted
-      // this logic may later be moved to a higher layer of domain
-
-      return _user;
-    } catch (e) {
-      console.log(e);
-      return null;
-    }
+    return await userStore.fetch(email);
   }
 
   async deleteUser(userUUID) {
-    try {
-      const _user = await userStore.remove(userUUID);
-
-      if (!_user) return null;
-      // this logic may later be moved to a higher layer of domain
-
-      return _user;
-      //
-    } catch (e) {
-      console.log(e);
-      return null;
-    }
+    return await userStore.remove(userUUID);
   }
 
   async updateUser(userUUID) {
-    try {
-      const _user = await userStore.update(userUUID);
-
-      if (!_user) return null;
-
-      return _user;
-      //
-    } catch (e) {
-      console.log(e);
-      return null;
-    }
+    return await userStore.update(userUUID);
   }
 }

@@ -3,12 +3,9 @@ import { ControllerService } from "../services/controller-service";
 const userApplicationService = new UserApplicationService();
 
 interface UserControllersI {
-  // createNewUser(req, res);
-  // loginUser(req, res);
   logoutUser(req, res);
   getUserDetails(req, res);
   deleteUser(req, res);
-  // updateUser(req, res);
   findOrCreateUser(req, res);
 }
 
@@ -18,54 +15,42 @@ interface UserControllersI {
 
 export class UserControllers implements UserControllersI {
   async findOrCreateUser(req, res) {
-    const payload = ControllerService.createPayloadForUser(req);
-
-    let user;
     try {
-      user = await userApplicationService.findOrCreateUser(payload);
+      const user = await userApplicationService.findOrCreateUser(req);
+      ControllerService.handleResponseForUser(user, res);
     } catch (e) {
-      res.status(400).send(e);
+      console.log(e);
+      return res.status(400).send(e.message);
     }
-
-    ControllerService.handleResponseForUser(user, res);
   }
 
   async logoutUser(req, res) {
-    const payload = ControllerService.createPayloadForUser(req);
-    let user;
     try {
-      user = await userApplicationService.logoutUser(payload);
+      const user = await userApplicationService.logoutUser(req);
+      ControllerService.handleResponseForUser(user, res);
     } catch (e) {
-      res.status(400).send(e);
+      console.log(e);
+      return res.status(400).send(e.message);
     }
-
-    ControllerService.handleResponseForUser(user, res);
   }
 
   async getUserDetails(req, res) {
-    const payload = ControllerService.createPayloadForUser(req);
-    let user;
-
     try {
-      // wait for user details
-      user = await userApplicationService.findUser(payload);
+      const user = await userApplicationService.findUser(req);
+      ControllerService.handleResponseForUser(user, res);
     } catch (e) {
-      res.status(400).send(e);
+      console.log(e);
+      return res.status(400).send(e.message);
     }
-
-    ControllerService.handleResponseForUser(user, res);
   }
 
   async deleteUser(req, res) {
-    const payload = ControllerService.createPayloadForUser(req);
-    let user;
-
     try {
-      user = await userApplicationService.deleteUser(payload);
+      const user = await userApplicationService.deleteUser(req);
+      ControllerService.handleResponseForUser(user, res);
     } catch (e) {
-      res.status(400).send(e);
+      console.log(e);
+      return res.status(400).send(e.message);
     }
-
-    ControllerService.handleResponseForUser(user, res);
   }
 }

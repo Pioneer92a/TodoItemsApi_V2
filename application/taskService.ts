@@ -1,4 +1,5 @@
 import { TaskDomainServices } from "../domain/taskDomainServices";
+import { ApplicationService } from "./Application-service";
 const taskDomainServices = new TaskDomainServices();
 
 interface TaskApplicationServiceI {
@@ -9,47 +10,54 @@ interface TaskApplicationServiceI {
 }
 
 export class TaskApplicationService implements TaskApplicationServiceI {
-  async createNewTask(payload) {
+  async createNewTask(req) {
+    // input validations
+    if (!req.body.name) throw new Error(`request body doesn't contain name`);
+    if (!req.body.userUUID)
+      throw new Error(`request body doesn't contain userUUID`);
+
+    const payload = ApplicationService.createPayloadForTask(req);
     return await taskDomainServices.createNewTask(payload);
   }
 
-  async deleteTask(payload) {
-    try {
-      const deletedTask = await taskDomainServices.deleteTask(payload);
-      return deletedTask;
-    } catch (e) {
-      console.log(e);
-      return null;
-    }
+  async deleteTask(req) {
+    // input validations
+    if (!req.params.id) throw new Error(`request body doesn't contain task ID`);
+    if (!req.body.userUUID)
+      throw new Error(`request body doesn't contain userUUID`);
+
+    const payload = ApplicationService.createPayloadForTask(req);
+    return await taskDomainServices.deleteTask(payload);
   }
 
-  async getTask(payload) {
-    try {
-      const getTask = await taskDomainServices.getTask(payload);
-      return getTask;
-    } catch (e) {
-      console.log(e);
-      return null;
-    }
+  async getTask(req) {
+    // input validations
+    if (!req.params.id) throw new Error(`request body doesn't contain task ID`);
+    if (!req.body.userUUID)
+      throw new Error(`request body doesn't contain userUUID`);
+
+    const payload = ApplicationService.createPayloadForTask(req);
+    return await taskDomainServices.getTask(payload);
   }
 
-  async getAllTasks(payload) {
-    try {
-      const getTask = await taskDomainServices.getAllTasks(payload);
-      return getTask;
-    } catch (e) {
-      console.log(e);
-      return null;
-    }
+  async getAllTasks(req) {
+    // input validations
+    if (!req.params.page)
+      throw new Error(`request body doesn't contain page info`);
+    if (!req.body.userUUID)
+      throw new Error(`request body doesn't contain userUUID`);
+
+    const payload = ApplicationService.createPayloadForTask(req);
+    return await taskDomainServices.getAllTasks(payload);
   }
 
-  async updateTask(payload) {
-    try {
-      const updateTask = await taskDomainServices.updateTask(payload);
-      return updateTask;
-    } catch (e) {
-      console.log(e);
-      return null;
-    }
+  async updateTask(req) {
+    // input validations
+    if (!req.params.id) throw new Error(`request body doesn't contain task ID`);
+    if (!req.body.userUUID)
+      throw new Error(`request body doesn't contain userUUID`);
+
+    const payload = ApplicationService.createPayloadForTask(req);
+    return await taskDomainServices.updateTask(payload);
   }
 }

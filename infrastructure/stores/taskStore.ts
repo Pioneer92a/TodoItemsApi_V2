@@ -15,38 +15,37 @@ interface TaskStoreI {
  */
 export class TaskStore implements TaskStoreI {
   async add(taskEntity) {
-    const newTaskCreated = await taskRepository.createNewTask(taskEntity);
+    const task = await taskRepository.createNewTask(taskEntity);
     //
-    if (!newTaskCreated) return null;
-    else return TaskServices.createTaskEntity(newTaskCreated);
+    if (task) return TaskServices.createTaskEntity(task);
+    else throw new Error(`task could not be added`);
   }
 
   async remove(taskID) {
-    const deletedTask = await taskRepository.deleteTask(taskID);
+    const task = await taskRepository.deleteTask(taskID);
     //
-    if (!deletedTask) return null;
-    else return TaskServices.createTaskEntity(deletedTask);
+    if (task) return TaskServices.createTaskEntity(task);
+    else throw new Error(`task could not be removed`);
   }
 
   async update(taskId) {
-    const updatedTask = await taskRepository.updateTask(taskId);
+    const task = await taskRepository.updateTask(taskId);
     //
-    if (!updatedTask) return null;
-    else return TaskServices.createTaskEntity(updatedTask);
+    if (task) return TaskServices.createTaskEntity(task);
+    else throw new Error(`task could not be updated`);
   }
 
   async fetch(taskId) {
-    const getTask = await taskRepository.getTask(taskId);
+    const task = await taskRepository.getTask(taskId);
     //
-    if (!getTask) return null;
-    else return TaskServices.createTaskEntity(getTask);
+    if (task) return TaskServices.createTaskEntity(task);
+    else throw new Error(`task could not be found`);
   }
 
   async fetchAll(page) {
-    const getAllTasks = await taskRepository.getAllTasks(page);
+    const task = await taskRepository.getAllTasks(page);
     //
-    if (!getAllTasks) return null;
-    // else return TaskServices.createTaskEntity(getTask);
-    else return getAllTasks;
+    if (task) return task;
+    else throw new Error(`tasks not found`);
   }
 }

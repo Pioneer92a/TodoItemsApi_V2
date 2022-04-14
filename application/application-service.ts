@@ -1,8 +1,8 @@
-export class ControllerService {
+export class ApplicationService {
   /**
    * creates two different payloads FOR TASKS based on req
    */
-  static createPayload(req) {
+  static createPayloadForTask(req) {
     // create a payload for 'createNewTask'
     if (req.body.name) return { name: req.body.name, uuid: req.body.userUUID };
     // create a payload for pagination getAll
@@ -31,13 +31,12 @@ export class ControllerService {
    * creates two different payloads FOR USERS based on req
    */
   static createPayloadForUser(req) {
-    if (!req.params.uuid) {
-      // create a payload for 'createNewTask'
-      const payload = {
+    if (req.user) {
+      // create a payload for 'findOrCreateUser'
+      return {
         name: req.user.name.givenName,
         email: req.user.emails[0].value,
       };
-      return payload;
       //
     } else {
       // create a payload for others
