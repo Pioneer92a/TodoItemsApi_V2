@@ -3,8 +3,8 @@ import * as cors from "cors";
 import * as bodyParser from "body-parser";
 const cookieSession = require("cookie-session");
 
-import { UserControllers } from "../controllers/user";
-const userControllers = new UserControllers()
+import { UserController } from "../controllers/userController";
+const userControllers = new UserController();
 import { auth2 as isLoggedInCb } from "../middleware/auth";
 
 const app = express();
@@ -16,21 +16,20 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.get("/", (req, res) => {
-    res.send("you are not logged in");
-  });
-  
-  app.get("/failed", (req, res) => {
-    res.send("you failed to login");
-  });
+  res.send("you are not logged in");
+});
 
-  app.use(
-    cookieSession({
-      name: "todo-session",
-      keys: ["key1", "key2"],
-    })
-  );
+app.get("/failed", (req, res) => {
+  res.send("you failed to login");
+});
+
+app.use(
+  cookieSession({
+    name: "todo-session",
+    keys: ["key1", "key2"],
+  })
+);
 
 //   app.get("/good", isLoggedInCb, userControllers.findOrCreateUser); // somehow it needs to be in index file to work
 
-
-export {app}
+export { app };

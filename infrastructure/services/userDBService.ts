@@ -1,7 +1,7 @@
 import { UserRepository } from "../db/repository/userRepository";
 const userRepository = new UserRepository();
 
-export class UserServices {
+export class UserDBServices {
   /**
    * takes in the task body and returns task entity
    */
@@ -30,6 +30,6 @@ export class UserServices {
     const user = await userRepository.logout(userUUID);
     //
     if (!user) return null;
-    else return UserServices.createUserEntity(user);
+    else return UserDBServices.createUserEntity(user);
   }
 }

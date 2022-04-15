@@ -1,8 +1,8 @@
-import { TaskApplicationService } from "../../application/taskService";
+import { TaskApplicationService } from "../../application/taskApplicationService";
 import { ControllerService } from "../services/controller-service";
 const taskApplicationService = new TaskApplicationService();
 
-interface TaskControllersI {
+interface TaskControllerI {
   // BASIC CRUD OPERATIONS
   createNewTask(req, res);
   getTask(req, res);
@@ -14,7 +14,7 @@ interface TaskControllersI {
 // create payload. pass it on to application layer.
 // handle the response later on
 
-export class TaskControllers implements TaskControllersI {
+export class TaskController implements TaskControllerI {
   async createNewTask(req, res) {
     try {
       const task = await taskApplicationService.createNewTask(req);

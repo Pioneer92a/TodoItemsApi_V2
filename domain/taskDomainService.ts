@@ -1,4 +1,4 @@
-import { UserServices as UserDBServices } from "../infrastructure/services/userService";
+import { UserDBServices } from "../infrastructure/services/userDBService";
 import { TaskStore } from "../infrastructure/stores/taskStore";
 import { EntityFactory } from "./entityFactory";
 
@@ -7,14 +7,14 @@ const taskStore = new TaskStore();
 /**
  * basic crud operations
  */
-interface TaskDomainServicesI {
+interface TaskDomainServiceI {
   createNewTask(payload);
   getTask(payload);
   updateTask(payload);
   deleteTask(taskID);
 }
 
-export class TaskDomainServices implements TaskDomainServicesI {
+export class TaskDomainService implements TaskDomainServiceI {
   async createNewTask(payload) {
     // input validations
     // if (!payload)
@@ -23,7 +23,7 @@ export class TaskDomainServices implements TaskDomainServicesI {
     //   throw new Error(`payload not proper at ${TaskDomainServices.name}`);
 
     const _user = await UserDBServices.findUserbyUUID(payload.uuid.toString());
-    //
+    // Business logic
     if (!_user) throw new Error("user with given uuid not found");
     if (!_user.isLoggedIn) throw new Error("user with given not logged in");
 

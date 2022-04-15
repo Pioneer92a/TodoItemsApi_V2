@@ -1,7 +1,7 @@
-import { UserDomainServices } from "../domain/userDomainServices";
-import { ApplicationService } from "./Application-service";
+import { UserDomainService } from "../domain/userDomainService";
+// import { ApplicationService } from "./Application-service";
 
-const userDomainServices = new UserDomainServices();
+const userDomainServices = new UserDomainService();
 
 interface UserApplicationServiceI {
   createNewUser(payload);
@@ -23,6 +23,8 @@ export class UserApplicationService implements UserApplicationServiceI {
     if (!req.user) throw new Error(`request body doesn't contain user info`);
 
     // const payload = ApplicationService.createPayloadForUser(req);
+    //^ payload should be created by this but there is some error
+
     const payload = {
       name: req.user.name.givenName,
       email: req.user.emails[0].value,

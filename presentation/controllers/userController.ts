@@ -1,8 +1,8 @@
-import { UserApplicationService } from "../../application/userService";
+import { UserApplicationService } from "../../application/userApplicationService";
 import { ControllerService } from "../services/controller-service";
 const userApplicationService = new UserApplicationService();
 
-interface UserControllersI {
+interface UserControllerI {
   logoutUser(req, res);
   getUserDetails(req, res);
   deleteUser(req, res);
@@ -13,7 +13,7 @@ interface UserControllersI {
 // create payload. pass it on to application layer.
 // handle the response later on
 
-export class UserControllers implements UserControllersI {
+export class UserController implements UserControllerI {
   async findOrCreateUser(req, res) {
     try {
       const user = await userApplicationService.findOrCreateUser(req);

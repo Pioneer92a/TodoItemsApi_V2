@@ -1,6 +1,6 @@
-import { TaskDomainServices } from "../domain/taskDomainServices";
+import { TaskDomainService } from "../domain/taskDomainService";
 import { ApplicationService } from "./Application-service";
-const taskDomainServices = new TaskDomainServices();
+const taskDomainServices = new TaskDomainService();
 
 interface TaskApplicationServiceI {
   createNewTask(newTask);

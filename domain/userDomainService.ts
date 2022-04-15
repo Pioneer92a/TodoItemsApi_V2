@@ -1,10 +1,10 @@
-import { UserServices as UserDBServices } from "../infrastructure/services/userService";
+import { UserDBServices } from "../infrastructure/services/userDBService";
 import { UserStore } from "../infrastructure/stores/userStore";
 import { EntityFactory } from "./entityFactory";
 
 const userStore = new UserStore();
 
-interface UserDomainServicesI {
+interface UserDomainServiceI {
   createNewUser(payload);
   loginUser(payload);
   logoutUser(userUUID);
@@ -13,7 +13,7 @@ interface UserDomainServicesI {
   updateUser(userUUID);
 }
 
-export class UserDomainServices implements UserDomainServicesI {
+export class UserDomainService implements UserDomainServiceI {
   //
   async createNewUser(payload) {
     const userEntity = EntityFactory.createUser(payload); // create new user entity through static factory method

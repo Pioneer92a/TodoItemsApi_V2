@@ -3,8 +3,8 @@ import * as express from "express";
 const router = express.Router();
 
 import { auth } from "../middleware/auth";
-import { TaskControllers } from "../controllers/task";
-const taskControllers = new TaskControllers();
+import { TaskController } from "../controllers/taskController";
+const taskControllers = new TaskController();
 
 router.get("/test", () => {
   console.log("hello");

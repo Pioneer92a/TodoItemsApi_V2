@@ -1,9 +1,9 @@
 import * as express from "express";
-import { UserControllers } from "../controllers/user";
+import { UserController } from "../controllers/userController";
 import { auth } from "../middleware/auth";
 
 const router = express.Router();
-const userControllers = new UserControllers();
+const userControllers = new UserController();
 
 // route for logging-out a user
 router.post("/logout/:uuid", auth, userControllers.logoutUser);

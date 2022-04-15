@@ -1,4 +1,4 @@
-export class TaskServices {
+export class TaskDBServices {
   /**
    * takes in the task body and returns task entity
    */
