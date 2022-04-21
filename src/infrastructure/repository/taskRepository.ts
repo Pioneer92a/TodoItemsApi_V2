@@ -1,13 +1,7 @@
 import { PrismaClient, Task } from "@prisma/client";
-import { Task_Pagination_Limit } from "../../config";
+import { Task_Pagination_Limit } from "../config";
+import { TaskRepositoryI } from "./TaskRepositoryI";
 const prisma = new PrismaClient();
-
-interface TaskRepositoryI {
-  createNewTask(newTask);
-  deleteTask(taskID);
-  getTask(taskID);
-  updateTask(taskID);
-}
 
 /**
  * interacts with the database directly

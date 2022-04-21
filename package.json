@@ -16,6 +16,8 @@
     "passport-google-oauth": "^2.0.0",
     "passport-google-oauth20": "^2.0.0",
     "query-string": "^7.1.1",
+    "reflect-metadata": "^0.1.13",
+    "tsyringe": "^4.6.0",
     "uuid": "^8.3.2"
   },
   "devDependencies": {
@@ -28,7 +30,6 @@
     "@typescript-eslint/eslint-plugin": "^5.16.0",
     "@typescript-eslint/parser": "^5.16.0",
     "eslint": "^8.11.0",
-    "nodemo": "^1.0.0",
     "nodemon": "^2.0.15",
     "prisma": "^3.11.1",
     "ts-node": "^10.7.0",
@@ -38,12 +39,12 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.ts",
+    "start": "nodemon src/index.ts",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint . --ext .ts"
   },
   "prisma": {
-    "schema": "./infrastructure/db/prisma/schema.prisma"
+    "schema": ".src/infrastructure/db/prisma/schema.prisma"
   },
   "author": "",
   "license": "ISC",

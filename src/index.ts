@@ -21,10 +21,10 @@ app.get(
 //
 // JUST LOGS OUT THE CURRENT SESSION
 app.get("/logout", (req, res) => {
-  console.log("isAuthenticated?: ", req.isAuthenticated());
-  req.session = null; // destroy the session
-  req.logout(); // logout the user
+  req.session = null; // most probably a reduntant step
+  req.logout(); // remover the req.user property and clear the login session
   res.redirect("/"); // redirect to the homepage
+  // note: The session still keeps the cookies which doesn't properly destroy the session
 });
 //
 // (2) REDIRECT LINK

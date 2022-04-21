@@ -1,12 +1,6 @@
 import { PrismaClient, User } from "@prisma/client";
 const prisma = new PrismaClient();
-
-interface UserRepositoryI {
-  createNewUser(newUser);
-  findUserbyUUID(userID);
-  findUserbyEmail(userEmail);
-  deleteUser(userID);
-}
+import { UserRepositoryI } from "./UserRepositoryI";
 
 /**
  * interacts with the database directly

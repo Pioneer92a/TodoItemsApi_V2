@@ -1,15 +1,11 @@
-import { TaskDomainService } from "../domain/taskDomainService";
+import "reflect-metadata";
+import { TaskDomainService } from "../domain/services/taskDomainService";
 import { ApplicationService } from "./Application-service";
-const taskDomainServices = new TaskDomainService();
+import { container } from "../infrastructure/container";
 
-interface TaskApplicationServiceI {
-  createNewTask(newTask);
-  deleteTask(taskID);
-  getTask(payload);
-  updateTask(payload);
-}
+const taskDomainServices = container.resolve(TaskDomainService);
 
-export class TaskApplicationService implements TaskApplicationServiceI {
+export class TaskApplicationService {
   async createNewTask(req) {
     // input validations
     if (!req.body.name) throw new Error(`request body doesn't contain name`);

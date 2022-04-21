@@ -1,7 +1,7 @@
-import { UserDomainService } from "../domain/userDomainService";
-// import { ApplicationService } from "./Application-service";
+import { UserDomainService } from "../domain/services/userDomainService";
+import { container } from "../infrastructure/container";
 
-const userDomainServices = new UserDomainService();
+const userDomainServices = container.resolve(UserDomainService);
 
 interface UserApplicationServiceI {
   createNewUser(payload);

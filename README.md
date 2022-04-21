@@ -1,3 +1,8 @@
+Notes:
+
+1. Prisma automatically makes a lazy connection with the data source upon first query.
+   No connect command required
+
 User Routes cleared:
 
 1. post("/logout/:uuid")
