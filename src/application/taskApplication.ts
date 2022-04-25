@@ -1,7 +1,7 @@
 import "reflect-metadata";
 import { autoInjectable, inject } from "tsyringe";
 import { task } from "../domain/model/task";
-import { TaskDomainI } from "../infrastructure/interfaces/domainInterfaces/taskDomainI";
+import { TaskDomainI } from "./domainInterfaces/taskDomainI";
 import {
   createNewTaskDTO,
   getAllTasksDTO,

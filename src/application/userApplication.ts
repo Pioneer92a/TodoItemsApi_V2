@@ -1,7 +1,7 @@
 import "reflect-metadata";
 import { autoInjectable, inject } from "tsyringe";
 import { user } from "../domain/model/user";
-import { UserDomainI } from "../infrastructure/interfaces/domainInterfaces/userDomainI";
+import { UserDomainI } from "./domainInterfaces/userDomainI";
 import { findOrCreateUserDTO, UserDTOGenPurpose } from "./DTOs/userDTO";
 
 // const userDomain = container.resolve(UserDomain);

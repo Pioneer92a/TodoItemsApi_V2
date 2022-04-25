@@ -1,6 +1,6 @@
 import { PrismaClient, User } from "@prisma/client";
 const prisma = new PrismaClient();
-import { UserRepositoryI } from "../interfaces/repoInterface/UserRepositoryI";
+import { UserRepositoryI } from "../../domain/repoInterface/UserRepositoryI";
 
 /**
  * interacts with the database directly

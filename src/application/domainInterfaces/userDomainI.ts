@@ -1,4 +1,4 @@
-import { user } from "../../../domain/model/user";
+import { user } from "../../domain/model/user";
 
 export interface UserDomainI {
   createNewUser(payload): Promise<user>;

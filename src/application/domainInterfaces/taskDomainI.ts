@@ -1,4 +1,4 @@
-import { task } from "../../../domain/model/task";
+import { task } from "../../domain/model/task";
 
 export interface TaskDomainI {
   userRepository;

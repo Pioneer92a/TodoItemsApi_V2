@@ -1,7 +1,7 @@
 import { autoInjectable, inject } from "tsyringe";
-import { TaskDomainI } from "../../infrastructure/interfaces/domainInterfaces/taskDomainI";
-import { TaskRepositoryI } from "../../infrastructure/interfaces/repoInterface/TaskRepositoryI";
-import { UserRepositoryI } from "../../infrastructure/interfaces/repoInterface/UserRepositoryI";
+import { TaskDomainI } from "../../application/domainInterfaces/taskDomainI";
+import { TaskRepositoryI } from "../repoInterface/TaskRepositoryI";
+import { UserRepositoryI } from "../repoInterface/UserRepositoryI";
 import { task } from "../model/task";
 
 @autoInjectable()

@@ -1,6 +1,6 @@
 import { autoInjectable, inject } from "tsyringe";
-import { UserDomainI } from "../../infrastructure/interfaces/domainInterfaces/userDomainI";
-import { UserRepositoryI } from "../../infrastructure/interfaces/repoInterface/UserRepositoryI";
+import { UserDomainI } from "../../application/domainInterfaces/userDomainI";
+import { UserRepositoryI } from "../repoInterface/UserRepositoryI";
 import { user } from "../model/user";
 
 @autoInjectable()

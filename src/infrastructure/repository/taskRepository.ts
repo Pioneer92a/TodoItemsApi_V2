@@ -1,6 +1,6 @@
 import { PrismaClient, Task } from "@prisma/client";
 import { Task_Pagination_Limit } from "../config";
-import { TaskRepositoryI } from "../interfaces/repoInterface/TaskRepositoryI";
+import { TaskRepositoryI } from "../../domain/repoInterface/TaskRepositoryI";
 const prisma = new PrismaClient();
 
 /**
