@@ -1,5 +1,3 @@
-import { v1 as uuidv1 } from "uuid";
-
 /**
  * task entity
  */
@@ -10,7 +8,7 @@ export class task {
 
   constructor(newTask) {
     this.name = newTask.name;
-    this.userUUID = newTask.uuid;
-    this.uuid = uuidv1(); // generate uuid
+    this.uuid = newTask.uuid;
+    this.userUUID = newTask.userUUID;
   }
 }

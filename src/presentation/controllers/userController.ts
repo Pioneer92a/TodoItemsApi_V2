@@ -1,6 +1,8 @@
-import { UserApplicationService } from "../../application/userApplicationService";
+import { UserApplicationService } from "../../application/userApplication";
 import { ControllerService } from "../services/controller-service";
-const userApplicationService = new UserApplicationService();
+import { container } from "../../infrastructure/container";
+
+const userApplicationService = container.resolve(UserApplicationService);
 
 interface UserControllerI {
   logoutUser(req, res);
@@ -17,40 +19,40 @@ export class UserController implements UserControllerI {
   async findOrCreateUser(req, res) {
     try {
       const user = await userApplicationService.findOrCreateUser(req);
-      ControllerService.handleResponseForUser(user, res);
+      ControllerService.handleUserResponse(user, res);
     } catch (e) {
       console.log(e);
-      return res.status(400).send(e.message);
+      ControllerService.handleError(e, res);
     }
   }
 
   async logoutUser(req, res) {
     try {
       const user = await userApplicationService.logoutUser(req);
-      ControllerService.handleResponseForUser(user, res);
+      ControllerService.handleUserResponse(user, res);
     } catch (e) {
       console.log(e);
-      return res.status(400).send(e.message);
+      ControllerService.handleError(e, res);
     }
   }
 
   async getUserDetails(req, res) {
     try {
       const user = await userApplicationService.findUser(req);
-      ControllerService.handleResponseForUser(user, res);
+      ControllerService.handleUserResponse(user, res);
     } catch (e) {
       console.log(e);
-      return res.status(400).send(e.message);
+      ControllerService.handleError(e, res);
     }
   }
 
   async deleteUser(req, res) {
     try {
       const user = await userApplicationService.deleteUser(req);
-      ControllerService.handleResponseForUser(user, res);
+      ControllerService.handleUserResponse(user, res);
     } catch (e) {
       console.log(e);
-      return res.status(400).send(e.message);
+      ControllerService.handleError(e, res);
     }
   }
 }

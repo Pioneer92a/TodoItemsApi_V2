@@ -3,10 +3,6 @@ import * as cors from "cors";
 import * as bodyParser from "body-parser";
 const cookieSession = require("cookie-session");
 
-import { UserController } from "../controllers/userController";
-const userControllers = new UserController();
-import { auth2 as isLoggedInCb } from "../middleware/auth";
-
 const app = express();
 
 app.use(express.json());

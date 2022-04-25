@@ -1,6 +1,6 @@
 import { PrismaClient, User } from "@prisma/client";
 const prisma = new PrismaClient();
-import { UserRepositoryI } from "./UserRepositoryI";
+import { UserRepositoryI } from "../interfaces/repoInterface/UserRepositoryI";
 
 /**
  * interacts with the database directly
@@ -53,6 +53,21 @@ export class UserRepository implements UserRepositoryI {
         },
       });
       return newUserCreated;
+      //
+    } catch (e) {
+      console.log(e);
+      return null;
+    }
+  }
+
+  async findUserbyId(userId): Promise<User> {
+    try {
+      const userFound = await prisma.user.findUnique({
+        where: {
+          id: userId,
+        },
+      });
+      return userFound;
       //
     } catch (e) {
       console.log(e);
