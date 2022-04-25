@@ -1,3 +1,8 @@
+Notes:
+
+1. Prisma automatically makes a lazy connection with the data source upon first query.
+   No connect command required
+
 User Routes cleared:
 
 1. post("/logout/:uuid")
@@ -31,6 +36,9 @@ c. post('/task/update/:id') -> update a task
 body: userUUID
 
 d. delete('/task/:id') -> delete a task
+body: userUUID
+
+e. "/task/getAll/:page" -> get tasks of a user starting from page. Limit is defined in .env file. Offset pagination is implemented here
 body: userUUID
 
 TODO: middlewares need to be implemented in tasks
