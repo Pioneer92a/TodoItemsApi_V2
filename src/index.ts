@@ -1,10 +1,10 @@
-import { router as taskRouter } from "./presentation/routers/taskRouter"; // import tasks router
-import { router as userRouter } from "./presentation/routers/userRouter"; // import tasks router
-import { passport } from "./presentation/services/passport-service";
-import { app } from "./presentation/services/server-setting";
-import { UserController } from "./presentation/controllers/userController";
+import { router as taskRouter } from "./Presentation/Routers/TaskRouter"; // import tasks router
+import { router as userRouter } from "./Presentation/Routers/UserRouter"; // import tasks router
+import { passport } from "./Presentation/Services/PassportService";
+import { app } from "./Presentation/Services/ServerSetting";
+import { UserController } from "./Presentation/Controllers/UserController";
 const userControllers = new UserController();
-import { auth2 as isLoggedInCb } from "./presentation/middleware/auth";
+import { auth2 as isLoggedInCb } from "./Presentation/Middleware/Auth";
 
 app.use(passport.initialize());
 app.use(passport.session());

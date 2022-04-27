@@ -1,7 +1,7 @@
 /**
  * user entity
  */
-export class user {
+export class UserEntity {
   name: string;
   email: string;
   uuid: string;

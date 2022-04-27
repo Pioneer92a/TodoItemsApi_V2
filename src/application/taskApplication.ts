@@ -1,45 +1,55 @@
 import "reflect-metadata";
-import { autoInjectable, inject } from "tsyringe";
-import { task } from "../domain/model/task";
-import { TaskDomainI } from "./domainInterfaces/taskDomainI";
+import { autoInjectable } from "tsyringe";
+import { TaskEntity } from "../Domain/Entity/Task";
+import { TaskDomain } from "../Domain/TaskDomain";
+import { UserDomain } from "../Domain/UserDomain";
+import { validateUser, validateTask } from "./ApplicationServices";
 import {
   createNewTaskDTO,
   getAllTasksDTO,
   taskDTOforRUD,
-} from "./DTOs/taskDTO";
+} from "./DTOs/TaskDTO";
 
 @autoInjectable()
 export class TaskApplicationService {
-  taskDomain: TaskDomainI;
-  constructor(@inject("TaskDomainI") taskDomain: TaskDomainI) {
+  taskDomain: TaskDomain;
+  userDomain: UserDomain;
+  constructor(taskDomain: TaskDomain, userDomain: UserDomain) {
     this.taskDomain = taskDomain;
+    this.userDomain = userDomain;
   }
   /**
-   * create a new task
+   * create a new Task
    */
-  async createNewTask(req): Promise<task> {
-    const taskEntity = createNewTaskDTO(req);
-
-    return await this.taskDomain.createNewTask(taskEntity);
+  async createNewTask(payload): Promise<TaskEntity> {
+    const taskEntity = createNewTaskDTO(payload); // create TaskEntity if possible
+    await validateUser(taskEntity.userUUID, this.userDomain); // validate if user exists and is logged in
+    return await this.taskDomain.createNewTask(taskEntity); // send the entity to domain and return the response
   }
 
-  async deleteTask(req): Promise<task> {
-    const deleteTask = taskDTOforRUD(req);
-    return await this.taskDomain.deleteTask(deleteTask);
+  async deleteTask(payload): Promise<TaskEntity> {
+    const deleteTask = taskDTOforRUD(payload);
+    await validateUser(payload.userUUID, this.userDomain);
+    await validateTask(deleteTask, this.taskDomain);
+    return await this.taskDomain.deleteTask(parseInt(deleteTask.taskId));
   }
 
-  async getTask(req): Promise<task> {
-    const getTask = taskDTOforRUD(req);
-    return await this.taskDomain.getTask(getTask);
+  async getTask(payload): Promise<TaskEntity> {
+    const getTask = taskDTOforRUD(payload);
+    await validateUser(payload.userUUID, this.userDomain);
+    return await this.taskDomain.getTask(parseInt(getTask.taskId));
   }
 
-  async getAllTasks(req): Promise<task[]> {
-    const getAllTasks = getAllTasksDTO(req);
-    return await this.taskDomain.getAllTasks(getAllTasks);
+  async updateTask(payload): Promise<TaskEntity> {
+    const updateTask = taskDTOforRUD(payload);
+    await validateUser(payload.userUUID, this.userDomain);
+    await validateTask(updateTask, this.taskDomain);
+    return await this.taskDomain.updateTask(parseInt(updateTask.taskId));
   }
 
-  async updateTask(req): Promise<task> {
-    const updateTask = taskDTOforRUD(req);
-    return await this.taskDomain.updateTask(updateTask);
+  async getAllTasks(payload): Promise<TaskEntity[]> {
+    const getAllTasks = getAllTasksDTO(payload);
+    await validateUser(payload.userUUID, this.userDomain);
+    return await this.taskDomain.getAllTasks(parseInt(getAllTasks.page));
   }
 }

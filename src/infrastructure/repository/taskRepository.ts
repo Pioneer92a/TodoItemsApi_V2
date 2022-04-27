@@ -1,13 +1,14 @@
 import { PrismaClient, Task } from "@prisma/client";
 import { Task_Pagination_Limit } from "../config";
-import { TaskRepositoryI } from "../../domain/repoInterface/TaskRepositoryI";
+import { TaskRepositoryI } from "../../Domain/RepoInterface/TaskRepositoryI";
+import { TaskEntity } from "../../Domain/Entity/Task";
 const prisma = new PrismaClient();
 
 /**
  * interacts with the database directly
  */
 export class TaskRepository implements TaskRepositoryI {
-  async createNewTask(newTask): Promise<Task> {
+  async createNewTask(newTask: TaskEntity): Promise<Task> {
     try {
       const newTaskCreated = await prisma.task.create({
         data: {
@@ -39,11 +40,11 @@ export class TaskRepository implements TaskRepositoryI {
     }
   }
 
-  async deleteTask(taskID): Promise<Task> {
+  async deleteTask(taskId: number): Promise<Task> {
     try {
       const deletedTask = await prisma.task.delete({
         where: {
-          id: parseInt(taskID),
+          id: taskId,
         },
       });
       return deletedTask; // return task
@@ -53,12 +54,12 @@ export class TaskRepository implements TaskRepositoryI {
     }
   }
 
-  async getTask(taskID): Promise<Task> {
+  async getTask(taskId: number): Promise<Task> {
     try {
       // get The task
       const getTask = await prisma.task.findUnique({
         where: {
-          id: parseInt(taskID),
+          id: taskId,
         },
       });
       return getTask; // return task
@@ -68,12 +69,12 @@ export class TaskRepository implements TaskRepositoryI {
     }
   }
 
-  async updateTask(taskID): Promise<Task> {
+  async updateTask(taskId: number): Promise<Task> {
     try {
       // update The task
       const updateTask = await prisma.task.update({
         where: {
-          id: parseInt(taskID),
+          id: taskId,
         },
         data: {
           name: "name changed",
@@ -86,10 +87,10 @@ export class TaskRepository implements TaskRepositoryI {
     }
   }
 
-  async getAllTasks(page): Promise<Task[]> {
+  async getAllTasks(page: number): Promise<Task[]> {
     // get The task
     return await prisma.task.findMany({
-      skip: parseInt(page) - 1, // start from the parameter page by skipping page-1
+      skip: page - 1, // start from the parameter page by skipping page-1
       take: parseInt(Task_Pagination_Limit), // limit
     });
   }

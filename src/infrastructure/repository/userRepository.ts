@@ -1,16 +1,17 @@
 import { PrismaClient, User } from "@prisma/client";
+import { UserEntity } from "../../Domain/Entity/User";
 const prisma = new PrismaClient();
-import { UserRepositoryI } from "../../domain/repoInterface/UserRepositoryI";
+import { UserRepositoryI } from "../../Domain/RepoInterface/UserRepositoryI";
 
 /**
  * interacts with the database directly
  */
 export class UserRepository implements UserRepositoryI {
-  async logout(payload): Promise<User> {
+  async logout(userUUID: string): Promise<User> {
     try {
       const updatedUser = await prisma.user.update({
         where: {
-          uuid: payload,
+          uuid: userUUID,
         },
         data: {
           isLoggedIn: false,
@@ -24,11 +25,11 @@ export class UserRepository implements UserRepositoryI {
     }
   }
 
-  async login(payload): Promise<User> {
+  async login(userEmail: string): Promise<User> {
     try {
       const updatedUser = await prisma.user.update({
         where: {
-          email: payload,
+          email: userEmail,
         },
         data: {
           isLoggedIn: true,
@@ -42,7 +43,7 @@ export class UserRepository implements UserRepositoryI {
     }
   }
 
-  async createNewUser(newUser): Promise<User> {
+  async createNewUser(newUser: UserEntity): Promise<User> {
     try {
       const newUserCreated = await prisma.user.create({
         data: {
@@ -60,7 +61,7 @@ export class UserRepository implements UserRepositoryI {
     }
   }
 
-  async findUserbyId(userId): Promise<User> {
+  async findUserbyId(userId: number): Promise<User> {
     try {
       const userFound = await prisma.user.findUnique({
         where: {
@@ -75,7 +76,7 @@ export class UserRepository implements UserRepositoryI {
     }
   }
 
-  async findUserbyUUID(userUUID): Promise<User> {
+  async findUserbyUUID(userUUID: string): Promise<User> {
     try {
       const userFound = await prisma.user.findUnique({
         where: {
@@ -90,7 +91,7 @@ export class UserRepository implements UserRepositoryI {
     }
   }
 
-  async findUserbyEmail(userEmail): Promise<User> {
+  async findUserbyEmail(userEmail: string): Promise<User> {
     try {
       const userFound = await prisma.user.findUnique({
         where: {
@@ -105,12 +106,12 @@ export class UserRepository implements UserRepositoryI {
     }
   }
 
-  async deleteUser(userId): Promise<User> {
+  async deleteUser(userUUID: string): Promise<User> {
     try {
       // find the user first
       const userToDelete = await prisma.user.findUnique({
         where: {
-          uuid: userId,
+          uuid: userUUID,
         },
       });
       // return if user doesn't exist
@@ -126,7 +127,7 @@ export class UserRepository implements UserRepositoryI {
       // delete the user
       const deleteUser = prisma.user.delete({
         where: {
-          uuid: userId,
+          uuid: userUUID,
         },
       });
 
@@ -141,11 +142,11 @@ export class UserRepository implements UserRepositoryI {
     }
   }
 
-  async updateUser(userId): Promise<User> {
+  async updateUser(userUUID: string): Promise<User> {
     try {
       const updatedUser = await prisma.user.update({
         where: {
-          uuid: userId,
+          uuid: userUUID,
         },
         data: {
           name: "name changed",

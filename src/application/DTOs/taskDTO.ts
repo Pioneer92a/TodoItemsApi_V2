@@ -1,26 +1,15 @@
 import { v1 as uuidv1 } from "uuid";
-import { EntityFactory } from "../entityFactory";
+import { EntityFactory } from "../EntityFactory";
 
-function checkReqParamId(req) {
-  if (!req.params.id) throw new Error(`request body doesn't contain task ID`);
-}
-
-function checkReqBodyName(req) {
-  if (!req.body.name) throw new Error(`request body doesn't contain name`);
-}
-
-function checkReqParamPage(req) {
-  if (!req.params.page) throw new Error(`request body doesn't contain page`);
-}
 /**
  * check if a task Entity can be made. Return the task entity
  */
-export function createNewTaskDTO(req) {
-  checkReqBodyName(req);
+export function createNewTaskDTO(payload) {
+  checkReqBodyName(payload);
   //
   return EntityFactory.createTask({
-    name: req.body.name,
-    userUUID: req.body.userUUID,
+    name: payload.name,
+    userUUID: payload.userUUID,
     uuid: uuidv1(),
   });
 }
@@ -28,14 +17,25 @@ export function createNewTaskDTO(req) {
 /**
  * DTO for RUD: Read, Update, Delete
  */
-export function taskDTOforRUD(req) {
-  checkReqParamId(req);
-  //
-  return { taskId: req.params.id, userUUID: req.body.userUUID };
+export function taskDTOforRUD(payload) {
+  checkReqParamId(payload);
+  return payload;
 }
 
-export function getAllTasksDTO(req) {
-  checkReqParamPage(req);
+export function getAllTasksDTO(payload) {
+  checkReqParamPage(payload);
   //
-  return { page: req.params.page, userUUID: req.body.userUUID };
+  return payload;
+}
+
+function checkReqParamId(payload) {
+  if (!payload.taskId) throw new Error(`payload doesn't contain task ID`);
+}
+
+function checkReqBodyName(payload) {
+  if (!payload.name) throw new Error(`payload doesn't contain name`);
+}
+
+function checkReqParamPage(payload) {
+  if (!payload.page) throw new Error(`payload doesn't contain page`);
 }

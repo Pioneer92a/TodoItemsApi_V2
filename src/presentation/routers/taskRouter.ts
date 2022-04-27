@@ -2,8 +2,8 @@ import * as express from "express";
 
 const router = express.Router();
 
-import { taskAuth } from "../middleware/auth";
-import { TaskController } from "../controllers/taskController";
+import { taskAuth } from "../Middleware/Auth";
+import { TaskController } from "../Controllers/TaskController";
 const taskControllers = new TaskController();
 
 // route for Creating a new task

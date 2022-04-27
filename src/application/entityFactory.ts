@@ -1,17 +1,17 @@
-import { task } from "../domain/model/task";
-import { user } from "../domain/model/user";
+import { TaskEntity } from "../Domain/Entity/Task";
+import { UserEntity } from "../Domain/Entity/User";
 
 /**
  * responsible for creating entities using static factory method
  */
 export class EntityFactory {
-  static createUser(payload): user {
-    const _user = new user(payload);
+  static createUser(payload): UserEntity {
+    const _user = new UserEntity(payload);
     return _user;
   }
 
-  static createTask(payload): task {
-    const _task = new task(payload);
+  static createTask(payload): TaskEntity {
+    const _task = new TaskEntity(payload);
     return _task;
   }
 }

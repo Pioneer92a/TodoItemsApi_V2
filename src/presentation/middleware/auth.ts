@@ -1,6 +1,6 @@
 // in this file, we implement auth.js middleware for the authentication of the user
 
-import { ControllerService } from "../services/controller-service";
+import { handleError } from "../Services/ControllerServices";
 
 // import { User } from "../../infrastructure/db/model/userMongo"; // import user model
 
@@ -24,6 +24,6 @@ export const taskAuth = async (req, res, next) => {
       throw new Error(`request body doesn't contain userUUID`);
     next();
   } catch (error) {
-    ControllerService.handleError(error, res);
+    handleError(error, res);
   }
 };

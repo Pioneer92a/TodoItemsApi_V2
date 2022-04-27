@@ -4,7 +4,7 @@ import {
   GOOGLE_CLIENT_ID,
   GOOGLE_CLIENT_SECRET,
   NGROK_URI,
-} from "../../infrastructure/config";
+} from "../../Infrastructure/config";
 
 function GoogleStrategyCbFunc(accessToken, refreshToken, profile, done) {
   // console.log(accessToken);

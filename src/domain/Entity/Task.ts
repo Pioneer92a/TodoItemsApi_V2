@@ -1,7 +1,7 @@
 /**
  * task entity
  */
-export class task {
+export class TaskEntity {
   name: string;
   uuid: string;
   userUUID: string;

@@ -1,55 +1,61 @@
 import "reflect-metadata";
-import { autoInjectable, inject } from "tsyringe";
-import { user } from "../domain/model/user";
-import { UserDomainI } from "./domainInterfaces/userDomainI";
-import { findOrCreateUserDTO, UserDTOGenPurpose } from "./DTOs/userDTO";
-
-// const userDomain = container.resolve(UserDomain);
-
-interface UserApplicationServiceI {
-  // loginUser(payload);
-  logoutUser(payload);
-  findUser(userID);
-  deleteUser(userID);
-  // updateUser(userID);
-  findOrCreateUser(req);
-}
+import { autoInjectable } from "tsyringe";
+import { UserEntity } from "../Domain/Entity/User";
+import { UserDomain } from "../Domain/UserDomain";
+import {
+  validateUser,
+  validateUserByEmail,
+  validateUserByUUID,
+} from "./ApplicationServices";
+import { findOrCreateNewUserDTO, UserDTOGenPurpose } from "./DTOs/UserDTO";
 
 @autoInjectable()
-export class UserApplicationService implements UserApplicationServiceI {
-  userDomain: UserDomainI;
-  constructor(@inject("UserDomainI") userDomain: UserDomainI) {
+export class UserApplicationService {
+  userDomain: UserDomain;
+  constructor(userDomain: UserDomain) {
     this.userDomain = userDomain;
   }
   /**
    * perform login if user is found, otherwise create a new one in local database
    */
-  async findOrCreateUser(req): Promise<user> {
-    const userEntity = findOrCreateUserDTO(req);
-
-    // if user exists then log in
-    if (await this.userDomain.findUserbyEmail(userEntity.email))
-      return await this.userDomain.loginUser(userEntity.email);
-    // if user doesn't exist then create a new one
-    else return await this.userDomain.createNewUser(userEntity);
+  async findOrCreateUser(payload): Promise<UserEntity> {
+    // if user exists then log in, otherwise create a new one
+    if (await this.userDomain.findUserbyEmail(payload.email))
+      return await this.loginUser(payload);
+    else return await this.createNewUser(payload);
   }
 
-  async logoutUser(req): Promise<user> {
-    const logoutUser = UserDTOGenPurpose(req);
-    return await this.userDomain.logoutUser(logoutUser.userUUID);
+  async createNewUser(payload): Promise<UserEntity> {
+    const userEntity = findOrCreateNewUserDTO(payload);
+    return await this.userDomain.createNewUser(userEntity);
+  }
+
+  async loginUser(payload): Promise<UserEntity> {
+    const userEntity = findOrCreateNewUserDTO(payload);
+    await validateUserByEmail(userEntity.email, this.userDomain);
+    return await this.userDomain.loginUser(userEntity.email);
+  }
+
+  async logoutUser(payload): Promise<UserEntity> {
+    const userDTO = UserDTOGenPurpose(payload);
+    await validateUserByUUID(userDTO.userUUID, this.userDomain);
+    return await this.userDomain.logoutUser(userDTO.userUUID);
   }
 
   /**
    * finds user through their UUID
    */
-  async findUser(req): Promise<user> {
-    const findUser = UserDTOGenPurpose(req);
-    return await this.userDomain.findUserbyUUID(findUser.userUUID);
+  async getUserDetails(payload): Promise<UserEntity> {
+    const userDTO = UserDTOGenPurpose(payload);
+
+    await validateUser(userDTO.userUUID, this.userDomain);
+    return await this.userDomain.findUserbyUUID(userDTO.userUUID);
   }
 
-  async deleteUser(req): Promise<user> {
-    const deleteUser = UserDTOGenPurpose(req);
-    return await this.userDomain.deleteUser(deleteUser.userUUID);
+  async deleteUser(payload): Promise<UserEntity> {
+    const userDTO = UserDTOGenPurpose(payload);
+    await validateUser(userDTO.userUUID, this.userDomain);
+    return await this.userDomain.deleteUser(userDTO.userUUID);
   }
 
   // async updateUser(userID) {
