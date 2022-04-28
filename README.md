@@ -1,7 +1,13 @@
 Notes:
 
-1. Prisma automatically makes a lazy connection with the data source upon first query.
+1. 'npm start' -> default express port 3000
+   'npm start 4000' -> assign port '4000' to express server or whichever you specify
+
+2. Prisma automatically makes a lazy connection with the data source upon first query.
    No connect command required
+
+3. 'seed.ts' in the infrastructure layer provides seed data. It is automatically executed in case of 'npx prisma migrate reset'.
+   To execute it manually, use 'npx prisma db seed'
 
 User Routes cleared:
 

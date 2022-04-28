@@ -1,7 +1,13 @@
-import * as express from "express"; // import express server
-import * as cors from "cors";
 import * as bodyParser from "body-parser";
+import * as cors from "cors";
+import * as express from "express"; // import express server
+import { UserController } from "../Controllers/UserController";
+import { auth2 as isLoggedInCb } from "../Middleware/Auth";
+import { router as taskRouter } from "../Routers/TaskRouter"; // import tasks router
+import { router as userRouter } from "../Routers/UserRouter"; // import tasks router
+import { passport } from "../Services/PassportService";
 const cookieSession = require("cookie-session");
+const userControllers = new UserController();
 
 const app = express();
 
@@ -26,6 +32,39 @@ app.use(
   })
 );
 
-//   app.get("/good", isLoggedInCb, userControllers.findOrCreateUser); // somehow it needs to be in index file to work
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(taskRouter);
+app.use(userRouter);
+
+// PASSPORT related routes are declared here
+//
+// (1) MAIN LOGIN ROUTE
+app.get(
+  "/login",
+  passport.authenticate("google", { scope: ["profile", "email"] })
+);
+//
+// JUST LOGS OUT THE CURRENT SESSION
+app.get("/logout", (req, res) => {
+  req.session = null; // most probably a reduntant step
+  req.logout(); // remover the req.user property and clear the login session
+  res.redirect("/"); // redirect to the homepage
+  // note: The session still keeps the cookies which doesn't properly destroy the session
+});
+//
+// (2) REDIRECT LINK
+app.get(
+  "/google/callback",
+  passport.authenticate("google", { failureRedirect: "/failed" }),
+  function (req, res) {
+    // Successful authentication, redirect home.
+    res.redirect("/good");
+  }
+);
+//
+// (3) CREATE THE MAIN LOGIN REDIRECT ROUTE
+app.get("/good", isLoggedInCb, userControllers.findOrCreateUser);
+//
 
 export { app };

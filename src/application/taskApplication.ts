@@ -10,6 +10,9 @@ import {
   taskDTOforRUD,
 } from "./DTOs/TaskDTO";
 
+/**
+ * performs some application level checks on input before passing it on to Domain Layer
+ */
 @autoInjectable()
 export class TaskApplicationService {
   taskDomain: TaskDomain;

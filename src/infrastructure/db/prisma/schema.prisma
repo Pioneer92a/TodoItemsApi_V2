@@ -20,7 +20,7 @@ model User {
   updatedAt  DateTime? @updatedAt
   tasks      Task[]
   // token      String?
-  isLoggedIn Boolean   @default(true)
+  isLoggedIn Boolean   @default(false)
 }
 
 model Task {

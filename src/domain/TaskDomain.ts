@@ -3,6 +3,9 @@ import { TaskRepositoryI } from "./RepoInterface/TaskRepositoryI";
 import { UserRepositoryI } from "./RepoInterface/UserRepositoryI";
 import { TaskEntity } from "./Entity/Task";
 
+/**
+ * this layer contains entities and repository interfaces
+ */
 @autoInjectable()
 export class TaskDomain {
   userRepository: UserRepositoryI;
