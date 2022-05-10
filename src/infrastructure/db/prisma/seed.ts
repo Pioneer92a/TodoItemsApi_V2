@@ -2,7 +2,7 @@
 
 import { PrismaClient } from "@prisma/client";
 import * as faker from "faker";
-import { SEED_DATA_LIMIT } from "../../config";
+import { SEED_DATA_LIMIT } from "../../Config";
 const prisma = new PrismaClient();
 
 const seedDataLimit = parseInt(SEED_DATA_LIMIT);

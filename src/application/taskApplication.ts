@@ -14,7 +14,7 @@ import {
  * performs some application level checks on input before passing it on to Domain Layer
  */
 @autoInjectable()
-export class TaskApplicationService {
+export class TaskApplication {
   taskDomain: TaskDomain;
   userDomain: UserDomain;
   constructor(taskDomain: TaskDomain, userDomain: UserDomain) {
@@ -31,28 +31,29 @@ export class TaskApplicationService {
   }
 
   async deleteTask(payload): Promise<TaskEntity> {
-    const deleteTask = taskDTOforRUD(payload);
+    const taskDTO = taskDTOforRUD(payload);
     await validateUser(payload.userUUID, this.userDomain);
-    await validateTask(deleteTask, this.taskDomain);
-    return await this.taskDomain.deleteTask(parseInt(deleteTask.taskId));
+    await validateTask(taskDTO, this.taskDomain);
+    return await this.taskDomain.deleteTask(parseInt(taskDTO.taskId));
   }
 
   async getTask(payload): Promise<TaskEntity> {
-    const getTask = taskDTOforRUD(payload);
+    const taskDTO = taskDTOforRUD(payload);
     await validateUser(payload.userUUID, this.userDomain);
-    return await this.taskDomain.getTask(parseInt(getTask.taskId));
+    await validateTask(taskDTO, this.taskDomain);
+    return await this.taskDomain.getTask(parseInt(taskDTO.taskId));
   }
 
   async updateTask(payload): Promise<TaskEntity> {
-    const updateTask = taskDTOforRUD(payload);
+    const taskDTO = taskDTOforRUD(payload);
     await validateUser(payload.userUUID, this.userDomain);
-    await validateTask(updateTask, this.taskDomain);
-    return await this.taskDomain.updateTask(parseInt(updateTask.taskId));
+    await validateTask(taskDTO, this.taskDomain);
+    return await this.taskDomain.updateTask(parseInt(taskDTO.taskId));
   }
 
   async getAllTasks(payload): Promise<TaskEntity[]> {
-    const getAllTasks = getAllTasksDTO(payload);
+    const taskDTO = getAllTasksDTO(payload);
     await validateUser(payload.userUUID, this.userDomain);
-    return await this.taskDomain.getAllTasks(parseInt(getAllTasks.page));
+    return await this.taskDomain.getAllTasks(parseInt(taskDTO.page));
   }
 }

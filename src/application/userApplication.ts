@@ -8,21 +8,28 @@ import {
   validateUserByUUID,
 } from "./ApplicationServices";
 import { findOrCreateNewUserDTO, UserDTOGenPurpose } from "./DTOs/UserDTO";
+import * as jwt from "jsonwebtoken";
+import { JWT_SECRET } from "../Infrastructure/Config";
 
 @autoInjectable()
-export class UserApplicationService {
+export class UserApplication {
   userDomain: UserDomain;
   constructor(userDomain: UserDomain) {
     this.userDomain = userDomain;
   }
   /**
    * perform login if user is found, otherwise create a new one in local database
-   */
+    create a jwt token for the user as well 
+  */
   async findOrCreateUser(payload): Promise<UserEntity> {
     // if user exists then log in, otherwise create a new one
+    let user: UserEntity;
     if (await this.userDomain.findUserbyEmail(payload.email))
-      return await this.loginUser(payload);
-    else return await this.createNewUser(payload);
+      user = await this.loginUser(payload);
+    else user = await this.createNewUser(payload);
+    const token = jwt.sign({ _uuid: user.uuid.toString() }, JWT_SECRET);
+    user.token = token;
+    return user;
   }
 
   async createNewUser(payload): Promise<UserEntity> {

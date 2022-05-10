@@ -1,8 +1,13 @@
-import { UserApplicationService } from "../../Application/UserApplication";
-import { container } from "../../Infrastructure/container";
-import { createUserPayload, handleError, handleUserResponse, userPayloadType } from "../Services/ControllerServices";
+import { UserApplication } from "../../Application/UserApplication";
+import { container } from "../../Infrastructure/Container";
+import {
+  createUserPayload,
+  handleError,
+  handleUserResponse,
+  userPayloadType,
+} from "../Services/ControllerServices";
 
-const userApplicationService = container.resolve(UserApplicationService);
+const userApplication = container.resolve(UserApplication);
 
 /**
  * prepares input data for application layer and handles response
@@ -11,7 +16,7 @@ export class UserController {
   async findOrCreateUser(req, res) {
     try {
       const payload = createUserPayload(req, userPayloadType.findOrCreate);
-      const user = await userApplicationService.findOrCreateUser(payload);
+      const user = await userApplication.findOrCreateUser(payload);
       handleUserResponse(user, res);
     } catch (e) {
       console.log(e);
@@ -22,7 +27,7 @@ export class UserController {
   async logoutUser(req, res) {
     try {
       const payload = createUserPayload(req, userPayloadType.generalPurpose);
-      const user = await userApplicationService.logoutUser(payload);
+      const user = await userApplication.logoutUser(payload);
       handleUserResponse(user, res);
     } catch (e) {
       console.log(e);
@@ -33,7 +38,7 @@ export class UserController {
   async getUserDetails(req, res) {
     try {
       const payload = createUserPayload(req, userPayloadType.generalPurpose);
-      const user = await userApplicationService.getUserDetails(payload);
+      const user = await userApplication.getUserDetails(payload);
       handleUserResponse(user, res);
     } catch (e) {
       console.log(e);
@@ -44,7 +49,7 @@ export class UserController {
   async deleteUser(req, res) {
     try {
       const payload = createUserPayload(req, userPayloadType.generalPurpose);
-      const user = await userApplicationService.deleteUser(payload);
+      const user = await userApplication.deleteUser(payload);
       handleUserResponse(user, res);
     } catch (e) {
       console.log(e);

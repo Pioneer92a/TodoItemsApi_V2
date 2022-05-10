@@ -1,6 +1,6 @@
 import "reflect-metadata";
-import { TaskApplicationService } from "../../Application/TaskApplication";
-import { container } from "../../Infrastructure/container";
+import { TaskApplication } from "../../Application/TaskApplication";
+import { container } from "../../Infrastructure/Container";
 import {
   handleTaskResponse,
   handleError,
@@ -8,7 +8,7 @@ import {
   taskPayloadType,
 } from "../Services/ControllerServices";
 
-const taskApplicationService = container.resolve(TaskApplicationService);
+const taskApplication = container.resolve(TaskApplication);
 
 /**
  * prepares input data for application layer and handles response
@@ -17,7 +17,7 @@ export class TaskController {
   async createNewTask(req, res) {
     try {
       const payload = createTaskPayload(req, taskPayloadType.createNewTask);
-      const task = await taskApplicationService.createNewTask(payload);
+      const task = await taskApplication.createNewTask(payload);
       handleTaskResponse(task, res);
     } catch (e) {
       console.log(e);
@@ -28,7 +28,7 @@ export class TaskController {
   async deleteTask(req, res) {
     try {
       const payload = createTaskPayload(req, taskPayloadType.generalPurpose);
-      const task = await taskApplicationService.deleteTask(payload);
+      const task = await taskApplication.deleteTask(payload);
       handleTaskResponse(task, res);
     } catch (e) {
       handleError(e, res);
@@ -38,7 +38,7 @@ export class TaskController {
   async getTask(req, res) {
     try {
       const payload = createTaskPayload(req, taskPayloadType.generalPurpose);
-      const task = await taskApplicationService.getTask(payload);
+      const task = await taskApplication.getTask(payload);
       handleTaskResponse(task, res);
     } catch (e) {
       console.log(e);
@@ -49,7 +49,7 @@ export class TaskController {
   async getAllTasks(req, res) {
     try {
       const payload = createTaskPayload(req, taskPayloadType.getAllTasks);
-      const task = await taskApplicationService.getAllTasks(payload);
+      const task = await taskApplication.getAllTasks(payload);
       //  handleResponseForTask(task, res);
       return res.send({ AllTasks: task });
     } catch (e) {
@@ -61,7 +61,7 @@ export class TaskController {
   async updateTask(req, res) {
     try {
       const payload = createTaskPayload(req, taskPayloadType.generalPurpose);
-      const task = await taskApplicationService.updateTask(payload);
+      const task = await taskApplication.updateTask(payload);
       handleTaskResponse(task, res);
     } catch (e) {
       console.log(e);

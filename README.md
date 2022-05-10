@@ -9,6 +9,10 @@ Notes:
 3. 'seed.ts' in the infrastructure layer provides seed data. It is automatically executed in case of 'npx prisma migrate reset'.
    To execute it manually, use 'npx prisma db seed'
 
+4. 'ngrok http 3000' is used to create an https tunnel for google rerouting etc
+
+5. JWT token is generated in application layer during login. It is just used in Auth later to know uuid of user that is making a request. login an logout are still managed by isLoggedIn flag in the database.
+
 User Routes cleared:
 
 1. post("/logout/:uuid")
