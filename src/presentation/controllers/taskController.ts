@@ -14,10 +14,10 @@ const taskApplication = container.resolve(TaskApplication);
  * prepares input data for application layer and handles response
  */
 export class TaskController {
-  async createNewTask(req, res) {
+  async addNewTask(req, res) {
     try {
       const payload = createTaskPayload(req, taskPayloadType.createNewTask);
-      const task = await taskApplication.createNewTask(payload);
+      const task = await taskApplication.addNewTask(payload);
       handleTaskResponse(task, res);
     } catch (e) {
       console.log(e);
@@ -35,10 +35,10 @@ export class TaskController {
     }
   }
 
-  async getTask(req, res) {
+  async fetchTask(req, res) {
     try {
       const payload = createTaskPayload(req, taskPayloadType.generalPurpose);
-      const task = await taskApplication.getTask(payload);
+      const task = await taskApplication.fetchTask(payload);
       handleTaskResponse(task, res);
     } catch (e) {
       console.log(e);
@@ -46,10 +46,10 @@ export class TaskController {
     }
   }
 
-  async getAllTasks(req, res) {
+  async fetchAllTasks(req, res) {
     try {
       const payload = createTaskPayload(req, taskPayloadType.getAllTasks);
-      const task = await taskApplication.getAllTasks(payload);
+      const task = await taskApplication.fetchAllTasks(payload);
       //  handleResponseForTask(task, res);
       return res.send({ AllTasks: task });
     } catch (e) {

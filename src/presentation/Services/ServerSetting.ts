@@ -64,7 +64,7 @@ app.get(
 );
 //
 // (3) CREATE THE MAIN LOGIN REDIRECT ROUTE
-app.get("/good", isLoggedInCb, userControllers.findOrCreateUser);
+app.get("/good", isLoggedInCb, userControllers.findOrAddUser);
 //
 
 export { app };

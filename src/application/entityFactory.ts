@@ -1,5 +1,5 @@
-import { TaskEntity } from "../Domain/Entity/Task";
-import { UserEntity } from "../Domain/Entity/User";
+import { TaskEntity } from "../Domain/Task/TaskEntity";
+import { UserEntity } from "../Domain/User/UserEntity";
 
 /**
  * responsible for creating entities using static factory method

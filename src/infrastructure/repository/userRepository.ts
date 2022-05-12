@@ -1,7 +1,7 @@
 import { PrismaClient, User } from "@prisma/client";
-import { UserEntity } from "../../Domain/Entity/User";
+import { UserEntity } from "../../Domain/User/UserEntity";
 const prisma = new PrismaClient();
-import { UserRepositoryI } from "../../Domain/RepoInterface/UserRepositoryI";
+import { UserRepositoryI } from "../../Domain/User/UserRepository";
 
 /**
  * interacts with the database directly
@@ -43,7 +43,7 @@ export class UserRepository implements UserRepositoryI {
     }
   }
 
-  async createNewUser(newUser: UserEntity): Promise<User> {
+  async addNewUser(newUser: UserEntity): Promise<User> {
     try {
       const newUserCreated = await prisma.user.create({
         data: {
@@ -61,7 +61,7 @@ export class UserRepository implements UserRepositoryI {
     }
   }
 
-  async findUserbyId(userId: number): Promise<User> {
+  async fetchUserbyId(userId: number): Promise<User> {
     try {
       const userFound = await prisma.user.findUnique({
         where: {
@@ -76,7 +76,7 @@ export class UserRepository implements UserRepositoryI {
     }
   }
 
-  async findUserbyUUID(userUUID: string): Promise<User> {
+  async fetchUserbyUUID(userUUID: string): Promise<User> {
     try {
       const userFound = await prisma.user.findUnique({
         where: {
@@ -91,7 +91,7 @@ export class UserRepository implements UserRepositoryI {
     }
   }
 
-  async findUserbyEmail(userEmail: string): Promise<User> {
+  async fetchUserbyEmail(userEmail: string): Promise<User> {
     try {
       const userFound = await prisma.user.findUnique({
         where: {

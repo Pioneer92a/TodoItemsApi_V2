@@ -1,7 +1,8 @@
 Notes:
 
 1. 'npm start' -> default express port 3000
-   'npm start 4000' -> assign port '4000' to express server or whichever you specify
+   'npm start 4000' -> assign port '4000' to express server or whichever you specify.
+   npm module Commander is used for this.
 
 2. Prisma automatically makes a lazy connection with the data source upon first query.
    No connect command required
@@ -15,7 +16,7 @@ Notes:
 
 User Routes cleared:
 
-1. post("/logout/:uuid")
+1. post("/logout/")
    mark the specific user logged out in the database
    no impact on current session
 
@@ -28,27 +29,23 @@ User Routes cleared:
    create new user if not already present (logged in by default)
    if user already present, mark him/her as logged in
 
-4. post("/delete/:uuid")
+4. post("/delete/")
    delete the user
 
-5. get("/user/:uuid")
+5. get("/user/")
    read the user
 
    TASK ROUTES: note that below operations will be performed only if user is marked logged in from database
 
 a. post('/task') -> create a new task
-body: name, userUUID
+body: name
 
 b. get('/task/:id') -> read a task
-body: userUUID
 
 c. post('/task/update/:id') -> update a task
-body: userUUID
 
 d. delete('/task/:id') -> delete a task
-body: userUUID
 
 e. "/task/getAll/:page" -> get tasks of a user starting from page. Limit is defined in .env file. Offset pagination is implemented here
-body: userUUID
 
 TODO: middlewares need to be implemented in tasks

@@ -9,7 +9,7 @@ const userControllers = new UserController();
 router.post("/logout", userAuth, userControllers.logoutUser);
 
 // route for Reading a user
-router.get("/user", userAuth, userControllers.getUserDetails);
+router.get("/user", userAuth, userControllers.fetchUser);
 
 // route for Deleting a user
 router.delete("/user/", userAuth, userControllers.deleteUser);

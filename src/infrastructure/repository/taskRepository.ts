@@ -1,14 +1,14 @@
 import { PrismaClient, Task } from "@prisma/client";
 import { Task_Pagination_Limit } from "../Config";
-import { TaskRepositoryI } from "../../Domain/RepoInterface/TaskRepositoryI";
-import { TaskEntity } from "../../Domain/Entity/Task";
+import { TaskRepositoryI } from "../../Domain/Task/TaskRepository";
+import { TaskEntity } from "../../Domain/Task/TaskEntity";
 const prisma = new PrismaClient();
 
 /**
  * interacts with the database directly
  */
 export class TaskRepository implements TaskRepositoryI {
-  async createNewTask(newTask: TaskEntity): Promise<Task> {
+  async addNewTask(newTask: TaskEntity): Promise<Task> {
     try {
       const newTaskCreated = await prisma.task.create({
         data: {
@@ -54,7 +54,7 @@ export class TaskRepository implements TaskRepositoryI {
     }
   }
 
-  async getTask(taskId: number): Promise<Task> {
+  async fetchTask(taskId: number): Promise<Task> {
     try {
       // get The task
       const getTask = await prisma.task.findUnique({
@@ -87,7 +87,7 @@ export class TaskRepository implements TaskRepositoryI {
     }
   }
 
-  async getAllTasks(page: number): Promise<Task[]> {
+  async fetchAllTasks(page: number): Promise<Task[]> {
     // get The task
     return await prisma.task.findMany({
       skip: page - 1, // start from the parameter page by skipping page-1

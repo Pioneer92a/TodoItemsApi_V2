@@ -1,5 +1,5 @@
-import { TaskDomain } from "../Domain/TaskDomain";
-import { UserDomain } from "../Domain/UserDomain";
+import { TaskRepositoryI } from "../Domain/Task/TaskRepository";
+import { UserRepositoryI } from "../Domain/User/UserRepository";
 
 /**
  * throw an error if user doesn't exist
@@ -25,12 +25,16 @@ export function throwErrorIfTaskDoesNotExist(task) {
 /**
  * check if user exists and is logged in
  */
-export async function validateUser(userUUID: string, userDomain: UserDomain) {
+export async function validateUser(
+  userUUID: string,
+  userRepository: UserRepositoryI
+) {
   // does the user exist?
-  const _user = await userDomain.findUserbyUUID(userUUID);
+  const _user = await userRepository.fetchUserbyUUID(userUUID);
   throwErrorIfUserDoesNotExist(_user);
   // is the user loggedIn ?
-  const isLoggedIn = await userDomain.isUserLoggedIn(userUUID);
+  // const isLoggedIn = await userRepository.isUserLoggedIn(userUUID);
+  const isLoggedIn = true; // TODO LATER
   throwErrorIfUserNotLoggedIn(isLoggedIn);
   //
 }
@@ -38,8 +42,8 @@ export async function validateUser(userUUID: string, userDomain: UserDomain) {
 /**
  * check if the Task exists
  */
-export async function validateTask(task, taskDomain: TaskDomain) {
-  const _task = await taskDomain.getTask(parseInt(task.taskId));
+export async function validateTask(task, taskRepository: TaskRepositoryI) {
+  const _task = await taskRepository.fetchTask(parseInt(task.taskId));
   throwErrorIfTaskDoesNotExist(_task);
 }
 
@@ -48,9 +52,9 @@ export async function validateTask(task, taskDomain: TaskDomain) {
  */
 export async function validateUserByEmail(
   email: string,
-  userDomain: UserDomain
+  userRepository: UserRepositoryI
 ) {
-  if (!(await userDomain.findUserbyEmail(email)))
+  if (!(await userRepository.fetchUserbyEmail(email)))
     throw new Error(`user having following email not found: ${email}`);
 }
 
@@ -59,8 +63,8 @@ export async function validateUserByEmail(
  */
 export async function validateUserByUUID(
   userUUID: string,
-  userDomain: UserDomain
+  userRepository: UserRepositoryI
 ) {
-  if (!(await userDomain.findUserbyUUID(userUUID)))
+  if (!(await userRepository.fetchUserbyUUID(userUUID)))
     throw new Error(`user having following UUID not found: ${userUUID}`);
 }

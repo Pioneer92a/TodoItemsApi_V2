@@ -13,10 +13,10 @@ const userApplication = container.resolve(UserApplication);
  * prepares input data for application layer and handles response
  */
 export class UserController {
-  async findOrCreateUser(req, res) {
+  async findOrAddUser(req, res) {
     try {
       const payload = createUserPayload(req, userPayloadType.findOrCreate);
-      const user = await userApplication.findOrCreateUser(payload);
+      const user = await userApplication.findOrAddUser(payload);
       handleUserResponse(user, res);
     } catch (e) {
       console.log(e);
@@ -35,10 +35,10 @@ export class UserController {
     }
   }
 
-  async getUserDetails(req, res) {
+  async fetchUser(req, res) {
     try {
       const payload = createUserPayload(req, userPayloadType.generalPurpose);
-      const user = await userApplication.getUserDetails(payload);
+      const user = await userApplication.fetchUser(payload);
       handleUserResponse(user, res);
     } catch (e) {
       console.log(e);
