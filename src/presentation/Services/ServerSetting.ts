@@ -1,10 +1,10 @@
 import * as bodyParser from "body-parser";
 import * as cors from "cors";
 import * as express from "express"; // import express server
-import { UserController } from "../Controllers/UserController";
+import { UserController } from "../User/Controller";
 import { auth2 as isLoggedInCb } from "../Middleware/Auth";
-import { router as taskRouter } from "../Routers/TaskRouter"; // import tasks router
-import { router as userRouter } from "../Routers/UserRouter"; // import tasks router
+import { router as taskRouter } from "../Task/Router"; // import tasks router
+import { router as userRouter } from "../User/Router"; // import tasks router
 import { passport } from "../Services/PassportService";
 const cookieSession = require("cookie-session");
 const userControllers = new UserController();

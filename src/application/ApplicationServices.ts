@@ -1,49 +1,27 @@
-import { TaskRepositoryI } from "../Domain/Task/TaskRepository";
-import { UserRepositoryI } from "../Domain/User/UserRepository";
+import { TaskRepositoryI } from "../Domain/Task/Repository";
+import { UserRepositoryI } from "../Domain/User/Repository";
 
-/**
- * throw an error if user doesn't exist
- */
-export function throwErrorIfUserDoesNotExist(_user) {
-  if (!_user) throw new Error("the user does not exist");
-}
-
-/**
- * throw an error if user isn't logged in
- */
-export function throwErrorIfUserNotLoggedIn(isLoggedIn: boolean) {
-  if (!isLoggedIn) throw new Error("user is not logged in");
-}
-
-/**
- * throw an error if the task doesn't exist
- */
-export function throwErrorIfTaskDoesNotExist(task) {
-  if (!task) throw new Error("task does not exist");
-}
-
-/**
- * check if user exists and is logged in
- */
-export async function validateUser(
+export async function checkIfUserExists(
   userUUID: string,
   userRepository: UserRepositoryI
 ) {
-  // does the user exist?
   const _user = await userRepository.fetchUserbyUUID(userUUID);
   throwErrorIfUserDoesNotExist(_user);
-  // is the user loggedIn ?
-  // const isLoggedIn = await userRepository.isUserLoggedIn(userUUID);
-  const isLoggedIn = true; // TODO LATER
-  throwErrorIfUserNotLoggedIn(isLoggedIn);
-  //
 }
 
-/**
- * check if the Task exists
- */
-export async function validateTask(task, taskRepository: TaskRepositoryI) {
-  const _task = await taskRepository.fetchTask(parseInt(task.taskId));
+export async function checkIfUserLoggedIn(
+  userUUID: string,
+  userRepository: UserRepositoryI
+) {
+  const _userLoginStatus = await userRepository.fetchUserLoginStatus(userUUID);
+  throwErrorIfUserNotLoggedIn(_userLoginStatus);
+}
+
+export async function checkIfTaskExists(
+  taskId: number,
+  taskRepository: TaskRepositoryI
+) {
+  const _task = await taskRepository.fetchTask(taskId);
   throwErrorIfTaskDoesNotExist(_task);
 }
 
@@ -67,4 +45,16 @@ export async function validateUserByUUID(
 ) {
   if (!(await userRepository.fetchUserbyUUID(userUUID)))
     throw new Error(`user having following UUID not found: ${userUUID}`);
+}
+
+function throwErrorIfUserDoesNotExist(arg) {
+  if (!arg) throw new Error("the user does not exist");
+}
+
+function throwErrorIfUserNotLoggedIn(arg) {
+  if (!arg) throw new Error("user is not logged in");
+}
+
+function throwErrorIfTaskDoesNotExist(arg) {
+  if (!arg) throw new Error("task does not exist");
 }

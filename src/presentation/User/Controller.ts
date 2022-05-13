@@ -1,10 +1,12 @@
-import { UserApplication } from "../../Application/UserApplication";
+import { UserApplication } from "../../Application/User/UserApplication";
+import {
+  FindOrAddUserDTO,
+  GeneralUserDTO,
+} from "../../Application/User/UserDTO";
 import { container } from "../../Infrastructure/Container";
 import {
-  createUserPayload,
   handleError,
   handleUserResponse,
-  userPayloadType,
 } from "../Services/ControllerServices";
 
 const userApplication = container.resolve(UserApplication);
@@ -15,44 +17,43 @@ const userApplication = container.resolve(UserApplication);
 export class UserController {
   async findOrAddUser(req, res) {
     try {
-      const payload = createUserPayload(req, userPayloadType.findOrCreate);
-      const user = await userApplication.findOrAddUser(payload);
+      const findOrAddUserDTO = new FindOrAddUserDTO(
+        req.user.name.givenName,
+        req.user.emails[0].value
+      );
+      const user = await userApplication.findOrAddUser(findOrAddUserDTO);
       handleUserResponse(user, res);
     } catch (e) {
-      console.log(e);
       handleError(e, res);
     }
   }
 
   async logoutUser(req, res) {
     try {
-      const payload = createUserPayload(req, userPayloadType.generalPurpose);
-      const user = await userApplication.logoutUser(payload);
+      const logoutUserDTO = new GeneralUserDTO(req.params.uuid);
+      const user = await userApplication.logoutUser(logoutUserDTO);
       handleUserResponse(user, res);
     } catch (e) {
-      console.log(e);
       handleError(e, res);
     }
   }
 
   async fetchUser(req, res) {
     try {
-      const payload = createUserPayload(req, userPayloadType.generalPurpose);
-      const user = await userApplication.fetchUser(payload);
+      const fetchUserDTO = new GeneralUserDTO(req.params.uuid);
+      const user = await userApplication.fetchUserbyUUID(fetchUserDTO);
       handleUserResponse(user, res);
     } catch (e) {
-      console.log(e);
       handleError(e, res);
     }
   }
 
   async deleteUser(req, res) {
     try {
-      const payload = createUserPayload(req, userPayloadType.generalPurpose);
-      const user = await userApplication.deleteUser(payload);
+      const deleteUserDTO = new GeneralUserDTO(req.params.uuid);
+      const user = await userApplication.deleteUser(deleteUserDTO);
       handleUserResponse(user, res);
     } catch (e) {
-      console.log(e);
       handleError(e, res);
     }
   }

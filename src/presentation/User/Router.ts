@@ -1,6 +1,6 @@
 import * as express from "express";
-import { UserController } from "../Controllers/UserController";
-import { auth, userAuth } from "../Middleware/Auth";
+import { userAuth } from "../Middleware/Auth";
+import { UserController } from "./Controller";
 
 const router = express.Router();
 const userControllers = new UserController();
@@ -14,8 +14,6 @@ router.get("/user", userAuth, userControllers.fetchUser);
 // route for Deleting a user
 router.delete("/user/", userAuth, userControllers.deleteUser);
 
-// the following route is in main file index.ts
-// create a user and login, or find a user and login
-// app.get("/good", isLoggedInCb, userControllers.findOrCreateUser);
+// note: some user endpoints are not included in router and are in main file
 
 export { router };

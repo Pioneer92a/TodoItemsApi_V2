@@ -3,7 +3,7 @@ import * as express from "express";
 const router = express.Router();
 
 import { taskAuth } from "../Middleware/Auth";
-import { TaskController } from "../Controllers/TaskController";
+import { TaskController } from "./Controller";
 const taskControllers = new TaskController();
 
 // route for Creating a new task

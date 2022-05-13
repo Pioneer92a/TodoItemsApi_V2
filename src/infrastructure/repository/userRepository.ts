@@ -1,15 +1,16 @@
-import { PrismaClient, User } from "@prisma/client";
-import { UserEntity } from "../../Domain/User/UserEntity";
+import { PrismaClient } from "@prisma/client";
+import { EntityFactory } from "../../Domain/EntityFactory";
+import { UserEntity } from "../../Domain/User/Entity";
+import { UserRepositoryI } from "../../Domain/User/Repository";
 const prisma = new PrismaClient();
-import { UserRepositoryI } from "../../Domain/User/UserRepository";
 
 /**
  * interacts with the database directly
  */
 export class UserRepository implements UserRepositoryI {
-  async logout(userUUID: string): Promise<User> {
+  async logout(userUUID: string): Promise<UserEntity> {
     try {
-      const updatedUser = await prisma.user.update({
+      const user = await prisma.user.update({
         where: {
           uuid: userUUID,
         },
@@ -17,17 +18,16 @@ export class UserRepository implements UserRepositoryI {
           isLoggedIn: false,
         },
       });
-      return updatedUser;
-      //
+      return EntityFactory.createUser(user.uuid, user.name, user.email); //
     } catch (e) {
       console.log(e);
       return null;
     }
   }
 
-  async login(userEmail: string): Promise<User> {
+  async login(userEmail: string): Promise<UserEntity> {
     try {
-      const updatedUser = await prisma.user.update({
+      const user = await prisma.user.update({
         where: {
           email: userEmail,
         },
@@ -35,17 +35,16 @@ export class UserRepository implements UserRepositoryI {
           isLoggedIn: true,
         },
       });
-      return updatedUser;
-      //
+      return EntityFactory.createUser(user.uuid, user.name, user.email); //
     } catch (e) {
       console.log(e);
       return null;
     }
   }
 
-  async addNewUser(newUser: UserEntity): Promise<User> {
+  async addNewUser(newUser: UserEntity): Promise<UserEntity> {
     try {
-      const newUserCreated = await prisma.user.create({
+      const user = await prisma.user.create({
         data: {
           uuid: newUser.uuid,
           email: newUser.email,
@@ -53,7 +52,7 @@ export class UserRepository implements UserRepositoryI {
           isLoggedIn: true,
         },
       });
-      return newUserCreated;
+      return EntityFactory.createUser(user.uuid, user.name, user.email);
       //
     } catch (e) {
       console.log(e);
@@ -61,52 +60,51 @@ export class UserRepository implements UserRepositoryI {
     }
   }
 
-  async fetchUserbyId(userId: number): Promise<User> {
+  async fetchUserbyUUID(userUUID: string): Promise<UserEntity> {
     try {
-      const userFound = await prisma.user.findUnique({
-        where: {
-          id: userId,
-        },
-      });
-      return userFound;
-      //
-    } catch (e) {
-      console.log(e);
-      return null;
-    }
-  }
-
-  async fetchUserbyUUID(userUUID: string): Promise<User> {
-    try {
-      const userFound = await prisma.user.findUnique({
+      const user = await prisma.user.findUnique({
         where: {
           uuid: userUUID,
         },
       });
-      return userFound;
+      return EntityFactory.createUser(user.uuid, user.name, user.email);
       //
     } catch (e) {
       console.log(e);
       return null;
     }
   }
-
-  async fetchUserbyEmail(userEmail: string): Promise<User> {
+  async fetchUserLoginStatus(userUUID: string): Promise<boolean> {
     try {
-      const userFound = await prisma.user.findUnique({
+      const user = await prisma.user.findUnique({
+        where: {
+          uuid: userUUID,
+        },
+      });
+      if (!user) return null;
+      else return user.isLoggedIn;
+      //
+    } catch (e) {
+      console.log(e);
+      return null;
+    }
+  }
+  async fetchUserbyEmail(userEmail: string): Promise<UserEntity> {
+    try {
+      const user = await prisma.user.findUnique({
         where: {
           email: userEmail,
         },
       });
-      return userFound;
-      //
+      if (!user) return null;
+      else return EntityFactory.createUser(user.uuid, user.name, user.email); //
     } catch (e) {
       console.log(e);
       return null;
     }
   }
 
-  async deleteUser(userUUID: string): Promise<User> {
+  async deleteUser(userUUID: string): Promise<UserEntity> {
     try {
       // find the user first
       const userToDelete = await prisma.user.findUnique({
@@ -133,26 +131,12 @@ export class UserRepository implements UserRepositoryI {
 
       // delete a user and all their taks with two separate queries in a transaction (all queries must succeed)
       const transaction = await prisma.$transaction([deleteTasks, deleteUser]);
-
-      return transaction[1]; // return User
-      //
-    } catch (e) {
-      console.log(e);
-      return null;
-    }
-  }
-
-  async updateUser(userUUID: string): Promise<User> {
-    try {
-      const updatedUser = await prisma.user.update({
-        where: {
-          uuid: userUUID,
-        },
-        data: {
-          name: "name changed",
-        },
-      });
-      return updatedUser;
+      return EntityFactory.createUser(
+        transaction[1].uuid,
+        transaction[1].name,
+        transaction[1].email
+      );
+      // return transaction[1]; // return User
       //
     } catch (e) {
       console.log(e);
