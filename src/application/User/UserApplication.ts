@@ -5,7 +5,7 @@ import { v1 as uuidv1 } from "uuid";
 import { EntityFactory } from "../../Domain/EntityFactory";
 import { UserEntity } from "../../Domain/User/Entity";
 import { UserRepositoryI } from "../../Domain/User/Repository";
-import { JWT_SECRET } from "../../Infrastructure/Config";
+import { JWT_SECRET } from "../../Infrastructure/Cross-Cutting/Config";
 import {
   checkIfUserExists,
   checkIfUserLoggedIn,

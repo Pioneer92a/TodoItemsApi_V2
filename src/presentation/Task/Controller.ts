@@ -6,7 +6,7 @@ import {
   GeneralTaskDTO,
   UpdateTaskDTO,
 } from "../../Application/Task/TaskDTO";
-import { container } from "../../Infrastructure/Container";
+import { container } from "../../Infrastructure/Cross-Cutting/Container";
 import {
   handleError,
   handleTaskResponse,

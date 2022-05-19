@@ -4,11 +4,9 @@ import {
   GOOGLE_CLIENT_ID,
   GOOGLE_CLIENT_SECRET,
   NGROK_URI,
-} from "../../Infrastructure/Config";
+} from "../../Infrastructure/Cross-Cutting/Config";
 
 function GoogleStrategyCbFunc(accessToken, refreshToken, profile, done) {
-  // console.log(accessToken);
-
   return done(null, profile); // serialize function will be called here
 }
 

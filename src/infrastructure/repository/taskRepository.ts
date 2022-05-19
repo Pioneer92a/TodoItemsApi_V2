@@ -2,12 +2,9 @@ import { PrismaClient } from "@prisma/client";
 import { EntityFactory } from "../../Domain/EntityFactory";
 import { TaskEntity } from "../../Domain/Task/Entity";
 import { TaskRepositoryI } from "../../Domain/Task/Repository";
-import { Task_Pagination_Limit } from "../Config";
+import { Task_Pagination_Limit } from "../Cross-Cutting/Config";
 const prisma = new PrismaClient();
 
-/**
- * interacts with the database directly
- */
 export class TaskRepository implements TaskRepositoryI {
   async addNewTask(newTask: TaskEntity): Promise<TaskEntity> {
     try {

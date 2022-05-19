@@ -2,7 +2,7 @@
 
 import { handleError } from "../Services/ControllerServices";
 import * as jwt from "jsonwebtoken";
-import { JWT_SECRET } from "../../Infrastructure/Config";
+import { JWT_SECRET } from "../../Infrastructure/Cross-Cutting/Config";
 
 // import { User } from "../../infrastructure/db/model/userMongo"; // import user model
 
@@ -24,7 +24,6 @@ export const userAuth = async (req, res, next) => {
   try {
     const token = req.header("Authorization").replace("Bearer ", "");
     const decoded = jwt.verify(token, JWT_SECRET);
-    // console.log(decoded._uuid);
     req.params.uuid = decoded._uuid;
     if (!req.params.uuid)
       throw new Error(`request body doesn't contain userUUID info`);
@@ -38,7 +37,6 @@ export const taskAuth = async (req, res, next) => {
   try {
     const token = req.header("Authorization").replace("Bearer ", "");
     const decoded = jwt.verify(token, JWT_SECRET);
-    // console.log(decoded._uuid);
     req.body.userUUID = decoded._uuid;
     if (!req.body.userUUID)
       throw new Error(`request body doesn't contain userUUID info`);

@@ -1,7 +1,8 @@
-import { portNumber } from "../src/Infrastructure/Commander";
-import { app } from "../src/Presentation/Services/ServerSetting";
+import { portNumber } from "../src/Infrastructure/Cross-Cutting/Commander";
+import { logger } from "../src/Infrastructure/Cross-Cutting/LoggerService";
+import app from "../src/Presentation/Services/ServerSetting";
 
 // SERVER STARTS LISTENING
 app.listen(portNumber, () => {
-  console.log(`server listening on port ${portNumber}`);
+  logger.info(`server listening on port ${portNumber}`);
 });

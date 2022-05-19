@@ -9,103 +9,71 @@ const prisma = new PrismaClient();
  */
 export class UserRepository implements UserRepositoryI {
   async logout(userUUID: string): Promise<UserEntity> {
-    try {
-      const user = await prisma.user.update({
-        where: {
-          uuid: userUUID,
-        },
-        data: {
-          isLoggedIn: false,
-        },
-      });
-      return EntityFactory.createUser(user.uuid, user.name, user.email); //
-    } catch (e) {
-      console.log(e);
-      return null;
-    }
+    const user = await prisma.user.update({
+      where: {
+        uuid: userUUID,
+      },
+      data: {
+        isLoggedIn: false,
+      },
+    });
+    return EntityFactory.createUser(user.uuid, user.name, user.email); //
   }
 
   async login(userEmail: string): Promise<UserEntity> {
-    try {
-      const user = await prisma.user.update({
-        where: {
-          email: userEmail,
-        },
-        data: {
-          isLoggedIn: true,
-        },
-      });
-      return EntityFactory.createUser(user.uuid, user.name, user.email); //
-    } catch (e) {
-      console.log(e);
-      return null;
-    }
+    const user = await prisma.user.update({
+      where: {
+        email: userEmail,
+      },
+      data: {
+        isLoggedIn: true,
+      },
+    });
+    return EntityFactory.createUser(user.uuid, user.name, user.email); //
   }
 
   async addNewUser(newUser: UserEntity): Promise<UserEntity> {
-    try {
-      const user = await prisma.user.create({
-        data: {
-          uuid: newUser.uuid,
-          email: newUser.email,
-          name: newUser.name,
-          isLoggedIn: true,
-        },
-      });
-      return EntityFactory.createUser(user.uuid, user.name, user.email);
-      //
-    } catch (e) {
-      console.log(e);
-      return null;
-    }
+    const user = await prisma.user.create({
+      data: {
+        uuid: newUser.uuid,
+        email: newUser.email,
+        name: newUser.name,
+        isLoggedIn: true,
+      },
+    });
+    return EntityFactory.createUser(user.uuid, user.name, user.email);
   }
 
   async fetchUserbyUUID(userUUID: string): Promise<UserEntity> {
-    try {
-      const user = await prisma.user.findUnique({
-        where: {
-          uuid: userUUID,
-        },
-      });
-      return EntityFactory.createUser(user.uuid, user.name, user.email);
-      //
-    } catch (e) {
-      console.log(e);
-      return null;
-    }
+    const user = await prisma.user.findUnique({
+      where: {
+        uuid: userUUID,
+      },
+    });
+    return EntityFactory.createUser(user.uuid, user.name, user.email);
   }
+
   async fetchUserLoginStatus(userUUID: string): Promise<boolean> {
-    try {
-      const user = await prisma.user.findUnique({
-        where: {
-          uuid: userUUID,
-        },
-      });
-      if (!user) return null;
-      else return user.isLoggedIn;
-      //
-    } catch (e) {
-      console.log(e);
-      return null;
-    }
+    const user = await prisma.user.findUnique({
+      where: {
+        uuid: userUUID,
+      },
+    });
+    if (!user) return null;
+    else return user.isLoggedIn;
   }
+
   async fetchUserbyEmail(userEmail: string): Promise<UserEntity> {
-    try {
-      const user = await prisma.user.findUnique({
-        where: {
-          email: userEmail,
-        },
-      });
-      if (!user) return null;
-      else return EntityFactory.createUser(user.uuid, user.name, user.email); //
-    } catch (e) {
-      console.log(e);
-      return null;
-    }
+    const user = await prisma.user.findUnique({
+      where: {
+        email: userEmail,
+      },
+    });
+    if (!user) return null;
+    else return EntityFactory.createUser(user.uuid, user.name, user.email); //
   }
 
   async deleteUser(userUUID: string): Promise<UserEntity> {
-    try {
       // find the user first
       const userToDelete = await prisma.user.findUnique({
         where: {
@@ -136,11 +104,5 @@ export class UserRepository implements UserRepositoryI {
         transaction[1].name,
         transaction[1].email
       );
-      // return transaction[1]; // return User
-      //
-    } catch (e) {
-      console.log(e);
-      return null;
-    }
   }
 }
