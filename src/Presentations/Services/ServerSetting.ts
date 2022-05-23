@@ -4,9 +4,9 @@ import * as express from "express"; // import express server
 import {
   logger,
   loggerMidleware,
-} from "../../Infrastructure/Cross-Cutting/LoggerService";
+} from "../../Infrastructures/Cross-Cutting/LoggerService";
 import { isLoggedInCb } from "../Middleware/Auth";
-import { passport } from "../Services/PassportService";
+import { passport } from "./PassportService";
 import { router as taskRouter } from "../Task/Router"; // import tasks router
 import { UserController } from "../User/Controller";
 import { router as userRouter } from "../User/Router"; // import tasks router

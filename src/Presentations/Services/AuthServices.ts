@@ -1,7 +1,7 @@
 import * as jwt from "jsonwebtoken";
-import { JWT_SECRET } from "../../Infrastructure/Cross-Cutting/Config";
-import { TaskRepository } from "../../Infrastructure/Repository/TaskRepository";
-import { UserRepository } from "../../Infrastructure/Repository/UserRepository";
+import { JWT_SECRET } from "../../Infrastructures/Cross-Cutting/Config";
+import { TaskRepository } from "../../Infrastructures/Repository/TaskRepository";
+import { UserRepository } from "../../Infrastructures/Repository/UserRepository";
 const userRepository = new UserRepository();
 const taskRepository = new TaskRepository();
 

@@ -1,4 +1,4 @@
-import { logger } from "../../Infrastructure/Cross-Cutting/LoggerService";
+import { logger } from "../../Infrastructures/Cross-Cutting/LoggerService";
 
 export function handleTaskResponse(task, res) {
   if (task) {

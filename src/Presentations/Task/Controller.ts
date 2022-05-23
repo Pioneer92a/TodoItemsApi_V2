@@ -1,12 +1,12 @@
 import "reflect-metadata";
-import { TaskApplication } from "../../Application/Task/TaskApplication";
+import { TaskApplication } from "../../Applications/Task/TaskApplication";
 import {
   AddNewTaskDTO,
   FetchAllTasksDTO,
   GeneralTaskDTO,
   UpdateTaskDTO,
-} from "../../Application/Task/TaskDTO";
-import { container } from "../../Infrastructure/Cross-Cutting/Container";
+} from "../../Applications/Task/TaskDTO";
+import { container } from "../../Infrastructures/Cross-Cutting/Container";
 import {
   handleError,
   handleTaskResponse,
