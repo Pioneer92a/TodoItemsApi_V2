@@ -5,7 +5,7 @@ import {
   logger,
   loggerMidleware,
 } from "../../Infrastructure/Cross-Cutting/LoggerService";
-import { auth2 as isLoggedInCb } from "../Middleware/Auth";
+import { isLoggedInCb } from "../Middleware/Auth";
 import { passport } from "../Services/PassportService";
 import { router as taskRouter } from "../Task/Router"; // import tasks router
 import { UserController } from "../User/Controller";

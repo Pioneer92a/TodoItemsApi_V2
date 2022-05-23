@@ -6,12 +6,7 @@ import { EntityFactory } from "../../Domain/EntityFactory";
 import { UserEntity } from "../../Domain/User/Entity";
 import { UserRepositoryI } from "../../Domain/User/Repository";
 import { JWT_SECRET } from "../../Infrastructure/Cross-Cutting/Config";
-import {
-  checkIfUserExists,
-  checkIfUserLoggedIn,
-  validateUserByEmail,
-  validateUserByUUID,
-} from "../ApplicationServices";
+import { throwErrorUfUserNotFoundByEmail } from "../ApplicationServices";
 import { FindOrAddUserDTO, GeneralUserDTO } from "./UserDTO";
 
 @autoInjectable()
@@ -45,24 +40,19 @@ export class UserApplication {
   }
 
   async loginUser(payload: FindOrAddUserDTO): Promise<UserEntity> {
-    await validateUserByEmail(payload.email, this.userRepository);
+    await throwErrorUfUserNotFoundByEmail(payload.email, this.userRepository);
     return await this.userRepository.login(payload.email);
   }
 
   async logoutUser(payload: GeneralUserDTO): Promise<UserEntity> {
-    await validateUserByUUID(payload.uuid, this.userRepository);
     return await this.userRepository.logout(payload.uuid);
   }
 
   async fetchUserbyUUID(payload: GeneralUserDTO): Promise<UserEntity> {
-    await checkIfUserExists(payload.uuid, this.userRepository);
-    await checkIfUserLoggedIn(payload.uuid, this.userRepository);
     return await this.userRepository.fetchUserbyUUID(payload.uuid);
   }
 
   async deleteUser(payload: GeneralUserDTO): Promise<UserEntity> {
-    await checkIfUserExists(payload.uuid, this.userRepository);
-    await checkIfUserLoggedIn(payload.uuid, this.userRepository);
     return await this.userRepository.deleteUser(payload.uuid);
   }
 }

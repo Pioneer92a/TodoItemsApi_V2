@@ -2,16 +2,19 @@ import { PrismaClient } from "@prisma/client";
 import { EntityFactory } from "../../Domain/EntityFactory";
 import { TaskEntity } from "../../Domain/Task/Entity";
 import { TaskRepositoryI } from "../../Domain/Task/Repository";
-import { Task_Pagination_Limit } from "../Cross-Cutting/Config";
 const prisma = new PrismaClient();
 
 export class TaskRepository implements TaskRepositoryI {
   async addNewTask(newTask: TaskEntity): Promise<TaskEntity> {
     try {
+      const _dueDate = new Date();
+      _dueDate.setDate(_dueDate.getDate() + 14); // set due date after two weeks by default ... change it later
+
       const newTaskCreated = await prisma.task.create({
         data: {
           uuid: newTask.uuid,
           name: newTask.name,
+          dueDate: newTask.dueDate,
           user: {
             connectOrCreate: {
               where: {
@@ -30,10 +33,13 @@ export class TaskRepository implements TaskRepositoryI {
           user: true,
         },
       });
+      // console.log(newTaskCreated);
+
       return EntityFactory.createTask(
         newTaskCreated.uuid,
         newTaskCreated.name,
-        newTaskCreated.user.uuid
+        newTaskCreated.user.uuid,
+        newTaskCreated.dueDate
       );
       //
     } catch (e) {
@@ -57,7 +63,8 @@ export class TaskRepository implements TaskRepositoryI {
         return EntityFactory.createTask(
           deletedTask.uuid,
           deletedTask.name,
-          deletedTask.user.uuid
+          deletedTask.user.uuid,
+          deletedTask.dueDate
         );
     } catch (e) {
       console.log(e);
@@ -79,7 +86,8 @@ export class TaskRepository implements TaskRepositoryI {
       return EntityFactory.createTask(
         getTask.uuid,
         getTask.name,
-        getTask.user.uuid
+        getTask.user.uuid,
+        getTask.dueDate
       );
     } catch (e) {
       console.log(e);
@@ -90,7 +98,8 @@ export class TaskRepository implements TaskRepositoryI {
   async updateTask(
     taskId: number,
     updatedName: string,
-    _completed: boolean
+    _completed: boolean,
+    _dueDate: Date
   ): Promise<TaskEntity> {
     try {
       const updateTask = await prisma.task.update({
@@ -100,15 +109,18 @@ export class TaskRepository implements TaskRepositoryI {
         data: {
           name: updatedName,
           completed: _completed,
+          dueDate: _dueDate,
         },
         include: {
           user: true,
         },
       });
+
       return EntityFactory.createTask(
         updateTask.uuid,
         updateTask.name,
-        updateTask.user.uuid
+        updateTask.user.uuid,
+        updateTask.dueDate
       ); // return task
     } catch (e) {
       console.log(e);
@@ -116,11 +128,11 @@ export class TaskRepository implements TaskRepositoryI {
     }
   }
 
-  async fetchAllTasks(page: number): Promise<TaskEntity[]> {
+  async fetchAllTasks(start: number, limit: number): Promise<TaskEntity[]> {
     // get The task
     const fetchAllTasks = await prisma.task.findMany({
-      skip: page - 1, // start from the parameter page by skipping page-1
-      take: parseInt(Task_Pagination_Limit), // limit
+      skip: start - 1, // start from the parameter page by skipping page-1
+      take: limit, // limit
       include: {
         user: true,
       },
@@ -131,7 +143,8 @@ export class TaskRepository implements TaskRepositoryI {
       fetchAllTasksEdited[index] = EntityFactory.createTask(
         task.uuid,
         task.name,
-        task.user.uuid
+        task.user.uuid,
+        task.dueDate
       );
     });
     return fetchAllTasksEdited;

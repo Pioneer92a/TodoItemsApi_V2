@@ -1,12 +1,13 @@
 export class AddNewTaskDTO {
   name: string;
   userUUID: string;
-  constructor(_name: string, _userUUID: string) {
+  dueDate?: Date;
+  constructor(_name: string, _userUUID: string, _dueDate?: string) {
     throwErrorIfNoName(_name);
-    throwErrorIfNoUserUUID(_userUUID);
     //
     this.name = _name;
     this.userUUID = _userUUID;
+    this.dueDate = new Date(_dueDate);
   }
 }
 
@@ -27,11 +28,13 @@ export class UpdateTaskDTO {
   userUUID: string;
   name: string;
   completed: boolean;
+  dueDate: Date;
   constructor(
     _taskId: string,
     _userUUID: string,
     _name: string,
-    _completed: boolean
+    _completed: boolean,
+    _dueDate: string
   ) {
     throwErrorIfNoId(_taskId);
     throwErrorIfNoUserUUID(_userUUID);
@@ -40,17 +43,20 @@ export class UpdateTaskDTO {
     this.userUUID = _userUUID;
     this.name = _name;
     this.completed = _completed;
+    this.dueDate = new Date(_dueDate);
   }
 }
 
 export class FetchAllTasksDTO {
-  page: number;
+  start: number;
+  limit: number;
   userUUID: string;
-  constructor(_page: string, _userUUID: string) {
-    throwErrorIfNoOffsetDetails(_page);
+  constructor(_start: string, _limit: string, _userUUID: string) {
+    throwErrorIfNoOffsetDetails(_start);
     throwErrorIfNoUserUUID(_userUUID);
     //
-    this.page = parseInt(_page);
+    this.start = parseInt(_start);
+    this.limit = parseInt(_limit);
     this.userUUID = _userUUID;
   }
 }

@@ -37,7 +37,7 @@ User Routes cleared:
 
    TASK ROUTES: note that below operations will be performed only if user is marked logged in from database
 
-a. post('/task') -> create a new task
+a. post('/newTask') -> create a new task
 body: name
 
 b. get('/task/:id') -> read a task
@@ -46,6 +46,6 @@ c. post('/task/update/:id') -> update a task
 
 d. delete('/task/:id') -> delete a task
 
-e. "/task/getAll/:page" -> get tasks of a user starting from page. Limit is defined in .env file. Offset pagination is implemented here
+e. "/task/getAll/:start/:limit" -> get 'limit' number of tasks starting from 'start'
 
 TODO: middlewares need to be implemented in tasks

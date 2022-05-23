@@ -9,71 +9,103 @@ const prisma = new PrismaClient();
  */
 export class UserRepository implements UserRepositoryI {
   async logout(userUUID: string): Promise<UserEntity> {
-    const user = await prisma.user.update({
-      where: {
-        uuid: userUUID,
-      },
-      data: {
-        isLoggedIn: false,
-      },
-    });
-    return EntityFactory.createUser(user.uuid, user.name, user.email); //
+    try {
+      const user = await prisma.user.update({
+        where: {
+          uuid: userUUID,
+        },
+        data: {
+          isLoggedIn: false,
+        },
+      });
+      return EntityFactory.createUser(user.uuid, user.name, user.email); //
+    } catch (e) {
+      console.log(e);
+      return null;
+    }
   }
 
   async login(userEmail: string): Promise<UserEntity> {
-    const user = await prisma.user.update({
-      where: {
-        email: userEmail,
-      },
-      data: {
-        isLoggedIn: true,
-      },
-    });
-    return EntityFactory.createUser(user.uuid, user.name, user.email); //
+    try {
+      const user = await prisma.user.update({
+        where: {
+          email: userEmail,
+        },
+        data: {
+          isLoggedIn: true,
+        },
+      });
+      return EntityFactory.createUser(user.uuid, user.name, user.email); //
+    } catch (e) {
+      console.log(e);
+      return null;
+    }
   }
 
   async addNewUser(newUser: UserEntity): Promise<UserEntity> {
-    const user = await prisma.user.create({
-      data: {
-        uuid: newUser.uuid,
-        email: newUser.email,
-        name: newUser.name,
-        isLoggedIn: true,
-      },
-    });
-    return EntityFactory.createUser(user.uuid, user.name, user.email);
+    try {
+      const user = await prisma.user.create({
+        data: {
+          uuid: newUser.uuid,
+          email: newUser.email,
+          name: newUser.name,
+          isLoggedIn: true,
+        },
+      });
+      return EntityFactory.createUser(user.uuid, user.name, user.email);
+      //
+    } catch (e) {
+      console.log(e);
+      return null;
+    }
   }
 
   async fetchUserbyUUID(userUUID: string): Promise<UserEntity> {
-    const user = await prisma.user.findUnique({
-      where: {
-        uuid: userUUID,
-      },
-    });
-    return EntityFactory.createUser(user.uuid, user.name, user.email);
+    try {
+      const user = await prisma.user.findUnique({
+        where: {
+          uuid: userUUID,
+        },
+      });
+      return EntityFactory.createUser(user.uuid, user.name, user.email);
+      //
+    } catch (e) {
+      console.log(e);
+      return null;
+    }
   }
-
   async fetchUserLoginStatus(userUUID: string): Promise<boolean> {
-    const user = await prisma.user.findUnique({
-      where: {
-        uuid: userUUID,
-      },
-    });
-    if (!user) return null;
-    else return user.isLoggedIn;
+    try {
+      const user = await prisma.user.findUnique({
+        where: {
+          uuid: userUUID,
+        },
+      });
+      if (!user) return null;
+      else return user.isLoggedIn;
+      //
+    } catch (e) {
+      console.log(e);
+      return null;
+    }
   }
-
   async fetchUserbyEmail(userEmail: string): Promise<UserEntity> {
-    const user = await prisma.user.findUnique({
-      where: {
-        email: userEmail,
-      },
-    });
-    if (!user) return null;
-    else return EntityFactory.createUser(user.uuid, user.name, user.email); //
+    try {
+      const user = await prisma.user.findUnique({
+        where: {
+          email: userEmail,
+        },
+      });
+      if (!user) return null;
+      else return EntityFactory.createUser(user.uuid, user.name, user.email); //
+    } catch (e) {
+      console.log(e);
+      return null;
+    }
   }
 
   async deleteUser(userUUID: string): Promise<UserEntity> {
+    try {
       // find the user first
       const userToDelete = await prisma.user.findUnique({
         where: {
@@ -104,5 +136,9 @@ export class UserRepository implements UserRepositoryI {
         transaction[1].name,
         transaction[1].email
       );
+    } catch (e) {
+      console.log(e);
+      return null;
+    }
   }
 }

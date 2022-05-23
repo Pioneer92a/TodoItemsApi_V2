@@ -11,21 +11,21 @@ datasource db {
 }
 
 model User {
-  id         Int       @id @default(autoincrement())
-  uuid       String    @unique
-  email      String    @unique
+  id         Int      @id @default(autoincrement())
+  uuid       String   @unique
+  email      String   @unique
   name       String
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime? @updatedAt
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
   tasks      Task[]
-  isLoggedIn Boolean   @default(false)
+  isLoggedIn Boolean  @default(false)
 }
 
 model Task {
   id        Int       @id @default(autoincrement())
   uuid      String    @unique
   name      String
-  dueDate   DateTime?
+  dueDate   DateTime? @db.Date
   completed Boolean   @default(false)
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt

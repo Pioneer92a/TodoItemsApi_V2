@@ -10,8 +10,13 @@ export class EntityFactory {
     return _user;
   }
 
-  static createTask(_uuid: string, _name: string, _userUUID): TaskEntity {
-    const _task = new TaskEntity(_uuid, _name, _userUUID);
+  static createTask(
+    _uuid: string,
+    _name: string,
+    _userUUID: string,
+    _dueDate: Date
+  ): TaskEntity {
+    const _task = new TaskEntity(_uuid, _name, _userUUID, _dueDate);
     return _task;
   }
 }

@@ -39,7 +39,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon BIN/www.ts -p",
+    "start": "nodemon src/Presentation/BIN/www.ts -p",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint . --ext .ts",
     "debug": "ts-node BIN/www.ts -p 3000 -d true"

@@ -6,11 +6,6 @@ import { TaskEntity } from "../../Domain/Task/Entity";
 import { TaskRepositoryI } from "../../Domain/Task/Repository";
 import { UserRepositoryI } from "../../Domain/User/Repository";
 import {
-  checkIfTaskExists,
-  checkIfUserExists,
-  checkIfUserLoggedIn,
-} from "../ApplicationServices";
-import {
   AddNewTaskDTO,
   FetchAllTasksDTO,
   GeneralTaskDTO,
@@ -33,41 +28,34 @@ export class TaskApplication {
     const taskEntity = EntityFactory.createTask(
       uuidv1(),
       payload.name,
-      payload.userUUID
+      payload.userUUID,
+      payload.dueDate
     );
-    await checkIfUserExists(taskEntity.userUUID, this.userRepository);
-    await checkIfUserLoggedIn(taskEntity.userUUID, this.userRepository);
+
     return await this.taskRepository.addNewTask(taskEntity); // send the entity to domain and return the response
   }
 
   async deleteTask(payload: GeneralTaskDTO): Promise<TaskEntity> {
-    await checkIfUserExists(payload.userUUID, this.userRepository);
-    await checkIfUserLoggedIn(payload.userUUID, this.userRepository);
-    await checkIfTaskExists(Number(payload.taskId), this.taskRepository);
     return await this.taskRepository.deleteTask(payload.taskId);
   }
 
   async fetchTask(payload: GeneralTaskDTO): Promise<TaskEntity> {
-    await checkIfUserExists(payload.userUUID, this.userRepository);
-    await checkIfUserLoggedIn(payload.userUUID, this.userRepository);
-    await checkIfTaskExists(Number(payload.taskId), this.taskRepository);
     return await this.taskRepository.fetchTask(payload.taskId);
   }
 
   async updateTask(payload: UpdateTaskDTO): Promise<TaskEntity> {
-    await checkIfUserExists(payload.userUUID, this.userRepository);
-    await checkIfUserLoggedIn(payload.userUUID, this.userRepository);
-    await checkIfTaskExists(Number(payload.taskId), this.taskRepository);
     return await this.taskRepository.updateTask(
       payload.taskId,
       payload.name,
-      payload.completed
+      payload.completed,
+      payload.dueDate
     );
   }
 
   async fetchAllTasks(payload: FetchAllTasksDTO): Promise<TaskEntity[]> {
-    await checkIfUserExists(payload.userUUID, this.userRepository);
-    await checkIfUserLoggedIn(payload.userUUID, this.userRepository);
-    return await this.taskRepository.fetchAllTasks(payload.page);
+    return await this.taskRepository.fetchAllTasks(
+      payload.start,
+      payload.limit
+    );
   }
 }

@@ -1,14 +1,9 @@
 // in this file, we implement auth.js middleware for the authentication of the user
 
+import AuthServices from "../Services/AuthServices";
 import { handleError } from "../Services/ControllerServices";
-import * as jwt from "jsonwebtoken";
-import { JWT_SECRET } from "../../Infrastructure/Cross-Cutting/Config";
 
-// import { User } from "../../infrastructure/db/model/userMongo"; // import user model
-
-// defining middlewares
-export const auth2 = async (req, res, next) => {
-  //middleware
+export const isLoggedInCb = async (req, res, next) => {
   if (req.user) {
     next();
   } else {
@@ -16,17 +11,13 @@ export const auth2 = async (req, res, next) => {
   }
 };
 
-export const auth = async (req, res, next) => {
-  next();
-};
-
 export const userAuth = async (req, res, next) => {
   try {
-    const token = req.header("Authorization").replace("Bearer ", "");
-    const decoded = jwt.verify(token, JWT_SECRET);
-    req.params.uuid = decoded._uuid;
-    if (!req.params.uuid)
-      throw new Error(`request body doesn't contain userUUID info`);
+    const { _uuid } = AuthServices.decodeUUIDFromHeader(req); // destructuring concept used ... it is decoded._uuid actually
+    AuthServices.throwErrorIfNoUUID(_uuid);
+    await AuthServices.throwErrorIfUserDoesNotExist(_uuid);
+    await AuthServices.throwErrorIfUserNotLoggedIn(_uuid);
+    req.params.uuid = _uuid;
     next();
   } catch (error) {
     handleError(error, res);
@@ -35,12 +26,26 @@ export const userAuth = async (req, res, next) => {
 
 export const taskAuth = async (req, res, next) => {
   try {
-    const token = req.header("Authorization").replace("Bearer ", "");
-    const decoded = jwt.verify(token, JWT_SECRET);
-    req.body.userUUID = decoded._uuid;
-    if (!req.body.userUUID)
-      throw new Error(`request body doesn't contain userUUID info`);
-    next();
+    const { _uuid } = AuthServices.decodeUUIDFromHeader(req); // destructuring concept used ... it is decoded._uuid actually
+    AuthServices.throwErrorIfNoUUID(_uuid);
+    req.body.userUUID = _uuid; // attach the userUUID with the request
+    await AuthServices.throwErrorIfUserDoesNotExist(_uuid);
+    await AuthServices.throwErrorIfUserNotLoggedIn(_uuid);
+
+    // skip the rest if request is 'create new task' or 'getAll'
+    if (
+      req.originalUrl.includes("newtask") ||
+      req.originalUrl.includes("task/getAll")
+    ) {
+      next();
+    }
+
+    // for cases of read, delete, update, do the following:
+    else {
+      await AuthServices.throwErrorIfTaskDoesNotExist(Number(req.params.id));
+      next();
+    }
+    //
   } catch (error) {
     handleError(error, res);
   }

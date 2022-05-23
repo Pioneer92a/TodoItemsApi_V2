@@ -7,7 +7,8 @@ export interface TaskRepositoryI {
   updateTask(
     taskId: number,
     name?: string,
-    completed?: boolean
+    completed?: boolean,
+    dueDate?: Date
   ): Promise<TaskEntity>;
-  fetchAllTasks(page: number): Promise<TaskEntity[]>;
+  fetchAllTasks(start: number, limit: number): Promise<TaskEntity[]>;
 }

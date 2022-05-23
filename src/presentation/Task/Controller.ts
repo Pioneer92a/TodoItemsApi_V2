@@ -20,7 +20,12 @@ const taskApplication = container.resolve(TaskApplication);
 export class TaskController {
   async addNewTask(req, res) {
     try {
-      const addNewTaskDTO = new AddNewTaskDTO(req.body.name, req.body.userUUID);
+      const addNewTaskDTO = new AddNewTaskDTO(
+        req.body.name,
+        req.body.userUUID,
+        req.body.dueDate
+      );
+
       const task = await taskApplication.addNewTask(addNewTaskDTO);
       handleTaskResponse(task, res);
     } catch (e) {
@@ -51,13 +56,15 @@ export class TaskController {
     }
   }
 
+  // update all or some of properties including name, completion status, or dueDate
   async updateTask(req, res) {
     try {
       const updateTaskDTO = new UpdateTaskDTO(
         req.params.id,
         req.body.userUUID,
         req.body.name,
-        req.body.completed
+        req.body.completed,
+        req.body.dueDate
       );
       const task = await taskApplication.updateTask(updateTaskDTO);
       handleTaskResponse(task, res);
@@ -69,7 +76,8 @@ export class TaskController {
   async fetchAllTasks(req, res) {
     try {
       const fetchAllTasksDTO = new FetchAllTasksDTO(
-        req.params.page,
+        req.params.start,
+        req.params.limit,
         req.body.userUUID
       );
       const task = await taskApplication.fetchAllTasks(fetchAllTasksDTO);
