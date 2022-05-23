@@ -1,9 +1,9 @@
-import { UserApplication } from "../../Applications/User/UserApplication";
+import { UserApplication } from "../../Application/User/UserApplication";
 import {
   FindOrAddUserDTO,
   GeneralUserDTO,
-} from "../../Applications/User/UserDTO";
-import { container } from "../../Infrastructures/Cross-Cutting/Container";
+} from "../../Application/User/UserDTO";
+import { container } from "../../Infrastructure/Cross-Cutting/Container";
 import {
   handleError,
   handleUserResponse,
