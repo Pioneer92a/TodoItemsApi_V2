@@ -10,5 +10,6 @@ export interface TaskRepositoryI {
     completed?: boolean,
     dueDate?: Date
   ): Promise<TaskEntity>;
-  fetchAllTasks(start: number, limit: number): Promise<TaskEntity[]>;
+  fetchAllTasks(page: number, perPage: number): Promise<TaskEntity[]>;
+  fetchTotalTasks(): Promise<number>;
 }

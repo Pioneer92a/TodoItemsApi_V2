@@ -48,15 +48,15 @@ export class UpdateTaskDTO {
 }
 
 export class FetchAllTasksDTO {
-  start: number;
-  limit: number;
+  page: number;
+  perPage: number;
   userUUID: string;
-  constructor(_start: string, _limit: string, _userUUID: string) {
-    throwErrorIfNoOffsetDetails(_start);
+  constructor(page: string, perPage: string, _userUUID: string) {
+    // throwErrorIfNoOffsetDetails(_start);
     throwErrorIfNoUserUUID(_userUUID);
     //
-    this.start = parseInt(_start);
-    this.limit = parseInt(_limit);
+    this.page = parseInt(page);
+    this.perPage = parseInt(perPage);
     this.userUUID = _userUUID;
   }
 }

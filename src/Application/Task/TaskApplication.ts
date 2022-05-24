@@ -5,6 +5,8 @@ import { EntityFactory } from "../../Domain/EntityFactory";
 import { TaskEntity } from "../../Domain/Task/Entity";
 import { TaskRepositoryI } from "../../Domain/Task/Repository";
 import { UserRepositoryI } from "../../Domain/User/Repository";
+import PaginatedData from "./PaginatedData";
+import PaginationOptions from "./PaginationOptions";
 import {
   AddNewTaskDTO,
   FetchAllTasksDTO,
@@ -52,10 +54,22 @@ export class TaskApplication {
     );
   }
 
-  async fetchAllTasks(payload: FetchAllTasksDTO): Promise<TaskEntity[]> {
-    return await this.taskRepository.fetchAllTasks(
-      payload.start,
-      payload.limit
+  async fetchAllTasks(
+    payload: FetchAllTasksDTO
+  ): Promise<PaginatedData<TaskEntity>> {
+    //
+    const totalTasks = await this.taskRepository.fetchTotalTasks();
+    const paginationOptions = new PaginationOptions(
+      payload.page,
+      payload.perPage,
+      totalTasks
     );
+    //
+    const selectedTasks = await this.taskRepository.fetchAllTasks(
+      paginationOptions.getOffset(),
+      paginationOptions.perPage
+    );
+
+    return new PaginatedData<TaskEntity>(paginationOptions, selectedTasks);
   }
 }

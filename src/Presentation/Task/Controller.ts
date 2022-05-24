@@ -76,13 +76,14 @@ export class TaskController {
   async fetchAllTasks(req, res) {
     try {
       const fetchAllTasksDTO = new FetchAllTasksDTO(
-        req.params.start,
-        req.params.limit,
+        req.query.page,
+        req.query.perPage,
         req.body.userUUID
       );
-      const task = await taskApplication.fetchAllTasks(fetchAllTasksDTO);
+
+      const tasks = await taskApplication.fetchAllTasks(fetchAllTasksDTO);
       //  handleResponseForTask(task, res);
-      return res.send({ AllTasks: task });
+      return res.send(tasks);
     } catch (e) {
       handleError(e, res);
     }

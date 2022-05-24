@@ -18,11 +18,15 @@ router.delete("/task/:id", taskAuth, taskControllers.deleteTask);
 // route for updating a task
 router.post("/task/update/:id", taskAuth, taskControllers.updateTask);
 
+// // route for reading a task
+// router.get(
+//   "/task/getAll/:start/:limit",
+//   taskAuth,
+//   taskControllers.fetchAllTasks
+// );
+
 // route for reading a task
-router.get(
-  "/task/getAll/:start/:limit",
-  taskAuth,
-  taskControllers.fetchAllTasks
-);
+// router.get("/task/getAll", taskAuth, taskControllers.fetchAllTasks);
+router.get("/getAllTasks", taskAuth, taskControllers.fetchAllTasks);
 
 export { router };

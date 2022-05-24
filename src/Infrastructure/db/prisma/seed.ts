@@ -24,7 +24,45 @@ async function main() {
       },
     });
   }
+  // append my own username at end
+  await prisma.user.upsert({
+    where: { email: "shahzaib.atif@carbonteq.com" },
+    update: {},
+    create: {
+      email: "shahzaib.atif@carbonteq.com",
+      name: "Shahzaib",
+      uuid: faker.datatype.uuid(),
+    },
+  });
+
+  for (let index = 0; index < 45; index++) {
+    await prisma.task.create({
+      data: {
+        uuid: faker.datatype.uuid(),
+        name: `task no. ${index + 1}`,
+        dueDate: faker.date.soon(14),
+        user: {
+          connectOrCreate: {
+            where: {
+              email: "shahzaib.atif@carbonteq.com",
+            },
+            create: {
+              email: "UserNotFound@prisma.io",
+              name: "UserNotFound",
+              uuid: "UserNotFound",
+              isLoggedIn: true,
+            },
+          },
+        },
+      },
+      include: {
+        user: true,
+      },
+    });
+  }
 }
+
+// add tasks to my own username
 
 main()
   .catch((e) => {

@@ -128,11 +128,10 @@ export class TaskRepository implements TaskRepositoryI {
     }
   }
 
-  async fetchAllTasks(start: number, limit: number): Promise<TaskEntity[]> {
-    // get The task
+  async fetchAllTasks(page: number, perPage: number): Promise<TaskEntity[]> {
     const fetchAllTasks = await prisma.task.findMany({
-      skip: start - 1, // start from the parameter page by skipping page-1
-      take: limit, // limit
+      skip: page - 1, // start from the parameter page by skipping page-1
+      take: perPage, // limit
       include: {
         user: true,
       },
@@ -148,5 +147,10 @@ export class TaskRepository implements TaskRepositoryI {
       );
     });
     return fetchAllTasksEdited;
+  }
+
+  async fetchTotalTasks(): Promise<number> {
+    const totalTasks = await prisma.task.count();
+    return totalTasks;
   }
 }

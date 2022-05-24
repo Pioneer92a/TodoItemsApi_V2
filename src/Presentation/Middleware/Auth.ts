@@ -35,7 +35,7 @@ export const taskAuth = async (req, res, next) => {
     // skip the rest if request is 'create new task' or 'getAll'
     if (
       req.originalUrl.includes("newtask") ||
-      req.originalUrl.includes("task/getAll")
+      req.originalUrl.includes("getAllTasks")
     ) {
       next();
     }
