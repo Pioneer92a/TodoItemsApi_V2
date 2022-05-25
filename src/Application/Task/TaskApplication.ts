@@ -5,8 +5,8 @@ import { EntityFactory } from "../../Domain/EntityFactory";
 import { TaskEntity } from "../../Domain/Task/Entity";
 import { TaskRepositoryI } from "../../Domain/Task/Repository";
 import { UserRepositoryI } from "../../Domain/User/Repository";
-import PaginatedData from "./PaginatedData";
-import PaginationOptions from "./PaginationOptions";
+import PaginatedData from "../Services/PaginatedData";
+import PaginationOptions from "../Services/PaginationOptions";
 import {
   AddNewTaskDTO,
   FetchAllTasksDTO,
