@@ -1,5 +1,7 @@
-import PaginationOptions from "./PaginationOptions";
-import PaginationParams from "./PaginationOptions";
+import {
+  default as PaginationOptions,
+  default as PaginationParams,
+} from "./PaginationOptions";
 
 class PaginatedData<T> {
   info: PaginationOptions;

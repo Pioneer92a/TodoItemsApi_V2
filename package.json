@@ -1,8 +1,7 @@
 {
   "dependencies": {
-    "@prisma/client": "^3.11.0",
+    "@prisma/client": "^3.14.0",
     "body-parser": "^1.20.0",
-    "bunyan": "^1.8.15",
     "commander": "^9.2.0",
     "cookie-session": "^2.0.0",
     "cors": "^2.8.5",
@@ -14,7 +13,6 @@
     "passport-google-oauth20": "^2.0.0",
     "pino": "^7.11.0",
     "pino-pretty": "^7.6.1",
-    "prisma-pagination": "^0.2.3",
     "reflect-metadata": "^0.1.13",
     "tsyringe": "^4.6.0",
     "uuid": "^8.3.2"
@@ -23,7 +21,6 @@
     "@types/cookie-session": "^2.0.44",
     "@types/cors": "^2.8.12",
     "@types/express": "^4.17.13",
-    "@types/faker": "^6.6.9",
     "@types/node": "^17.0.29",
     "@types/passport": "^1.0.7",
     "@typescript-eslint/eslint-plugin": "^5.16.0",
@@ -46,8 +43,8 @@
     "debug": "ts-node BIN/www.ts -p 3000 -d true"
   },
   "prisma": {
-    "schema": "./src/infrastructure/db/prisma/schema.prisma",
-    "seed": "ts-node ./src/infrastructure/db/prisma/seed.ts"
+    "schema": "./src/Infrastructure/db/prisma/schema.prisma",
+    "seed": "ts-node ./src/Infrastructure/db/prisma/seed.ts"
   },
   "author": "",
   "license": "ISC",

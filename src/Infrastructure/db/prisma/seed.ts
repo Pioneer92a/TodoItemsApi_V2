@@ -2,8 +2,8 @@
 
 import { PrismaClient } from "@prisma/client";
 import * as faker from "faker";
+import { logger } from "../../../Infrastructure/Cross-Cutting/LoggerService";
 import { SEED_DATA_LIMIT } from "../../Cross-Cutting/Config";
-import { logger } from "../../Cross-Cutting/LoggerService";
 const prisma = new PrismaClient();
 
 const seedDataLimit = parseInt(SEED_DATA_LIMIT);
