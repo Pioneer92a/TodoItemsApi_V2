@@ -8,5 +8,11 @@
     "*.tsx": "${capture}.ts",
     "tsconfig.json": "tsconfig.*.json",
     "package.json": "package-lock.json, yarn.lock"
+  },
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll": true,
+    "source.organizeImports": true,
+    "source.sortMembers": true
   }
 }

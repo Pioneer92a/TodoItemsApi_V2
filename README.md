@@ -14,7 +14,7 @@ Notes:
 
 5. JWT token is generated in application layer during login. It is just used in Auth later to know uuid of user that is making a request. login an logout are still managed by isLoggedIn flag in the database.
 
-6. use "docker compose up -d --force-recreate --build mysql" to run mysql service on docker. Remove service name 'mysql' if you want to run both todo-api and mysql services on docker. The connection url changes for each scenario. Look in the .env file for that.
+6. use "docker compose up -d --force-recreate --build mysql" to run mysql service on docker. Remove the build option if there are no changes in project. Remove service name 'mysql' if you want to run both todo-api and mysql services on docker. The connection url changes for each scenario. Look in the .env file for that.
 
 User Routes cleared:
 
