@@ -57,7 +57,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon src/Presentation/BIN/www.ts -p",
+    "start": "nest start --watch",
     "test": "jest -i",
     "lint": "eslint . --ext .ts",
     "debug": "ts-node BIN/www.ts -p 3000 -d true"

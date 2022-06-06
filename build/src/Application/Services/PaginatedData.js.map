@@ -1,1 +1,0 @@
-{"version":3,"file":"PaginatedData.js","sourceRoot":"","sources":["../../../../src/Application/Services/PaginatedData.ts"],"names":[],"mappings":";;AAKA,MAAM,aAAa;IAGjB,YAAY,IAAsB,EAAE,IAAS;QAC3C,IAAI,CAAC,IAAI,GAAG,IAAI,CAAC;QACjB,IAAI,CAAC,IAAI,GAAG,IAAI,CAAC;IACnB,CAAC;CACF;AAED,kBAAe,aAAa,CAAC"}

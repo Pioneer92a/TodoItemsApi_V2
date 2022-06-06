@@ -4,7 +4,7 @@ import {
   NestModule,
   RequestMethod,
 } from "@nestjs/common";
-import { LoggerMiddleware } from "./logger.middleware";
+import { LoggerMiddleware } from "./Middleware/logger.middleware";
 import { TaskController } from "./Task/task.controller";
 import { TaskModule } from "./Task/task.module";
 import { UserController } from "./User/user.controller";
