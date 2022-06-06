@@ -6,12 +6,10 @@ import {
   LoginOrAddUserDTO,
 } from "../../Application/User/UserDTO";
 import { container } from "../../Infrastructure/Cross-Cutting/Container";
-import { UserService } from "./user.service";
 const userApplication = container.resolve(UserApplication);
 
 @Controller("user")
 export class UserController {
-  constructor(private readonly userService: UserService) {}
 
   @Get("/fetch")
   async fetchUser(@Req() req: Request) {

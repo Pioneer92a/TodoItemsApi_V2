@@ -1,3 +1,4 @@
+import { HttpException, HttpStatus } from "@nestjs/common";
 class PaginationOptions {
   currentPage: number;
   perPage: number;
@@ -13,6 +14,7 @@ class PaginationOptions {
     this.setTotalPages();
     this.setNextPage();
     this.setPreviousPage();
+    this.throwErrorIfCurrentPageExceedsLimit();
   }
 
   private setTotalPages() {
@@ -32,6 +34,14 @@ class PaginationOptions {
 
   getOffset() {
     return (this.currentPage - 1) * this.perPage + 1;
+  }
+
+  throwErrorIfCurrentPageExceedsLimit() {
+    if (this.currentPage > this.totalPages)
+      throw new HttpException(
+        "requested page exceeds the max number of pages",
+        HttpStatus.NOT_ACCEPTABLE
+      );
   }
 }
 

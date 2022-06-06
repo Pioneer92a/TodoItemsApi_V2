@@ -9,18 +9,24 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppModule = void 0;
 const common_1 = require("@nestjs/common");
 const logger_middleware_1 = require("./logger.middleware");
-const login_module_1 = require("./NestFiles/login.module");
+const task_controller_1 = require("./Task/task.controller");
+const task_module_1 = require("./Task/task.module");
+const user_controller_1 = require("./User/user.controller");
 const user_module_1 = require("./User/user.module");
 let AppModule = class AppModule {
     configure(consumer) {
         consumer
             .apply(logger_middleware_1.LoggerMiddleware)
-            .forRoutes({ path: "user/fetch", method: common_1.RequestMethod.GET }, { path: "user/logout", method: common_1.RequestMethod.POST }, { path: "user/delete", method: common_1.RequestMethod.DELETE });
+            .exclude({
+            path: "user/login",
+            method: common_1.RequestMethod.GET,
+        })
+            .forRoutes(user_controller_1.UserController, task_controller_1.TaskController);
     }
 };
 AppModule = __decorate([
     (0, common_1.Module)({
-        imports: [user_module_1.UserModule, login_module_1.LoginModule],
+        imports: [user_module_1.UserModule, task_module_1.TaskModule],
     })
 ], AppModule);
 exports.AppModule = AppModule;

@@ -5,20 +5,22 @@ import {
   RequestMethod,
 } from "@nestjs/common";
 import { LoggerMiddleware } from "./logger.middleware";
-import { LoginModule } from "./NestFiles/login.module";
+import { TaskController } from "./Task/task.controller";
+import { TaskModule } from "./Task/task.module";
+import { UserController } from "./User/user.controller";
 import { UserModule } from "./User/user.module";
 
 @Module({
-  imports: [UserModule, LoginModule],
+  imports: [UserModule, TaskModule],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(LoggerMiddleware)
-      .forRoutes(
-        { path: "user/fetch", method: RequestMethod.GET },
-        { path: "user/logout", method: RequestMethod.POST },
-        { path: "user/delete", method: RequestMethod.DELETE }
-      );
+      .exclude({
+        path: "user/login",
+        method: RequestMethod.GET,
+      })
+      .forRoutes(UserController, TaskController);
   }
 }

@@ -17,12 +17,8 @@ const common_1 = require("@nestjs/common");
 const UserApplication_1 = require("../../Application/User/UserApplication");
 const UserDTO_1 = require("../../Application/User/UserDTO");
 const Container_1 = require("../../Infrastructure/Cross-Cutting/Container");
-const user_service_1 = require("./user.service");
 const userApplication = Container_1.container.resolve(UserApplication_1.UserApplication);
 let UserController = class UserController {
-    constructor(userService) {
-        this.userService = userService;
-    }
     async fetchUser(req) {
         const { uuid } = req.body;
         const fetchUserDTO = new UserDTO_1.GeneralUserDTO(uuid);
@@ -73,8 +69,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "deleteUser", null);
 UserController = __decorate([
-    (0, common_1.Controller)("user"),
-    __metadata("design:paramtypes", [user_service_1.UserService])
+    (0, common_1.Controller)("user")
 ], UserController);
 exports.UserController = UserController;
 //# sourceMappingURL=user.controller.js.map

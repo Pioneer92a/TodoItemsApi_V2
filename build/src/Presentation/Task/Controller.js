@@ -18,16 +18,6 @@ class TaskController {
             (0, ControllerServices_1.handleError)(e, res);
         }
     }
-    async deleteTask(req, res) {
-        try {
-            const deleteTaskDTO = new TaskDTO_1.GeneralTaskDTO(req.params.id, req.body.userUUID);
-            const task = await taskApplication.deleteTask(deleteTaskDTO);
-            (0, ControllerServices_1.handleTaskResponse)(task, res);
-        }
-        catch (e) {
-            (0, ControllerServices_1.handleError)(e, res);
-        }
-    }
     async fetchTask(req, res) {
         try {
             const fetchTaskDTO = new TaskDTO_1.GeneralTaskDTO(req.params.id, req.body.userUUID);
@@ -42,6 +32,16 @@ class TaskController {
         try {
             const updateTaskDTO = new TaskDTO_1.UpdateTaskDTO(req.params.id, req.body.userUUID, req.body.name, req.body.completed, req.body.dueDate);
             const task = await taskApplication.updateTask(updateTaskDTO);
+            (0, ControllerServices_1.handleTaskResponse)(task, res);
+        }
+        catch (e) {
+            (0, ControllerServices_1.handleError)(e, res);
+        }
+    }
+    async deleteTask(req, res) {
+        try {
+            const deleteTaskDTO = new TaskDTO_1.GeneralTaskDTO(req.params.id, req.body.userUUID);
+            const task = await taskApplication.deleteTask(deleteTaskDTO);
             (0, ControllerServices_1.handleTaskResponse)(task, res);
         }
         catch (e) {

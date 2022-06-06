@@ -33,19 +33,6 @@ export class TaskController {
     }
   }
 
-  async deleteTask(req, res) {
-    try {
-      const deleteTaskDTO = new GeneralTaskDTO(
-        req.params.id,
-        req.body.userUUID
-      );
-      const task = await taskApplication.deleteTask(deleteTaskDTO);
-      handleTaskResponse(task, res);
-    } catch (e) {
-      handleError(e, res);
-    }
-  }
-
   async fetchTask(req, res) {
     try {
       const fetchTaskDTO = new GeneralTaskDTO(req.params.id, req.body.userUUID);
@@ -67,6 +54,19 @@ export class TaskController {
         req.body.dueDate
       );
       const task = await taskApplication.updateTask(updateTaskDTO);
+      handleTaskResponse(task, res);
+    } catch (e) {
+      handleError(e, res);
+    }
+  }
+
+  async deleteTask(req, res) {
+    try {
+      const deleteTaskDTO = new GeneralTaskDTO(
+        req.params.id,
+        req.body.userUUID
+      );
+      const task = await taskApplication.deleteTask(deleteTaskDTO);
       handleTaskResponse(task, res);
     } catch (e) {
       handleError(e, res);
