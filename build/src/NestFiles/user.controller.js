@@ -14,36 +14,32 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserController = void 0;
 const common_1 = require("@nestjs/common");
-const UserApplication_1 = require("../../Application/User/UserApplication");
-const UserDTO_1 = require("../../Application/User/UserDTO");
-const Container_1 = require("../../Infrastructure/Cross-Cutting/Container");
+const UserApplication_1 = require("../Application/User/UserApplication");
+const UserDTO_1 = require("../Application/User/UserDTO");
+const Container_1 = require("../Infrastructure/Cross-Cutting/Container");
 const user_service_1 = require("./user.service");
 const userApplication = Container_1.container.resolve(UserApplication_1.UserApplication);
 let UserController = class UserController {
     constructor(userService) {
         this.userService = userService;
     }
+    getHello(request) {
+        console.log(request.params.uuid);
+        return this.userService.getHello();
+    }
     async fetchUser(req) {
         const { uuid } = req.body;
         const fetchUserDTO = new UserDTO_1.GeneralUserDTO(uuid);
         return await userApplication.fetchUserbyUUID(fetchUserDTO);
     }
-    async loginOrAddUser(req) {
-        const { name, email } = req.body;
-        const findOrAddUserDTO = new UserDTO_1.LoginOrAddUserDTO(name, email);
-        return await userApplication.findOrAddUser(findOrAddUserDTO);
-    }
-    async logoutUser(req) {
-        const { uuid } = req.body;
-        const logoutUserDTO = new UserDTO_1.GeneralUserDTO(uuid);
-        return await userApplication.logoutUser(logoutUserDTO);
-    }
-    async deleteUser(req) {
-        const { uuid } = req.body;
-        const deleteUserDTO = new UserDTO_1.GeneralUserDTO(uuid);
-        return await userApplication.deleteUser(deleteUserDTO);
-    }
 };
+__decorate([
+    (0, common_1.Get)(),
+    __param(0, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", String)
+], UserController.prototype, "getHello", null);
 __decorate([
     (0, common_1.Get)("/fetch"),
     __param(0, (0, common_1.Req)()),
@@ -51,27 +47,6 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "fetchUser", null);
-__decorate([
-    (0, common_1.Get)("/login"),
-    __param(0, (0, common_1.Req)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", Promise)
-], UserController.prototype, "loginOrAddUser", null);
-__decorate([
-    (0, common_1.Post)("/logout"),
-    __param(0, (0, common_1.Req)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", Promise)
-], UserController.prototype, "logoutUser", null);
-__decorate([
-    (0, common_1.Delete)("/delete"),
-    __param(0, (0, common_1.Req)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", Promise)
-], UserController.prototype, "deleteUser", null);
 UserController = __decorate([
     (0, common_1.Controller)("user"),
     __metadata("design:paramtypes", [user_service_1.UserService])

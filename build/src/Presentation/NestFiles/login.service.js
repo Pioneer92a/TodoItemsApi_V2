@@ -6,21 +6,21 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.LoggerMiddleware = void 0;
+exports.LoginService = void 0;
 const common_1 = require("@nestjs/common");
-const AuthServices_1 = require("../Services/AuthServices");
-let LoggerMiddleware = class LoggerMiddleware {
-    async use(req, res, next) {
-        const { _uuid } = AuthServices_1.default.decodeUUIDFromHeader(req);
-        AuthServices_1.default.throwErrorIfNoUUID(_uuid);
-        await AuthServices_1.default.throwErrorIfUserDoesNotExist(_uuid);
-        await AuthServices_1.default.throwErrorIfUserNotLoggedIn(_uuid);
-        req.body.uuid = _uuid;
-        next();
+let LoginService = class LoginService {
+    googleLogin(req) {
+        if (!req.user) {
+            return "No user from google";
+        }
+        return {
+            message: "User information from google",
+            user: req.user,
+        };
     }
 };
-LoggerMiddleware = __decorate([
+LoginService = __decorate([
     (0, common_1.Injectable)()
-], LoggerMiddleware);
-exports.LoggerMiddleware = LoggerMiddleware;
-//# sourceMappingURL=logger.middleware.js.map
+], LoginService);
+exports.LoginService = LoginService;
+//# sourceMappingURL=login.service.js.map

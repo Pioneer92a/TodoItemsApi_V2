@@ -1,9 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.FindOrAddUserDTO = exports.GeneralUserDTO = void 0;
+exports.LoginOrAddUserDTO = exports.FindOrAddUserDTO = exports.GeneralUserDTO = void 0;
 class GeneralUserDTO {
-    constructor(req) {
-        this.uuid = req.params.uuid;
+    constructor(uuid) {
+        this.uuid = uuid;
         throwErrorIfNoUUID(this.uuid);
     }
 }
@@ -17,6 +17,15 @@ class FindOrAddUserDTO {
     }
 }
 exports.FindOrAddUserDTO = FindOrAddUserDTO;
+class LoginOrAddUserDTO {
+    constructor(name, email) {
+        this.name = name;
+        this.email = email;
+        throwErrorIfNoName(this.name);
+        throwErrorIfNoEmail(this.email);
+    }
+}
+exports.LoginOrAddUserDTO = LoginOrAddUserDTO;
 function throwErrorIfNoName(arg) {
     if (!arg)
         throw new Error("user request does not have uuid");

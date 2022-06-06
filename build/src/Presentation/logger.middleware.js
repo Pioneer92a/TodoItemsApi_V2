@@ -8,9 +8,14 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.LoggerMiddleware = void 0;
 const common_1 = require("@nestjs/common");
+const AuthServices_1 = require("./Services/AuthServices");
 let LoggerMiddleware = class LoggerMiddleware {
-    use(req, res, next) {
-        console.log('Request...');
+    async use(req, res, next) {
+        const { _uuid } = AuthServices_1.default.decodeUUIDFromHeader(req);
+        AuthServices_1.default.throwErrorIfNoUUID(_uuid);
+        await AuthServices_1.default.throwErrorIfUserDoesNotExist(_uuid);
+        await AuthServices_1.default.throwErrorIfUserNotLoggedIn(_uuid);
+        req.body.uuid = _uuid;
         next();
     }
 };
