@@ -1,33 +1,44 @@
+import { HttpException, HttpStatus } from "@nestjs/common";
 import * as jwt from "jsonwebtoken";
 import { JWT_SECRET } from "../../Infrastructure/Cross-Cutting/Config";
 import { TaskRepository } from "../../Infrastructure/Repository/TaskRepository";
 import { UserRepository } from "../../Infrastructure/Repository/UserRepository";
+
 const userRepository = new UserRepository();
 const taskRepository = new TaskRepository();
 
 class AuthServices {
   static decodeUUIDFromHeader(req) {
-    const token = req.header("Authorization").replace("Bearer ", "");
+    let token = req.header("Authorization");
+    AuthServices.throwErrorIfNoUUID(token);
+    token = token.replace("Bearer ", "");
     return jwt.verify(token, JWT_SECRET);
   }
 
   static throwErrorIfNoUUID(uuid: string) {
-    if (!uuid) throw new Error(`request body doesn't contain userUUID info`);
+    if (!uuid)
+      throw new HttpException(
+        `request body doesn't contain userUUID info`,
+        HttpStatus.BAD_REQUEST
+      );
   }
 
   static async throwErrorIfUserDoesNotExist(uuid: string) {
     const user = await userRepository.fetchUserbyUUID(uuid);
-    if (!user) throw new Error("user not found");
+    if (!user)
+      if (!uuid)
+        throw new HttpException(`user not found`, HttpStatus.NOT_FOUND);
   }
 
   static async throwErrorIfUserNotLoggedIn(uuid: string) {
     const isLoggedIn = await userRepository.fetchUserLoginStatus(uuid);
-    if (!isLoggedIn) throw new Error("user not logged in");
+    if (!isLoggedIn)
+      throw new HttpException(`user not logged in`, HttpStatus.UNAUTHORIZED);
   }
 
   static async throwErrorIfTaskDoesNotExist(taskId: number) {
     const task = await taskRepository.fetchTask(taskId);
-    if (!task) throw new Error("the task does not exist");
+    if (!task) throw new HttpException(`task not found`, HttpStatus.NOT_FOUND);
   }
 }
 

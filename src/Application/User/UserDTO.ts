@@ -1,7 +1,7 @@
 export class GeneralUserDTO {
   uuid: string;
-  constructor(req) {
-    this.uuid = req.params.uuid;
+  constructor(uuid) {
+    this.uuid = uuid;
     throwErrorIfNoUUID(this.uuid);
   }
 }
@@ -12,6 +12,17 @@ export class FindOrAddUserDTO {
   constructor(req) {
     this.name = req.user.name.givenName;
     this.email = req.user.emails[0].value;
+    throwErrorIfNoName(this.name);
+    throwErrorIfNoEmail(this.email);
+  }
+}
+
+export class LoginOrAddUserDTO {
+  name: string;
+  email: string;
+  constructor(name, email) {
+    this.name = name;
+    this.email = email;
     throwErrorIfNoName(this.name);
     throwErrorIfNoEmail(this.email);
   }

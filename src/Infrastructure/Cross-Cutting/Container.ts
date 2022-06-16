@@ -10,13 +10,4 @@ container.register("TaskRepositoryI", {
   useClass: TaskRepository,
 });
 
-// container.register("TaskDomainI", {
-//   useClass: TaskDomain,
-// });
-
-// container.register("UserDomainI", {
-//   useClass: UserDomain,
-// });
-
 export { container };
-

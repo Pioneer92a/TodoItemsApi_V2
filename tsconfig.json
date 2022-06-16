@@ -12,7 +12,6 @@
         "removeComments": true,
         "sourceMap": true,
         "skipLibCheck": true,
-        "allowJs": true,
         "target": "es2020",
         "typeRoots": [
             "./node_modules/@types"
