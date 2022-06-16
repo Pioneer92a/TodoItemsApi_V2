@@ -4,11 +4,11 @@ import {
   NestModule,
   RequestMethod,
 } from "@nestjs/common";
-import { LoggerMiddleware } from "./Middleware/logger.middleware";
-import { TaskController } from "./Task/task.controller";
-import { TaskModule } from "./Task/task.module";
-import { UserController } from "./User/user.controller";
-import { UserModule } from "./User/user.module";
+import { LoggerMiddleware } from "src/Presentation/Middleware/logger.middleware";
+import { TaskController } from "src/Presentation/Task/task.controller";
+import { TaskModule } from "src/Presentation/Task/task.module";
+import { UserController } from "src/Presentation/User/user.controller";
+import { UserModule } from "src/Presentation/User/user.module";
 
 @Module({
   imports: [UserModule, TaskModule],

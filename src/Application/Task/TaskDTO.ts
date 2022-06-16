@@ -1,78 +1,48 @@
+import { z } from "zod";
+const stringSchema = z.string().min(1); // shouldn't be empty
+const numberSchema = z.number().min(1); // shoudn't be less than 1
+const uuidSchema = z.string().uuid();
+
 export class AddNewTaskDTO {
-  name: string;
-  userUUID: string;
   dueDate?: Date;
-  constructor(_name: string, _userUUID: string, _dueDate?: string) {
-    throwErrorIfNoName(_name);
-    //
-    this.name = _name;
-    this.userUUID = _userUUID;
+  constructor(
+    readonly name: string,
+    readonly userUUID: string,
+    private readonly _dueDate?: string
+  ) {
+    stringSchema.parse(name); // check if name is existent
     this.dueDate = new Date(_dueDate);
   }
 }
 
 export class GeneralTaskDTO {
-  taskId: number;
-  userUUID: string;
-  constructor(_taskId: string, _userUUID: string) {
-    throwErrorIfNoId(_taskId);
-    throwErrorIfNoUserUUID(_userUUID);
-    //
-    this.taskId = parseInt(_taskId);
-    this.userUUID = _userUUID;
+  constructor(readonly taskId: number, readonly userUUID: string) {
+    numberSchema.parse(taskId); // check if taskId is correct
+    uuidSchema.parse(userUUID); // check if userUUID is correct
   }
 }
 
 export class UpdateTaskDTO {
-  taskId: number;
-  userUUID: string;
-  name: string;
-  completed: boolean;
-  dueDate: Date;
+  dueDate?: Date;
   constructor(
-    _taskId: string,
-    _userUUID: string,
-    _name: string,
-    _completed: boolean,
-    _dueDate: string
+    readonly taskId: number,
+    readonly userUUID: string,
+    readonly name: string,
+    readonly completed: boolean,
+    private readonly _dueDate: string
   ) {
-    throwErrorIfNoId(_taskId);
-    throwErrorIfNoUserUUID(_userUUID);
-    //
-    this.taskId = parseInt(_taskId);
-    this.userUUID = _userUUID;
-    this.name = _name;
-    this.completed = _completed;
+    numberSchema.parse(taskId);
+    uuidSchema.parse(userUUID);
     this.dueDate = new Date(_dueDate);
   }
 }
 
 export class FetchAllTasksDTO {
-  page: number;
-  perPage: number;
-  userUUID: string;
-  constructor(page: string, perPage: string, _userUUID: string) {
-    // throwErrorIfNoOffsetDetails(_start);
-    throwErrorIfNoUserUUID(_userUUID);
-    //
-    this.page = parseInt(page);
-    this.perPage = parseInt(perPage);
-    this.userUUID = _userUUID;
+  constructor(
+    readonly page: number,
+    readonly perPage: number,
+    readonly userUUID: string
+  ) {
+    uuidSchema.parse(userUUID);
   }
-}
-
-function throwErrorIfNoName(arg: string) {
-  if (!arg) throw new Error("name not sent with the request body");
-}
-
-function throwErrorIfNoUserUUID(arg: string) {
-  if (!arg) throw new Error("user UUID not sent with the request body");
-}
-
-function throwErrorIfNoId(arg: string) {
-  if (!arg) throw new Error("user UUID not sent with the request body");
-}
-
-function throwErrorIfNoOffsetDetails(arg: string) {
-  if (!arg) throw new Error("user UUID not sent with the request body");
 }

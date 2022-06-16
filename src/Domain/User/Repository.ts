@@ -1,4 +1,4 @@
-import { UserEntity } from "./Entity";
+import { UserEntity } from "@domain/User/Entity";
 
 export interface UserRepositoryI {
   addNewUser(newUser: UserEntity): Promise<UserEntity>;

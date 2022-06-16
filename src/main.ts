@@ -1,6 +1,6 @@
+import { port } from "@infra/Cross-Cutting/Config";
 import { NestFactory } from "@nestjs/core";
-import { port } from "./Infrastructure/Cross-Cutting/Config";
-import { AppModule } from "./Presentation/app.module";
+import { AppModule } from "src/Presentation/app.module";
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);

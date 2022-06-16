@@ -1,18 +1,18 @@
-import "reflect-metadata";
-import { autoInjectable, inject } from "tsyringe";
-import { v1 as uuidv1 } from "uuid";
-import { EntityFactory } from "../../Domain/EntityFactory";
-import { TaskEntity } from "../../Domain/Task/Entity";
-import { TaskRepositoryI } from "../../Domain/Task/Repository";
-import { UserRepositoryI } from "../../Domain/User/Repository";
-import PaginatedData from "../Services/PaginatedData";
-import PaginationOptions from "../Services/PaginationOptions";
+import PaginatedData from "@app/Pagination/PaginatedData";
+import PaginationOptions from "@app/Pagination/PaginationOptions";
 import {
   AddNewTaskDTO,
   FetchAllTasksDTO,
   GeneralTaskDTO,
   UpdateTaskDTO,
-} from "./TaskDTO";
+} from "@app/Task/TaskDTO";
+import { EntityFactory } from "@domain/EntityFactory";
+import { TaskEntity } from "@domain/Task/Entity";
+import { TaskRepositoryI } from "@domain/Task/Repository";
+import { UserRepositoryI } from "@domain/User/Repository";
+import "reflect-metadata";
+import { autoInjectable, inject } from "tsyringe";
+import { v1 as uuidv1 } from "uuid";
 
 @autoInjectable()
 export class TaskApplication {

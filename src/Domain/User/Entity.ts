@@ -1,15 +1,9 @@
-/**
- * user entity
- */
-export class UserEntity {
-  name: string;
-  email: string;
-  uuid: string;
+import { BaseEntity } from "@domain/BaseEntity";
+
+export class UserEntity extends BaseEntity {
   token?: string;
 
-  constructor(_uuid: string, _name: string, _email: string) {
-    this.name = _name;
-    this.email = _email;
-    this.uuid = _uuid;
+  constructor(uuid: string, name: string, readonly email: string) {
+    super(uuid, name);
   }
 }

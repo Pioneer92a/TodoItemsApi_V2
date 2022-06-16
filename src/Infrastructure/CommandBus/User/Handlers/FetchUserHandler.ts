@@ -1,6 +1,6 @@
+import { UserApplication } from "@app/User/UserApplication";
+import FetchUserCommand from "@infra/CommandBus/User/Commands/FetchUserCommand";
 import { container } from "tsyringe";
-import { UserApplication } from "../../../../Application/User/UserApplication";
-import FetchUserCommand from "../Commands/FetchUserCommand";
 const userApplication = container.resolve(UserApplication);
 
 class FetchUserHandler {

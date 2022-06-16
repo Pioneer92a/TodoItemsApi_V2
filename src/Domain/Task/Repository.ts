@@ -1,4 +1,4 @@
-import { TaskEntity } from "./Entity";
+import { TaskEntity } from "@domain/Task/Entity";
 
 export interface TaskRepositoryI {
   addNewTask(newTask: TaskEntity): Promise<TaskEntity>;

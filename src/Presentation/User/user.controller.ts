@@ -1,16 +1,12 @@
+import { UserApplication } from "@app/User/UserApplication";
+import { GeneralUserDTO, LoginOrAddUserDTO } from "@app/User/UserDTO";
+import { container } from "@infra/Cross-Cutting/Container";
 import { Controller, Delete, Get, Post, Req } from "@nestjs/common";
 import { Request } from "express";
-import { UserApplication } from "../../Application/User/UserApplication";
-import {
-  GeneralUserDTO,
-  LoginOrAddUserDTO,
-} from "../../Application/User/UserDTO";
-import { container } from "../../Infrastructure/Cross-Cutting/Container";
 const userApplication = container.resolve(UserApplication);
 
 @Controller("user")
 export class UserController {
-
   @Get("/fetch")
   async fetchUser(@Req() req: Request) {
     const { uuid } = req.body;
@@ -22,7 +18,7 @@ export class UserController {
   async loginOrAddUser(@Req() req: Request) {
     const { name, email } = req.body;
     const findOrAddUserDTO = new LoginOrAddUserDTO(name, email);
-    return await userApplication.findOrAddUser(findOrAddUserDTO);
+    return await userApplication.loginOrAddUser(findOrAddUserDTO);
   }
 
   @Post("/logout")

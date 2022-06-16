@@ -13,10 +13,10 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserController = void 0;
-const common_1 = require("@nestjs/common");
 const UserApplication_1 = require("../../Application/User/UserApplication");
 const UserDTO_1 = require("../../Application/User/UserDTO");
 const Container_1 = require("../../Infrastructure/Cross-Cutting/Container");
+const common_1 = require("@nestjs/common");
 const userApplication = Container_1.container.resolve(UserApplication_1.UserApplication);
 let UserController = class UserController {
     async fetchUser(req) {
@@ -27,7 +27,7 @@ let UserController = class UserController {
     async loginOrAddUser(req) {
         const { name, email } = req.body;
         const findOrAddUserDTO = new UserDTO_1.LoginOrAddUserDTO(name, email);
-        return await userApplication.findOrAddUser(findOrAddUserDTO);
+        return await userApplication.loginOrAddUser(findOrAddUserDTO);
     }
     async logoutUser(req) {
         const { uuid } = req.body;

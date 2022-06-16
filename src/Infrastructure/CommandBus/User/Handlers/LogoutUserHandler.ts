@@ -1,6 +1,6 @@
+import { UserApplication } from "@app/User/UserApplication";
+import LogoutUserCommand from "@infra/CommandBus/User/Commands/LogoutUserCommand";
 import { container } from "tsyringe";
-import { UserApplication } from "../../../../Application/User/UserApplication";
-import LogoutUserCommand from "../Commands/LogoutUserCommand";
 const userApplication = container.resolve(UserApplication);
 
 class LogoutUserHandler {

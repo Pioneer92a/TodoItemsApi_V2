@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const simple_command_bus_1 = require("simple-command-bus");
 const DeleteUserHandler_1 = require("./Handlers/DeleteUserHandler");
+const simple_command_bus_1 = require("simple-command-bus");
 const FetchUserHandler_1 = require("./Handlers/FetchUserHandler");
 const FindOrAddUserHandler_1 = require("./Handlers/FindOrAddUserHandler");
 const LogoutUserHandler_1 = require("./Handlers/LogoutUserHandler");

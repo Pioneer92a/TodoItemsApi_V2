@@ -1,11 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserEntity = void 0;
-class UserEntity {
-    constructor(_uuid, _name, _email) {
-        this.name = _name;
-        this.email = _email;
-        this.uuid = _uuid;
+const BaseEntity_1 = require("../BaseEntity");
+class UserEntity extends BaseEntity_1.BaseEntity {
+    constructor(uuid, name, email) {
+        super(uuid, name);
+        this.email = email;
     }
 }
 exports.UserEntity = UserEntity;

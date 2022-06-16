@@ -8,6 +8,7 @@
         "moduleResolution": "Node",
         "noImplicitAny": false,
         "outDir": "./build",
+        "baseUrl": "./",
         "preserveConstEnums": true,
         "removeComments": true,
         "sourceMap": true,
@@ -16,6 +17,12 @@
         "typeRoots": [
             "./node_modules/@types"
         ],
+        "paths": {
+            "@app/*": ["./src/Application/*"],
+            "@domain/*": ["./src/Domain/*"],
+            "@infra/*": ["./src/Infrastructure/*"],
+            "@web/*": ["src/Presentation/*"],
+        },
         "lib": [
             "esnext",
             "dom",

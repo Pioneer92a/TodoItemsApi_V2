@@ -1,8 +1,8 @@
+import { JWT_SECRET } from "@infra/Cross-Cutting/Config";
+import { TaskRepository } from "@infra/Repository/TaskRepository";
+import { UserRepository } from "@infra/Repository/UserRepository";
 import { HttpException, HttpStatus } from "@nestjs/common";
 import * as jwt from "jsonwebtoken";
-import { JWT_SECRET } from "../../Infrastructure/Cross-Cutting/Config";
-import { TaskRepository } from "../../Infrastructure/Repository/TaskRepository";
-import { UserRepository } from "../../Infrastructure/Repository/UserRepository";
 
 const userRepository = new UserRepository();
 const taskRepository = new TaskRepository();

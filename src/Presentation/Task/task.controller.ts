@@ -1,24 +1,26 @@
-import {
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Post,
-  Query,
-  Req,
-} from "@nestjs/common";
-import { Request } from "express";
-import { TaskApplication } from "../../Application/Task/TaskApplication";
+import { TaskApplication } from "@app/Task/TaskApplication";
 import {
   AddNewTaskDTO,
   FetchAllTasksDTO,
   GeneralTaskDTO,
   UpdateTaskDTO,
-} from "../../Application/Task/TaskDTO";
-import { container } from "../../Infrastructure/Cross-Cutting/Container";
-import AuthServices from "../Services/AuthServices";
+} from "@app/Task/TaskDTO";
+import { container } from "@infra/Cross-Cutting/Container";
+import {
+  Controller,
+  Delete,
+  Get,
+  Param,
+  ParseIntPipe,
+  Post,
+  Query,
+  Req,
+} from "@nestjs/common";
+import AuthServices from "src/Presentation/Services/AuthServices";
+import { Request } from "express";
 const taskApplication = container.resolve(TaskApplication);
 
+// @UseInterceptors(ErrorsInterceptor)
 @Controller("task")
 export class TaskController {
   @Post("/create")
@@ -30,15 +32,21 @@ export class TaskController {
   }
 
   @Get("/fetch/:taskID")
-  async fetchTask(@Req() req: Request, @Param("taskID") taskID: string) {
-    await AuthServices.throwErrorIfTaskDoesNotExist(Number(taskID));
+  async fetchTask(
+    @Req() req: Request,
+    @Param("taskID", ParseIntPipe) taskID: number
+  ) {
+    await AuthServices.throwErrorIfTaskDoesNotExist(taskID);
     const userUUID = req.body.uuid;
     const fetchTaskDTO = new GeneralTaskDTO(taskID, userUUID);
     return await taskApplication.fetchTask(fetchTaskDTO);
   }
 
   @Post("/update/:taskID")
-  async updateTask(@Req() req: Request, @Param("taskID") taskID: string) {
+  async updateTask(
+    @Req() req: Request,
+    @Param("taskID", ParseIntPipe) taskID: number
+  ) {
     await AuthServices.throwErrorIfTaskDoesNotExist(Number(taskID));
     const userUUID = req.body.uuid;
     const { name, completed, dueDate } = req.body;
@@ -53,7 +61,10 @@ export class TaskController {
   }
 
   @Delete("/delete/:taskID")
-  async deleteTask(@Req() req: Request, @Param("taskID") taskID: string) {
+  async deleteTask(
+    @Req() req: Request,
+    @Param("taskID", ParseIntPipe) taskID: number
+  ) {
     await AuthServices.throwErrorIfTaskDoesNotExist(Number(taskID));
     const userUUID = req.body.uuid;
     const deleteTaskDTO = new GeneralTaskDTO(taskID, userUUID);
@@ -63,8 +74,8 @@ export class TaskController {
   @Get("/fetchAll")
   async fetchAllTasks(
     @Req() req: Request,
-    @Query("page") page: string,
-    @Query("perPage") perPage: string
+    @Query("page", ParseIntPipe) page: number,
+    @Query("perPage", ParseIntPipe) perPage: number
   ) {
     const userUUID = req.body.uuid;
     const fetchAllTasksDTO = new FetchAllTasksDTO(page, perPage, userUUID);

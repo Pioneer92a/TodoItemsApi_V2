@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const client_1 = require("@prisma/client");
 const faker = require("faker");
-const LoggerService_1 = require("../../../Infrastructure/Cross-Cutting/LoggerService");
+const LoggerService_1 = require("../../Cross-Cutting/LoggerService");
 const Config_1 = require("../../Cross-Cutting/Config");
 const prisma = new client_1.PrismaClient();
 const seedDataLimit = parseInt(Config_1.SEED_DATA_LIMIT);

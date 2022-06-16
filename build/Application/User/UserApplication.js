@@ -13,18 +13,18 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserApplication = void 0;
+const Services_1 = require("../Services");
+const EntityFactory_1 = require("../../Domain/EntityFactory");
+const Config_1 = require("../../Infrastructure/Cross-Cutting/Config");
 const jwt = require("jsonwebtoken");
 require("reflect-metadata");
 const tsyringe_1 = require("tsyringe");
 const uuid_1 = require("uuid");
-const EntityFactory_1 = require("../../Domain/EntityFactory");
-const Config_1 = require("../../Infrastructure/Cross-Cutting/Config");
-const ApplicationServices_1 = require("../ApplicationServices");
 let UserApplication = class UserApplication {
     constructor(userRepository) {
         this.userRepository = userRepository;
     }
-    async findOrAddUser(payload) {
+    async loginOrAddUser(payload) {
         let user;
         if (await this.userRepository.fetchUserbyEmail(payload.email))
             user = await this.loginUser(payload);
@@ -39,7 +39,7 @@ let UserApplication = class UserApplication {
         return await this.userRepository.addNewUser(userEntity);
     }
     async loginUser(payload) {
-        await (0, ApplicationServices_1.throwErrorUfUserNotFoundByEmail)(payload.email, this.userRepository);
+        await (0, Services_1.throwErrorUfUserNotFoundByEmail)(payload.email, this.userRepository);
         return await this.userRepository.login(payload.email);
     }
     async logoutUser(payload) {
