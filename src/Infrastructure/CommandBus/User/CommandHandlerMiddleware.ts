@@ -1,14 +1,14 @@
+import DeleteUserHandler from "@infra/CommandBus/User/Handlers/DeleteUserHandler";
 import {
   ClassNameExtractor,
   CommandHandlerMiddleware,
   HandleInflector,
   InMemoryLocator,
 } from "simple-command-bus";
-import DeleteUserHandler from "./Handlers/DeleteUserHandler";
 
-import FetchUserHandler from "./Handlers/FetchUserHandler";
-import FindOrAddUserHandler from "./Handlers/FindOrAddUserHandler";
-import LogoutUserHandler from "./Handlers/LogoutUserHandler";
+import FetchUserHandler from "@infra/CommandBus/User/Handlers/FetchUserHandler";
+import FindOrAddUserHandler from "@infra/CommandBus/User/Handlers/FindOrAddUserHandler";
+import LogoutUserHandler from "@infra/CommandBus/User/Handlers/LogoutUserHandler";
 
 const commandHandlerMiddleware = new CommandHandlerMiddleware(
   new ClassNameExtractor(),

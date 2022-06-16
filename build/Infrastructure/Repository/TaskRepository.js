@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.TaskRepository = void 0;
-const client_1 = require("@prisma/client");
 const EntityFactory_1 = require("../../Domain/EntityFactory");
+const client_1 = require("@prisma/client");
 const prisma = new client_1.PrismaClient();
 class TaskRepository {
     async addNewTask(newTask) {

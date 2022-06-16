@@ -1,5 +1,5 @@
-import { TaskRepositoryI } from "../Domain/Task/Repository";
-import { UserRepositoryI } from "../Domain/User/Repository";
+import { TaskRepositoryI } from "@domain/Task/Repository";
+import { UserRepositoryI } from "@domain/User/Repository";
 
 export async function checkIfTaskExists(
   taskId: number,
@@ -9,9 +9,6 @@ export async function checkIfTaskExists(
   if (!_task) throw new Error("task does not exist");
 }
 
-/**
- * throw an error if user with this email doesn't exist
- */
 export async function throwErrorUfUserNotFoundByEmail(
   email: string,
   userRepository: UserRepositoryI

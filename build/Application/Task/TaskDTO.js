@@ -1,59 +1,49 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.FetchAllTasksDTO = exports.UpdateTaskDTO = exports.GeneralTaskDTO = exports.AddNewTaskDTO = void 0;
+const zod_1 = require("zod");
+const stringSchema = zod_1.z.string().min(1);
+const numberSchema = zod_1.z.number().min(1);
+const uuidSchema = zod_1.z.string().uuid();
 class AddNewTaskDTO {
-    constructor(_name, _userUUID, _dueDate) {
-        throwErrorIfNoName(_name);
-        this.name = _name;
-        this.userUUID = _userUUID;
+    constructor(name, userUUID, _dueDate) {
+        this.name = name;
+        this.userUUID = userUUID;
+        this._dueDate = _dueDate;
+        stringSchema.parse(name);
         this.dueDate = new Date(_dueDate);
     }
 }
 exports.AddNewTaskDTO = AddNewTaskDTO;
 class GeneralTaskDTO {
-    constructor(_taskId, _userUUID) {
-        throwErrorIfNoId(_taskId);
-        throwErrorIfNoUserUUID(_userUUID);
-        this.taskId = parseInt(_taskId);
-        this.userUUID = _userUUID;
+    constructor(taskId, userUUID) {
+        this.taskId = taskId;
+        this.userUUID = userUUID;
+        numberSchema.parse(taskId);
+        uuidSchema.parse(userUUID);
     }
 }
 exports.GeneralTaskDTO = GeneralTaskDTO;
 class UpdateTaskDTO {
-    constructor(_taskId, _userUUID, _name, _completed, _dueDate) {
-        throwErrorIfNoId(_taskId);
-        throwErrorIfNoUserUUID(_userUUID);
-        this.taskId = parseInt(_taskId);
-        this.userUUID = _userUUID;
-        this.name = _name;
-        this.completed = _completed;
+    constructor(taskId, userUUID, name, completed, _dueDate) {
+        this.taskId = taskId;
+        this.userUUID = userUUID;
+        this.name = name;
+        this.completed = completed;
+        this._dueDate = _dueDate;
+        numberSchema.parse(taskId);
+        uuidSchema.parse(userUUID);
         this.dueDate = new Date(_dueDate);
     }
 }
 exports.UpdateTaskDTO = UpdateTaskDTO;
 class FetchAllTasksDTO {
-    constructor(page, perPage, _userUUID) {
-        throwErrorIfNoUserUUID(_userUUID);
-        this.page = parseInt(page);
-        this.perPage = parseInt(perPage);
-        this.userUUID = _userUUID;
+    constructor(page, perPage, userUUID) {
+        this.page = page;
+        this.perPage = perPage;
+        this.userUUID = userUUID;
+        uuidSchema.parse(userUUID);
     }
 }
 exports.FetchAllTasksDTO = FetchAllTasksDTO;
-function throwErrorIfNoName(arg) {
-    if (!arg)
-        throw new Error("name not sent with the request body");
-}
-function throwErrorIfNoUserUUID(arg) {
-    if (!arg)
-        throw new Error("user UUID not sent with the request body");
-}
-function throwErrorIfNoId(arg) {
-    if (!arg)
-        throw new Error("user UUID not sent with the request body");
-}
-function throwErrorIfNoOffsetDetails(arg) {
-    if (!arg)
-        throw new Error("user UUID not sent with the request body");
-}
 //# sourceMappingURL=TaskDTO.js.map

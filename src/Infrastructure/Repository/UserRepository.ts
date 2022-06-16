@@ -1,7 +1,7 @@
+import { EntityFactory } from "@domain/EntityFactory";
+import { UserEntity } from "@domain/User/Entity";
+import { UserRepositoryI } from "@domain/User/Repository";
 import { PrismaClient } from "@prisma/client";
-import { EntityFactory } from "../../Domain/EntityFactory";
-import { UserEntity } from "../../Domain/User/Entity";
-import { UserRepositoryI } from "../../Domain/User/Repository";
 const prisma = new PrismaClient();
 
 /**

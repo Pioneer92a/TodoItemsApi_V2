@@ -1,7 +1,7 @@
+import { EntityFactory } from "@domain/EntityFactory";
+import { TaskEntity } from "@domain/Task/Entity";
+import { TaskRepositoryI } from "@domain/Task/Repository";
 import { PrismaClient } from "@prisma/client";
-import { EntityFactory } from "../../Domain/EntityFactory";
-import { TaskEntity } from "../../Domain/Task/Entity";
-import { TaskRepositoryI } from "../../Domain/Task/Repository";
 const prisma = new PrismaClient();
 
 export class TaskRepository implements TaskRepositoryI {

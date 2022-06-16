@@ -1,10 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const common_1 = require("@nestjs/common");
-const jwt = require("jsonwebtoken");
 const Config_1 = require("../../Infrastructure/Cross-Cutting/Config");
 const TaskRepository_1 = require("../../Infrastructure/Repository/TaskRepository");
 const UserRepository_1 = require("../../Infrastructure/Repository/UserRepository");
+const common_1 = require("@nestjs/common");
+const jwt = require("jsonwebtoken");
 const userRepository = new UserRepository_1.UserRepository();
 const taskRepository = new TaskRepository_1.TaskRepository();
 class AuthServices {

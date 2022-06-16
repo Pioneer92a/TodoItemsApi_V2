@@ -13,12 +13,12 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.TaskApplication = void 0;
+const PaginatedData_1 = require("../Pagination/PaginatedData");
+const PaginationOptions_1 = require("../Pagination/PaginationOptions");
+const EntityFactory_1 = require("../../Domain/EntityFactory");
 require("reflect-metadata");
 const tsyringe_1 = require("tsyringe");
 const uuid_1 = require("uuid");
-const EntityFactory_1 = require("../../Domain/EntityFactory");
-const PaginatedData_1 = require("../Services/PaginatedData");
-const PaginationOptions_1 = require("../Services/PaginationOptions");
 let TaskApplication = class TaskApplication {
     constructor(userRepository, taskRepository) {
         this.userRepository = userRepository;

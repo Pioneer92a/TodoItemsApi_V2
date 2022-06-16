@@ -1,41 +1,24 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.LoginOrAddUserDTO = exports.FindOrAddUserDTO = exports.GeneralUserDTO = void 0;
+exports.LoginOrAddUserDTO = exports.GeneralUserDTO = void 0;
+const zod_1 = require("zod");
+const stringSchema = zod_1.z.string().min(1);
+const uuidSchema = zod_1.z.string().uuid();
+const emailSchema = zod_1.z.string().email();
 class GeneralUserDTO {
     constructor(uuid) {
         this.uuid = uuid;
-        throwErrorIfNoUUID(this.uuid);
+        uuidSchema.parse(uuid);
     }
 }
 exports.GeneralUserDTO = GeneralUserDTO;
-class FindOrAddUserDTO {
-    constructor(req) {
-        this.name = req.user.name.givenName;
-        this.email = req.user.emails[0].value;
-        throwErrorIfNoName(this.name);
-        throwErrorIfNoEmail(this.email);
-    }
-}
-exports.FindOrAddUserDTO = FindOrAddUserDTO;
 class LoginOrAddUserDTO {
     constructor(name, email) {
         this.name = name;
         this.email = email;
-        throwErrorIfNoName(this.name);
-        throwErrorIfNoEmail(this.email);
+        stringSchema.parse(name);
+        emailSchema.parse(email);
     }
 }
 exports.LoginOrAddUserDTO = LoginOrAddUserDTO;
-function throwErrorIfNoName(arg) {
-    if (!arg)
-        throw new Error("user request does not have uuid");
-}
-function throwErrorIfNoEmail(arg) {
-    if (!arg)
-        throw new Error("user request does not have uuid");
-}
-function throwErrorIfNoUUID(arg) {
-    if (!arg)
-        throw new Error("user request does not have uuid");
-}
 //# sourceMappingURL=UserDTO.js.map

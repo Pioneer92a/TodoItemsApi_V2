@@ -1,27 +1,22 @@
-/**
- * task entity
- */
-export class TaskEntity {
-  uuid: string;
-  name: string;
-  dueDate: Date;
-  userUUID: string;
+import { BaseEntity } from "@domain/BaseEntity";
 
-  // constructor(id, name) {
-  constructor(_uuid: string, _name: string, _userUUID: string, _dueDate: Date) {
-    this.guardAgainst140WordsLongName(_name);
-    this.uuid = _uuid;
-    this.name = _name;
-    this.userUUID = _userUUID;
-    this.dueDate = _dueDate;
+export class TaskEntity extends BaseEntity {
+  constructor(
+    uuid: string,
+    name: string,
+    readonly userUUID: string,
+    readonly dueDate: Date
+  ) {
+    super(uuid, name);
+    this.guardAgainst140WordsLongName(name);
   }
 
   // static createFromObj(rawObject) {
   //   return entity
   // }
 
-  private guardAgainst140WordsLongName(_name: string) {
-    return true;
-    // TO BE IMPLEMENTED LATER
+  private guardAgainst140WordsLongName(name: string) {
+    if (name.length < 140) return true;
+    else throw new Error("name of task too long");
   }
 }

@@ -1,7 +1,7 @@
 import {
   default as PaginationOptions,
   default as PaginationParams,
-} from "./PaginationOptions";
+} from "@app/Pagination/PaginationOptions";
 
 class PaginatedData<T> {
   info: PaginationOptions;

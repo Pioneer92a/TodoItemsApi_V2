@@ -5,7 +5,7 @@ const UserApplication_1 = require("../../../../Application/User/UserApplication"
 const userApplication = tsyringe_1.container.resolve(UserApplication_1.UserApplication);
 class FindOrAddUserHandler {
     async handle(command) {
-        return await userApplication.findOrAddUser(command);
+        return await userApplication.loginOrAddUser(command);
     }
 }
 exports.default = FindOrAddUserHandler;

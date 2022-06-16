@@ -1,6 +1,6 @@
+import { UserApplication } from "@app/User/UserApplication";
+import DeleteUserCommand from "@infra/CommandBus/User/Commands/DeleteUserCommand";
 import { container } from "tsyringe";
-import { UserApplication } from "../../../../Application/User/UserApplication";
-import DeleteUserCommand from "../Commands/DeleteUserCommand";
 const userApplication = container.resolve(UserApplication);
 
 class DeleteUserHandler {

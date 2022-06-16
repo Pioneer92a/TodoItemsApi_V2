@@ -1,6 +1,6 @@
+import { TaskRepository } from "@infra/Repository/TaskRepository";
+import { UserRepository } from "@infra/Repository/UserRepository";
 import { container } from "tsyringe";
-import { TaskRepository } from "../Repository/TaskRepository";
-import { UserRepository } from "../Repository/UserRepository";
 
 container.register("UserRepositoryI", {
   useClass: UserRepository,
